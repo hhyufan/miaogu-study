@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理仪表盘 - 喵咕学习平台</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- 顶部导航栏 -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75zM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5z" />
+                    </svg>
+                </button>
+                <div class="admin-logo">
+                    <span>喵咕管理后台</span>
+                </div>
+            </div>
+            <div class="admin-header-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+                    </svg>
+                </button>
+                <div class="admin-user">
+                    <span id="adminUserName">管理员</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 侧边导航栏 -->
+        <nav class="admin-sidebar" id="adminSidebar">
+            <ul class="admin-sidebar-nav">
+                <li><a href="dashboard.html" class="active">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" />
+                        </svg>
+                        仪表盘
+                    </a></li>
+                <li><a href="users.html">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                        </svg>
+                        用户管理
+                    </a></li>
+                <li><a href="notes.html">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+                            <path
+                                d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                        </svg>
+                        笔记管理
+                    </a></li>
+                <li><a href="settings.html">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                            <path
+                                d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                        </svg>
+                        系统设置
+                    </a></li>
+            </ul>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="admin-main">
+            <div class="admin-container">
+                <div class="page-header">
+                    <h1 class="page-title">管理仪表盘</h1>
+                    <p class="page-description">喵咕学习平台后台管理系统概览</p>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">1,234</div>
+                        <div class="stat-label">总用户数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalNotes">5,678</div>
+                        <div class="stat-label">总笔记数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalQuestions">2,345</div>
+                        <div class="stat-label">题库题目</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeUsers">456</div>
+                        <div class="stat-label">活跃用户</div>
+                    </div>
+                </div>
+
+                <!-- 内容区域 -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px;">
+                    <!-- 最近活动 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">最近活动</h2>
+                        </div>
+                        <div class="activity-list" id="recentActivity">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path
+                                            d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">用户 hhyufan 创建了新笔记</div>
+                                    <div class="activity-time">2分钟前</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.061L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">内容审核：通过了一篇笔记</div>
+                                    <div class="activity-time">15分钟前</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                        <path
+                                            d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28z" />
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">新用户注册：张三</div>
+                                    <div class="activity-time">1小时前</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 系统状态 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">系统状态</h2>
+                        </div>
+                        <div class="system-status">
+                            <div class="status-item">
+                                <div class="status-label">服务器状态</div>
+                                <div class="status-value status-good">正常</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">数据库连接</div>
+                                <div class="status-value status-good">正常</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">存储空间</div>
+                                <div class="status-value status-warning">78%</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">内存使用</div>
+                                <div class="status-value status-good">45%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 待处理事项 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">待处理事项</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>类型</th>
+                                    <th>内容</th>
+                                    <th>提交时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingItems">
+                                <tr>
+                                    <td>内容审核</td>
+                                    <td>笔记：《JavaScript高级编程技巧》</td>
+                                    <td>2024-01-15 14:30</td>
+                                    <td><span class="status-badge status-inactive">待审核</span></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary">审核</button>
+                                            <button class="btn">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>用户举报</td>
+                                    <td>用户：违规内容举报</td>
+                                    <td>2024-01-15 13:45</td>
+                                    <td><span class="status-badge status-inactive">待处理</span></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary">处理</button>
+                                            <button class="btn">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>系统公告</td>
+                                    <td>维护通知发布</td>
+                                    <td>2024-01-15 12:00</td>
+                                    <td><span class="status-badge status-active">已发布</span></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn">编辑</button>
+                                            <button class="btn">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin-dashboard.js"></script>
+</body>
+
+</html>

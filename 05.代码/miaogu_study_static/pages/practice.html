@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习页面</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/quiz-styles.css">
+    <link rel="stylesheet" href="../css/practice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span class="current-location">练习模式</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Type / to search" class="search-input">
+                </div>
+                <div class="button-group">
+                    <div class="action-buttons">
+                        <button class="header-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="header-btn language-toggle" title="切换语言">
+                            <i class="fas fa-language"></i>
+                        </button>
+                        <button class="header-btn theme-toggle" title="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <!-- <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                        </button> -->
+                    </div>
+                    <div class="user-avatar" onclick="window.location.href='../pages/profile.html'">
+                        <img src="../assets/hhyufan.jpg" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-container">
+        <!-- 左侧栏 - 章节管理 -->
+        <aside class="left-sidebar">
+            <div class="sidebar-header">
+                <h2>章节管理</h2>
+                <button class="new-btn">
+                    <i class="fas fa-plus"></i>
+                    新建
+                </button>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索章节或题目...">
+                </div>
+            </div>
+
+            <div class="chapter-list">
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter1')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter1"></i>
+                        <span>第一章 基础知识</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter1">
+                        <div class="topic-item active" onclick="showTopicDetail('topic1')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>1.1 概述</span>
+                        </div>
+                        <div class="topic-item" onclick="showTopicDetail('topic2')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>1.2 基本概念</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter2')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter2"></i>
+                        <span>第二章 进阶内容</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter2">
+                        <div class="topic-item" onclick="showTopicDetail('topic3')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>2.1 高级特性</span>
+                        </div>
+                        <div class="topic-item" onclick="showTopicDetail('topic4')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>2.2 实践应用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 中间栏 - 练习区域 -->
+        <section class="practice-content">
+            <div class="practice-header">
+                <div class="practice-info">
+                    <h2>填空练习</h2>
+                    <div class="progress-info">
+                        <span class="current-question">题目 1 / 10</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="exit-practice" onclick="exitPractice()">
+                    <i class="fas fa-times"></i>
+                    退出练习
+                </button>
+            </div>
+
+            <div class="question-area">
+                <div class="question-content">
+                    <h3>题目描述</h3>
+                    <p class="question-text">
+                        在JavaScript中，<input type="text" class="fill-blank" placeholder="请填入答案" data-answer="变量">
+                        是用来存储数据的容器，
+                        可以使用 <input type="text" class="fill-blank" placeholder="请填入答案" data-answer="let"> 或
+                        <input type="text" class="fill-blank" placeholder="请填入答案" data-answer="const"> 关键字来声明。
+                    </p>
+                </div>
+
+                <div class="question-actions">
+                    <button class="check-answer" onclick="checkAnswer()">
+                        <i class="fas fa-check"></i>
+                        检查答案
+                    </button>
+                    <button class="next-question" onclick="nextQuestion()" disabled>
+                        <i class="fas fa-arrow-right"></i>
+                        下一题
+                    </button>
+                </div>
+            </div>
+
+            <!-- 掌握程度选择 -->
+            <div class="mastery-level">
+                <h4>掌握程度</h4>
+                <div class="mastery-buttons">
+                    <button class="mastery-btn mastered" onclick="setMastery('mastered')">
+                        <i class="fas fa-check-circle"></i>
+                        已掌握
+                    </button>
+                    <button class="mastery-btn uncertain" onclick="setMastery('uncertain')">
+                        <i class="fas fa-question-circle"></i>
+                        不确定
+                    </button>
+                    <button class="mastery-btn not-mastered" onclick="setMastery('not-mastered')">
+                        <i class="fas fa-times-circle"></i>
+                        未掌握
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 右侧栏 - 答案和笔记 -->
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <div class="section-header" onclick="toggleSection('answer-section')">
+                    <h3>显示答案</h3>
+                    <i class="fas fa-chevron-down toggle-icon" id="answer-toggle"></i>
+                </div>
+                <div class="section-content collapsed" id="answer-section">
+                    <div class="answer-content">
+                        <h4>参考答案</h4>
+                        <div class="answer-list">
+                            <div class="answer-item">
+                                <span class="blank-number">空格1:</span>
+                                <span class="answer-text">变量</span>
+                            </div>
+                            <div class="answer-item">
+                                <span class="blank-number">空格2:</span>
+                                <span class="answer-text">let</span>
+                            </div>
+                            <div class="answer-item">
+                                <span class="blank-number">空格3:</span>
+                                <span class="answer-text">const</span>
+                            </div>
+                        </div>
+                        <div class="explanation">
+                            <h5>解析</h5>
+                            <p>变量是JavaScript中存储数据的基本单位，let用于声明可变变量，const用于声明常量。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-header" onclick="toggleSection('notes-section')">
+                    <h3>显示笔记</h3>
+                    <i class="fas fa-chevron-down toggle-icon" id="notes-toggle"></i>
+                </div>
+                <div class="section-content collapsed" id="notes-section">
+                    <div class="notes-content">
+                        <div class="note-item">
+                            <div class="note-header">
+                                <h4>变量声明笔记</h4>
+                                <span class="note-time">今天</span>
+                            </div>
+                            <p class="note-text">JavaScript中的变量声明有三种方式：var、let、const。推荐使用let和const。</p>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-header">
+                                <h4>重点记忆</h4>
+                                <span class="note-time">昨天</span>
+                            </div>
+                            <p class="note-text">const声明的变量必须在声明时初始化，且不能重新赋值。</p>
+                        </div>
+
+                        <div class="add-note">
+                            <button class="add-note-btn" onclick="addNote()">
+                                <i class="fas fa-plus"></i>
+                                添加笔记
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // 章节展开/收起功能
+        function toggleChapter(chapterId) {
+            const topics = document.getElementById('topics-' + chapterId);
+            const arrow = document.getElementById('arrow-' + chapterId);
+
+            if (topics.style.display === 'none' || topics.style.display === '') {
+                topics.style.display = 'block';
+                arrow.style.transform = 'rotate(90deg)';
+            } else {
+                topics.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 显示题目详情
+        function showTopicDetail(topicId) {
+            // 移除所有active类
+            document.querySelectorAll('.topic-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // 添加active类到当前项
+            event.target.closest('.topic-item').classList.add('active');
+        }
+
+        // 检查答案
+        function checkAnswer() {
+            const blanks = document.querySelectorAll('.fill-blank');
+            let allCorrect = true;
+
+            blanks.forEach(blank => {
+                const userAnswer = blank.value.trim();
+                const correctAnswer = blank.dataset.answer;
+
+                if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    blank.classList.remove('incorrect');
+                    blank.classList.add('correct');
+                } else {
+                    blank.classList.remove('correct');
+                    blank.classList.add('incorrect');
+                    allCorrect = false;
+                }
+            });
+
+            // 启用下一题按钮
+            document.querySelector('.next-question').disabled = false;
+
+            if (allCorrect) {
+                showMessage('答案正确！', 'success');
+            } else {
+                showMessage('部分答案有误，请检查', 'warning');
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            // 这里可以加载下一题的逻辑
+            showMessage('加载下一题...', 'info');
+
+            // 重置输入框
+            document.querySelectorAll('.fill-blank').forEach(blank => {
+                blank.value = '';
+                blank.classList.remove('correct', 'incorrect');
+            });
+
+            // 禁用下一题按钮
+            document.querySelector('.next-question').disabled = true;
+        }
+
+        // 设置掌握程度
+        function setMastery(level) {
+            document.querySelectorAll('.mastery-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            event.target.classList.add('selected');
+
+            const messages = {
+                'mastered': '标记为已掌握',
+                'uncertain': '标记为不确定',
+                'not-mastered': '标记为未掌握'
+            };
+
+            showMessage(messages[level], 'info');
+        }
+
+        // 切换右侧栏区域
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const toggleIcon = document.getElementById(sectionId.replace('-section', '-toggle'));
+
+            if (section.classList.contains('collapsed')) {
+                section.classList.remove('collapsed');
+                toggleIcon.style.transform = 'rotate(180deg)';
+            } else {
+                section.classList.add('collapsed');
+                toggleIcon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 退出练习
+        function exitPractice() {
+            if (confirm('确定要退出练习吗？进度将不会保存。')) {
+                window.location.href = 'quiz.html';
+            }
+        }
+
+        // 添加笔记
+        function addNote() {
+            const noteText = prompt('请输入笔记内容：');
+            if (noteText && noteText.trim()) {
+                const notesContent = document.querySelector('#notes-section .notes-content');
+                const addNoteBtn = notesContent.querySelector('.add-note');
+
+                const newNote = document.createElement('div');
+                newNote.className = 'note-item';
+                newNote.innerHTML = `
+                    <div class="note-header">
+                        <h4>新笔记</h4>
+                        <span class="note-time">刚刚</span>
+                    </div>
+                    <p class="note-text">${noteText}</p>
+                `;
+
+                notesContent.insertBefore(newNote, addNoteBtn);
+                showMessage('笔记添加成功', 'success');
+            }
+        }
+
+        // 显示消息
+        function showMessage(message, type) {
+            // 创建消息元素
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+
+            // 添加到页面
+            document.body.appendChild(messageEl);
+
+            // 3秒后移除
+            setTimeout(() => {
+                messageEl.remove();
+            }, 3000);
+        }
+
+        // 初始化：展开第一章，隐藏其他章节
+        document.addEventListener('DOMContentLoaded', function () {
+            // 展开第一章
+            toggleChapter('chapter1');
+
+            // 隐藏其他章节的题目列表
+            const topicLists = document.querySelectorAll('.topic-list');
+            topicLists.forEach((list, index) => {
+                if (index > 0) {
+                    list.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>导航菜单</h3>
+                <button class="close-btn" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="quiz.html" class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>题目练习</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>个人信息</span>
+                </a>
+                <a href="friendship.html" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>好友</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                body.classList.remove('sidebar-open');
+            } else {
+                sidebar.classList.add('active');
+                body.classList.add('sidebar-open');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+            sidebar.classList.remove('active');
+            body.classList.remove('sidebar-open');
+        }
+
+        // 点击侧边栏外部关闭
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+
+            if (sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+
+</html>
