@@ -1,0 +1,140 @@
+/* CSS变量定义 - 浅色主题 */
+:root {
+  /* 背景色 */
+  --page-bg: #f5f7fa;
+  --card-bg: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #fafafa;
+
+  /* 文字颜色 */
+  --text-primary: #262626;
+  --text-secondary: #595959;
+  --text-tertiary: #8c8c8c;
+
+  /* 边框颜色 */
+  --border-color: #d9d9d9;
+  --border-light: #f0f0f0;
+
+  /* 阴影 */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* 主色调 */
+  --primary-color: #409eff;
+  --primary-hover: #66b1ff;
+  --primary-active: #3a8ee6;
+
+  /* 状态颜色 */
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --error-color: #f56c6c;
+
+  /* 输入框 */
+  --input-bg: #ffffff;
+  --input-border: #dcdfe6;
+  --input-autofill-bg: #f0f9ff; /* 自动填充专用背景色，浅蓝色 */
+
+  /* Element Plus 主题变量覆盖 */
+  --el-color-primary: var(--primary-color);
+  --el-color-primary-light-3: var(--primary-hover);
+  --el-color-primary-dark-2: var(--primary-active);
+  --el-bg-color: var(--card-bg);
+  --el-bg-color-page: var(--page-bg);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-tertiary);
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-light);
+  --el-box-shadow: 0 8px 32px var(--shadow-color);
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  /* 背景色 */
+  --page-bg: #141414;
+  --card-bg: #1f1f1f;
+  --bg-secondary: #262626;
+  --bg-tertiary: #303030;
+
+  /* 文字颜色 */
+  --text-primary: #ffffff;
+  --text-secondary: #d9d9d9;
+  --text-tertiary: #8c8c8c;
+
+  /* 边框颜色 */
+  --border-color: #434343;
+  --border-light: #303030;
+
+  /* 阴影 */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+
+  /* 主色调 */
+  --primary-color: #409eff;
+  --primary-hover: #66b1ff;
+  --primary-active: #3a8ee6;
+
+  /* 状态颜色 */
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --error-color: #f56c6c;
+
+  /* 输入框 */
+  --input-bg: #262626;
+  --input-border: #434343;
+  --input-autofill-bg: #1a1a1a; /* 自动填充专用背景色，比普通输入框更深 */
+
+  /* Element Plus 深色主题变量覆盖 */
+  --el-color-primary: var(--primary-color);
+  --el-color-primary-light-3: var(--primary-hover);
+  --el-color-primary-dark-2: var(--primary-active);
+  --el-bg-color: var(--card-bg);
+  --el-bg-color-page: var(--page-bg);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-tertiary);
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-light);
+  --el-box-shadow: 0 8px 32px var(--shadow-color);
+  --el-fill-color-blank: var(--card-bg);
+  --el-fill-color-light: var(--bg-secondary);
+  --el-fill-color: var(--bg-tertiary);
+}
+
+/* 主题切换动画 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 全局样式重置 */
+body {
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* 修复浏览器自动填充样式 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--input-autofill-bg) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Element Plus 输入框自动填充样式修复 */
+.el-input__inner:-webkit-autofill,
+.el-input__inner:-webkit-autofill:hover,
+.el-input__inner:-webkit-autofill:focus,
+.el-input__inner:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--input-autofill-bg) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
