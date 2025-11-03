@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import HomeViewer from '../components/HomeViewer.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <HomeViewer />
 </template>

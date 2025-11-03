@@ -19,16 +19,16 @@
     "sendResetEmail": "Send Reset Email",
     "backToLogin": "Back to Login",
     "or": "or",
-    "githubLogin": "Continue with GitHub",
-    "loginWithGithub": "Login with GitHub",
+    "githubLogin": "Sign in with GitHub",
+    "loginWithGithub": "Sign in with GitHub",
     "githubAuthNotImplemented": "GitHub authentication not implemented yet",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "registerNow": "Sign up now",
     "loginNow": "Sign in now",
     "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
-    "toggleTheme": "Toggle theme",
-    "toggleLanguage": "Toggle language",
+    "toggleTheme": "Toggle Theme",
+    "toggleLanguage": "Toggle Language",
     "emailRequired": "Email is required",
     "emailInvalid": "Please enter a valid email address",
     "passwordRequired": "Password is required",
@@ -47,7 +47,7 @@
     "resetEmailSent": "Reset email sent. Please check your inbox",
     "resetEmailFailed": "Failed to send reset email. Please try again later",
     "passwordStrength": {
-      "none": "Enter password",
+      "none": "Enter a password",
       "weak": "Weak",
       "fair": "Fair",
       "medium": "Medium",
@@ -56,8 +56,51 @@
       "suggestions": {
         "lowercase": "Add lowercase letters",
         "uppercase": "Add uppercase letters",
-        "symbols": "Add special symbols"
+        "symbols": "Add symbols"
       }
     }
+  },
+  "common": {
+    "searchPlaceholder": "Type / to search"
+  },
+  "messages": {
+    "logoutSuccess": "Logged out successfully",
+    "themeSwitch": {
+      "dark": "Switched to dark theme",
+      "light": "Switched to light theme"
+    },
+    "languageSwitch": "Language switched to {language}",
+    "searchInfo": "Search: {query}"
+  },
+  "home": {
+    "myNotes": "My Notes",
+    "newNote": "New",
+    "searchNotes": "Search notes...",
+    "learningActivity": "Learning Activity",
+    "latestQuestions": "Latest Questions",
+    "filters": {
+      "all": "All",
+      "latest": "Latest",
+      "notes": "Notes"
+    },
+    "actions": {
+      "pinned": "pinned note",
+      "published": "published",
+      "updated": "updated",
+      "created": "created"
+    },
+    "stats": {
+      "views": "views",
+      "likes": "likes",
+      "progress": "progress"
+    },
+    "timeAgo": {
+      "yesterday": "yesterday",
+      "daysAgo": "days ago",
+      "hoursAgo": "hours ago",
+      "minutesAgo": "minutes ago",
+      "justNow": "just now"
+    },
+    "noData": "No data available"
   }
 }

@@ -30,12 +30,34 @@ onUnmounted(() => {
   <!-- 只在非Auth页面显示header -->
   <AppHeader v-if="!isAuthPage" />
 
-  <div :style="{ paddingTop: !isAuthPage ? '60px' : '0' }">
+  <div :class="{ 'main-wrapper': true, 'with-header': !isAuthPage }">
     <RouterView />
   </div>
 </template>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.main-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-wrapper.with-header {
+  padding-top: 60px;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -92,7 +114,6 @@ nav a:first-of-type {
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
     margin-top: 1rem;
   }

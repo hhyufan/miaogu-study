@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useThemeStore } from '@/stores/theme'
+import { useLanguageStore } from '@/stores/language'
 import { ElMessage } from 'element-plus'
 import IconPlus from './icons/IconPlus.vue'
 import IconSearch from './icons/IconSearch.vue'
@@ -9,16 +11,26 @@ import IconQuestionFilled from './icons/IconQuestionFilled.vue'
 import IconMoon from './icons/IconMoon.vue'
 import IconSunny from './icons/IconSunny.vue'
 import IconOperation from './icons/IconOperation.vue'
+import IconLanguage from './icons/IconLanguage.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const themeStore = useThemeStore()
+const languageStore = useLanguageStore()
 const searchQuery = ref('')
 const searchInputRef = ref<HTMLInputElement>()
 
 // 切换主题
 const toggleTheme = () => {
   themeStore.toggleTheme()
-  ElMessage.success(`已切换到${themeStore.isDark ? '深色' : '浅色'}主题`)
+  ElMessage.success(t(`messages.themeSwitch.${themeStore.isDark ? 'dark' : 'light'}`))
+}
+
+// 切换语言
+const toggleLanguage = () => {
+  languageStore.toggleLanguage()
+  const langText = languageStore.currentLanguage === 'zh-CN' ? '中文' : 'English'
+  ElMessage.success(t('messages.languageSwitch', { language: langText }))
 }
 
 // 切换侧边栏
@@ -41,7 +53,7 @@ const goToProfile = () => {
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
     // 这里可以添加搜索逻辑
-    ElMessage.info(`搜索: ${searchQuery.value}`)
+    ElMessage.info(t('messages.searchInfo', { query: searchQuery.value }))
   }
 }
 
@@ -69,8 +81,8 @@ onUnmounted(() => {
   <el-header class="app-header">
     <div class="header-container">
       <div class="header-left">
-        <el-button 
-          class="menu-btn" 
+        <el-button
+          class="menu-btn"
           @click="toggleSidebar"
           circle
         >
@@ -86,27 +98,27 @@ onUnmounted(() => {
 
       <div class="header-right">
         <el-input
-          v-model="searchQuery"
-          placeholder="Type / to search"
-          class="search-input"
-          @keyup.enter="handleSearch"
-          ref="searchInputRef"
-        >
-          <template #prefix>
-            <IconSearch />
-          </template>
-        </el-input>
-        
+            v-model="searchQuery"
+            :placeholder="t('common.searchPlaceholder')"
+            class="search-input"
+            ref="searchInputRef"
+            @keyup.enter="handleSearch"
+          >
+            <template #prefix>
+              <IconSearch />
+            </template>
+          </el-input>
+
         <div class="action-buttons">
-          <el-button 
+          <el-button
             circle
             title="新建"
             class="action-btn"
           >
             <IconPlus />
           </el-button>
-          
-          <el-button 
+
+          <el-button
             circle
             title="题目"
             @click="goToQuiz"
@@ -114,8 +126,17 @@ onUnmounted(() => {
           >
             <IconQuestionFilled />
           </el-button>
-          
-          <el-button 
+
+          <el-button
+            circle
+            title="切换语言"
+            @click="toggleLanguage"
+            class="action-btn"
+          >
+            <IconLanguage :current-language="languageStore.currentLanguage === 'zh-CN' ? 'zh' : 'en'" />
+          </el-button>
+
+          <el-button
             circle
             title="切换主题"
             @click="toggleTheme"
@@ -124,8 +145,8 @@ onUnmounted(() => {
             <IconSunny v-if="themeStore.isDark" />
             <IconMoon v-else />
           </el-button>
-          
-          <el-avatar 
+
+          <el-avatar
             :src="'/hhyufan.jpg'"
             :size="40"
             class="user-avatar"
@@ -140,7 +161,7 @@ onUnmounted(() => {
 
 <style scoped>
 .app-header {
-  background-color: var(--card-bg);
+  background-color: var(--header-bg);
   border-bottom: 1px solid var(--border-color);
   padding: 0;
   height: 60px !important;
@@ -216,14 +237,14 @@ onUnmounted(() => {
 
 .search-input {
   width: 240px;
-  background-color: var(--input-bg);
+  background-color: transparent;
   border-color: var(--input-border);
   color: var(--text-primary);
   transition: all 0.2s ease;
 }
 
 .search-input :deep(.el-input__wrapper) {
-  background-color: var(--input-bg);
+  background-color: transparent;
   box-shadow: 0 0 0 1px var(--input-border) inset;
 }
 
@@ -246,7 +267,7 @@ onUnmounted(() => {
 .action-buttons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px; /* 从8px减小到4px */
 }
 
 .action-btn {
@@ -280,15 +301,12 @@ onUnmounted(() => {
   color: var(--primary-color);
 }
 
-:deep(.el-button.is-circle) {
-  padding: 8px;
-}
-
 .user-avatar {
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid var(--border-color);
   border-radius: 50%;
+  margin-left: 20px; /* 增加与按钮组的距离 */
 }
 
 .user-avatar:hover {
@@ -302,15 +320,15 @@ onUnmounted(() => {
   .header-center {
     display: none;
   }
-  
+
   .search-input {
     width: 180px;
   }
-  
+
   .header-right {
     gap: 8px;
   }
-  
+
   .action-buttons {
     gap: 4px;
   }
@@ -320,11 +338,11 @@ onUnmounted(() => {
   .search-input {
     width: 120px;
   }
-  
+
   :deep(.el-button.is-circle) {
     padding: 6px;
   }
-  
+
   :deep(.el-avatar) {
     width: 32px;
     height: 32px;

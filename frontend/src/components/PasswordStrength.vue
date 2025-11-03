@@ -119,7 +119,7 @@ const passwordStrength = computed(() => {
       transition: all 0.3s ease;
 
       &.none {
-        width: 0%;
+        width: 0;
         background: transparent;
       }
       &.weak {

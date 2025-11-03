@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { PersistenceOptions } from 'pinia-plugin-persistedstate'
 
+// 导入用户数据
+import usersData from '@/data/users.json'
+
 export interface MockUser {
   id: number
   username: string
@@ -15,27 +18,8 @@ export interface MockUser {
 export const useMockDataStore = defineStore(
   'mockData',
   () => {
-    // 用户数据状态
-    const users = ref<MockUser[]>([
-      {
-        id: 1,
-        username: 'admin',
-        phone: '15502441707',
-        email: 'admin@miaogu.com',
-        password: '123456',
-        avatar: '/hhyufan.jpg',
-        createTime: '2025-01-25',
-      },
-      {
-        id: 2,
-        username: 'user',
-        phone: '13800138000',
-        email: 'user@example.com',
-        password: '123456',
-        avatar: '/hhyufan.jpg',
-        createTime: '2025-01-25',
-      },
-    ])
+    // 用户数据状态 - 从JSON文件初始化
+    const users = ref<MockUser[]>(usersData)
 
     // 获取所有用户
     const getUsers = () => {

@@ -3,6 +3,7 @@
   /* 背景色 */
   --page-bg: #f5f7fa;
   --card-bg: #ffffff;
+  --header-bg: #f0f2f5;  /* AppHeader专用背景，比page-bg更深 */
   --bg-secondary: #f5f5f5;
   --bg-tertiary: #fafafa;
 
@@ -36,6 +37,16 @@
   /* 图标颜色 */
   --icon-color: #24292f;
 
+  /* HomeViewer 特有颜色 */
+  --home-main-bg: var(--page-bg);  /* 主容器背景 */
+  --home-feed-bg: var(--card-bg);  /* Feed项目背景 */
+  --home-feed-content-bg: var(--bg-secondary);  /* Feed内容背景 */
+  --home-feed-header-bg: var(--card-bg);  /* Feed头部背景 */
+  --home-accent-color: var(--primary-color);  /* 强调色 */
+  --home-link-color: var(--primary-color);  /* 链接颜色 */
+  --home-hover-bg: rgba(0, 0, 0, 0.05);  /* 悬停背景 */
+  --home-hover-border: var(--primary-color);  /* 悬停边框 */
+
   /* Element Plus 主题变量覆盖 */
   --el-color-primary: var(--primary-color);
   --el-color-primary-light-3: var(--primary-hover);
@@ -53,19 +64,21 @@
 /* 深色主题 */
 [data-theme="dark"] {
   /* 背景色 */
-  --page-bg: #141414;
-  --card-bg: #1f1f1f;
-  --bg-secondary: #262626;
-  --bg-tertiary: #303030;
+  --page-bg: #0d1117;  /* 使用HomeViewer的黑色背景 */
+  --card-bg: #161b22;  /* 更深的卡片背景 */
+  --header-bg: #050608;  /* AppHeader专用背景，比HomeViewer更深 */
+  
+  --bg-secondary: #21262d;  /* 次要背景色 */
+  --bg-tertiary: #171b22;  /* 第三级背景色，用于内容区域 */
 
   /* 文字颜色 */
-  --text-primary: #ffffff;
-  --text-secondary: #d9d9d9;
-  --text-tertiary: #8c8c8c;
+  --text-primary: #e6edf3;  /* HomeViewer的主要文字颜色 */
+  --text-secondary: #8b949e;  /* HomeViewer的次要文字颜色 */
+  --text-tertiary: #7d8590;  /* HomeViewer的第三级文字颜色 */
 
   /* 边框颜色 */
-  --border-color: #434343;
-  --border-light: #303030;
+  --border-color: #30363d;  /* HomeViewer的边框颜色 */
+  --border-light: #21262d;  /* HomeViewer的浅色边框 */
 
   /* 阴影 */
   --shadow-color: rgba(0, 0, 0, 0.3);
@@ -87,6 +100,16 @@
 
   /* 图标颜色 */
   --icon-color: #e6edf3;
+
+  /* HomeViewer 特有颜色 */
+  --home-main-bg: #0d1117;  /* 主容器背景 */
+  --home-feed-bg: #0d1117;  /* Feed项目背景 */
+  --home-feed-content-bg: #171b22;  /* Feed内容背景 */
+  --home-feed-header-bg: #0d1117;  /* Feed头部背景 */
+  --home-accent-color: #7c3aed;  /* 强调色（紫色） */
+  --home-link-color: #58a6ff;  /* 链接颜色 */
+  --home-hover-bg: rgba(255, 255, 255, 0.05);  /* 悬停背景 */
+  --home-hover-border: rgba(124, 58, 237, 0.4);  /* 悬停边框 */
 
   /* Element Plus 深色主题变量覆盖 */
   --el-color-primary: var(--primary-color);

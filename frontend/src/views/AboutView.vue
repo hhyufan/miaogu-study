@@ -55,9 +55,11 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { SwitchButton } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
 const router = useRouter()
+const { t } = useI18n()
 
 const handleLogout = async () => {
   try {
@@ -68,7 +70,7 @@ const handleLogout = async () => {
     })
 
     userStore.logout()
-    ElMessage.success('已退出登录')
+    ElMessage.success(t('messages.logoutSuccess'))
     await router.push('/auth')
   } catch {
     // 用户取消操作

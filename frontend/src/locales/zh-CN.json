@@ -59,5 +59,48 @@
         "symbols": "添加特殊符号"
       }
     }
+  },
+  "common": {
+    "searchPlaceholder": "输入 / 进行搜索"
+  },
+  "messages": {
+    "logoutSuccess": "已退出登录",
+    "themeSwitch": {
+      "dark": "已切换到深色主题",
+      "light": "已切换到浅色主题"
+    },
+    "languageSwitch": "语言已切换到 {language}",
+    "searchInfo": "搜索: {query}"
+  },
+  "home": {
+    "myNotes": "我的笔记",
+    "newNote": "新建",
+    "searchNotes": "搜索笔记...",
+    "learningActivity": "学习动态",
+    "latestQuestions": "最新题目",
+    "filters": {
+      "all": "全部",
+      "latest": "最新",
+      "notes": "笔记"
+    },
+    "actions": {
+      "pinned": "置顶了笔记",
+      "published": "发布了",
+      "updated": "更新了",
+      "created": "创建了"
+    },
+    "stats": {
+      "views": "次查看",
+      "likes": "个赞",
+      "progress": "进度"
+    },
+    "timeAgo": {
+      "yesterday": "昨天",
+      "daysAgo": "天前",
+      "hoursAgo": "小时前",
+      "minutesAgo": "分钟前",
+      "justNow": "刚刚"
+    },
+    "noData": "暂无数据"
   }
 }
