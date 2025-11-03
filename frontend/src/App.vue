@@ -1,30 +1,38 @@
 <script lang="ts" setup>
-import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { computed } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView, useRoute } from 'vue-router'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import AppHeader from './components/AppHeader.vue'
 
 const route = useRoute()
 
 // 判断是否为Auth页面
 const isAuthPage = computed(() => route.name === 'auth')
+
+// 侧边栏状态
+const sidebarVisible = ref(false)
+
+// 处理侧边栏切换
+const handleSidebarToggle = () => {
+  sidebarVisible.value = !sidebarVisible.value
+}
+
+// 监听侧边栏切换事件
+onMounted(() => {
+  window.addEventListener('toggle-sidebar', handleSidebarToggle)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('toggle-sidebar', handleSidebarToggle)
+})
 </script>
 
 <template>
   <!-- 只在非Auth页面显示header -->
-  <header v-if="!isAuthPage">
-    <img alt="Vue logo" class="logo" height="125" src="@/assets/logo.svg" width="125" />
+  <AppHeader v-if="!isAuthPage" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div :style="{ paddingTop: !isAuthPage ? '60px' : '0' }">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
