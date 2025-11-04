@@ -1,42 +1,22 @@
 import request from './request'
-import type { Chapter, FeedItem, RecentNote } from '@/mock/home'
-
-// API响应类型定义
-export interface ApiResponse<T> {
-  code: number
-  message: string
-  data: T
-}
-
-// 分页响应类型定义
-export interface PaginatedResponse<T> {
-  items: T[]
-  total: number
-  page: number
-  size: number
-  totalPages: number
-}
-
-// 分页参数类型定义
-export interface PaginationParams {
-  page?: number
-  size?: number
-}
-
-// 搜索参数类型定义
-export interface SearchParams {
-  keyword: string
-}
+import type {
+  Chapter,
+  FeedItem,
+  RecentNote,
+  PaginationParams,
+  PaginatedResponse,
+  SearchParams,
+  Topic,
+} from '@/types/home'
+import type { ApiResponse } from '@/types/api'
 
 /**
  * 获取章节数据
  * @returns Promise<Chapter[]>
  */
-export const getChapters = (): Promise<Chapter[]> => {
-  return request.get('/api/home/chapters').then((res: any) => {
-    const apiResponse = res as ApiResponse<Chapter[]>
-    return apiResponse.data
-  })
+export const getChapters = async (): Promise<Chapter[]> => {
+  const res = (await request({ url: '/api/home/chapters', method: 'get' })) as ApiResponse<Chapter[]>
+  return res.data
 }
 
 /**
@@ -44,22 +24,18 @@ export const getChapters = (): Promise<Chapter[]> => {
  * @param params 搜索参数
  * @returns Promise<Chapter[]>
  */
-export const searchChapters = (params: SearchParams): Promise<Chapter[]> => {
-  return request.get('/api/home/chapters/search', { params }).then((res: any) => {
-    const apiResponse = res as ApiResponse<Chapter[]>
-    return apiResponse.data
-  })
+export const searchChapters = async (params: SearchParams): Promise<Chapter[]> => {
+  const res = (await request({ url: '/api/home/chapters/search', method: 'get', params })) as ApiResponse<Chapter[]>
+  return res.data
 }
 
 /**
  * 获取学习动态数据
  * @returns Promise<FeedItem[]>
  */
-export const getFeedData = (): Promise<FeedItem[]> => {
-  return request.get('/api/home/feed').then((res: any) => {
-    const apiResponse = res as ApiResponse<FeedItem[]>
-    return apiResponse.data
-  })
+export const getFeedData = async (): Promise<FeedItem[]> => {
+  const res = (await request({ url: '/api/home/feed', method: 'get' })) as ApiResponse<FeedItem[]>
+  return res.data
 }
 
 /**
@@ -67,22 +43,20 @@ export const getFeedData = (): Promise<FeedItem[]> => {
  * @param params 分页参数
  * @returns Promise<PaginatedResponse<FeedItem>>
  */
-export const getFeedDataPaginated = (params: PaginationParams): Promise<PaginatedResponse<FeedItem>> => {
-  return request.get('/api/home/feed', { params }).then((res: any) => {
-    const apiResponse = res as ApiResponse<PaginatedResponse<FeedItem>>
-    return apiResponse.data
-  })
+export const getFeedDataPaginated = async (
+  params: PaginationParams,
+): Promise<PaginatedResponse<FeedItem>> => {
+  const res = (await request({ url: '/api/home/feed', method: 'get', params })) as ApiResponse<PaginatedResponse<FeedItem>>
+  return res.data
 }
 
 /**
  * 获取最新题目数据
  * @returns Promise<RecentNote[]>
  */
-export const getRecentNotes = (): Promise<RecentNote[]> => {
-  return request.get('/api/home/recent-notes').then((res: any) => {
-    const apiResponse = res as ApiResponse<RecentNote[]>
-    return apiResponse.data
-  })
+export const getRecentNotes = async (): Promise<RecentNote[]> => {
+  const res = (await request({ url: '/api/home/recent-notes', method: 'get' })) as ApiResponse<RecentNote[]>
+  return res.data
 }
 
 /**
@@ -100,7 +74,9 @@ export const getChapterById = async (chapterId: string): Promise<Chapter | null>
  * @param topicId 主题ID
  * @returns Promise<{chapter: Chapter, topic: Topic} | null>
  */
-export const getTopicById = async (topicId: string): Promise<{chapter: Chapter, topic: any} | null> => {
+export const getTopicById = async (
+  topicId: string,
+): Promise<{ chapter: Chapter; topic: Topic } | null> => {
   const chapters = await getChapters()
   for (const chapter of chapters) {
     const topic = chapter.topics.find(t => t.id === topicId)

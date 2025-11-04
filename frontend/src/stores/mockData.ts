@@ -4,22 +4,13 @@ import type { PersistenceOptions } from 'pinia-plugin-persistedstate'
 
 // 导入用户数据
 import usersData from '@/data/users.json'
-
-export interface MockUser {
-  id: number
-  username: string
-  phone: string
-  email: string
-  password: string
-  avatar: string
-  createTime: string
-}
+import type { User } from '@/types/user'
 
 export const useMockDataStore = defineStore(
   'mockData',
   () => {
     // 用户数据状态 - 从JSON文件初始化
-    const users = ref<MockUser[]>(usersData)
+    const users = ref<User[]>(usersData)
 
     // 获取所有用户
     const getUsers = () => {
@@ -27,8 +18,8 @@ export const useMockDataStore = defineStore(
     }
 
     // 添加新用户
-    const addUser = (userData: Omit<MockUser, 'id' | 'avatar' | 'createTime'>): MockUser => {
-      const newUser: MockUser = {
+    const addUser = (userData: Omit<User, 'id' | 'avatar' | 'createTime'>): User => {
+      const newUser: User = {
         id: Math.max(...users.value.map((u) => u.id), 0) + 1,
         ...userData,
         avatar: '/favicon.ico',
@@ -40,13 +31,13 @@ export const useMockDataStore = defineStore(
     }
 
     // 根据用户名、手机号或邮箱查找用户
-    const findUser = (identifier: string): MockUser | undefined =>
+    const findUser = (identifier: string): User | undefined =>
       users.value.find(
         (u) => u.username === identifier || u.phone === identifier || u.email === identifier,
       )
 
     // 验证用户登录
-    const validateUser = (username: string, password: string): MockUser | undefined =>
+    const validateUser = (username: string, password: string): User | undefined =>
       users.value.find(
         (u) =>
           (u.username === username || u.phone === username || u.email === username) &&
@@ -54,7 +45,7 @@ export const useMockDataStore = defineStore(
       )
 
     // 检查用户是否已存在
-    const userExists = (username: string, phone: string, email: string): MockUser | undefined =>
+    const userExists = (username: string, phone: string, email: string): User | undefined =>
       users.value.find((u) => u.username === username || u.phone === phone || u.email === email)
 
     return {

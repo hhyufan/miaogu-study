@@ -3,7 +3,7 @@
 >**项目规范事项** ：
 >1. 页面放到views目录，组件放到components目录，图标以svg矢量图的形式放到components/icons目录
 >2. 使用mock.js模拟后端数据响应，写好mock响应和axios api数据请求，数据存放到src目录下的data。
->3. 使用TypeScript作为前端语言，请按照Ts规范声明好类型
+>3. 使用TypeScript作为前端语言，请按照Ts规范声明好类型,类型统一管理在src的types目录下。
 >4. 需要持久化的状态数据请使用pinia进行读写。
 >5. 涉及到文字硬编码，请使用i18n方法并定义好json中英配置。
 >6. 颜色相关样式请使用styles目录中的variables.css的css变量，做好主题适配
@@ -37,8 +37,14 @@ export interface ReportItem {
 import request from './request'
 import type { ReportItem } from '@/types/report'
 
-export const getReport = () =>
-  request.get<ReportItem[]>('/api/report')
+// 与现有 request 拦截器保持一致：返回值为后端的 data 字段
+import type { ApiResponse } from '@/types/api'
+
+export const getReport = (): Promise<ReportItem[]> =>
+  request.get('/api/report').then((res: any) => {
+    const api = res as ApiResponse<ReportItem[]>
+    return api.data
+  })
 ```
 
 **b. Mock 拦截**  `src/mock/report.ts`
@@ -53,9 +59,10 @@ Mock.mock('/api/report', 'get', () => ({
 }))
 ```
 
-**c. 注册 mock**  在 `src/mock/index.ts` 追加：
-```typescript
-import './report'
+**c. 注册 mock**  在 `src/main.ts` 追加：
+```ts
+// 导入其它 mock 后，按同样方式加入
+import './mock/report'
 ```
 
 ### 3. 创建页面组件
@@ -83,15 +90,15 @@ const reportList = ref<ReportItem[]>([])
 
 onMounted(async () => {
   const res = await getReport()
-  reportList.value = res.data
+  reportList.value = res
 })
 </script>
 
 <style scoped>
 .report-container {
   padding: 24px;
-  background: var(--color-background);
-  color: var(--color-text);
+  background: var(--page-bg);
+  color: var(--text-primary);
 }
 </style>
 ```
@@ -153,7 +160,7 @@ onMounted(async () => {
      size?: 'small' | 'medium' | 'large'
    }>()
    ```
-3. 事件名使用 camelCase，如 `update:modelValue`。
+3. 事件命名：使用语义化事件名，模板中采用 kebab-case（如 `@tab-change`）；v-model 使用约定事件名 `update:modelValue`。
 4. 样式作用域：统一使用 `<style scoped>`，避免全局污染。
 5. 颜色/字号统一引用 CSS 变量，禁止硬编码色值。
 
@@ -169,7 +176,7 @@ onMounted(async () => {
      </svg>
    </template>
    ```
-4. 支持 `size` prop（默认 1em）与当前文字颜色继承。
+4. 图标颜色请继承 `currentColor`，尺寸统一 `width/height: 1em`；如需可选尺寸，可提供 `size` prop 并同步到 `width/height`。
 
 ### 9.Pinia 状态模板
 
@@ -197,13 +204,24 @@ const reportStore = useReportStore()
 reportStore.setList(res.data)
 ```
 
-### 10.ESLint 规避清单
+如需持久化，请为 store 添加 `persist` 选项（项目已启用 `pinia-plugin-persistedstate`）：
+```ts
+export const useReportStore = defineStore(
+  'report',
+  () => { /* ... */ },
+  {
+    persist: { key: 'report-store', storage: localStorage }
+  }
+)
+```
 
-1. 禁用 `any`：使用显式类型或 `unknown` + 类型守卫。
-2. 禁用 `@ts-ignore`：优先补全类型声明。
-3. 禁止使用 `console.log`：使用封装后的日志工具（如 `useLogger()`）。
-4. 禁止使用 `var`，统一 `const` / `let`。
-5. 组件文件末尾保留一行空行（prettier 自动处理）。
+### 10.ESLint 与代码风格建议
+
+- 尽量避免 `any`：优先显式类型或 `unknown` + 类型守卫（当前项目已关闭强制限制，可在必要场景使用）。
+- 避免使用 `@ts-ignore`：补全类型或添加声明文件。
+- 清理调试日志：开发中可使用 `console.info`/`console.error`，提交前移除多余 `console.log`；用户提示使用 `ElMessage`。
+- 不使用 `var`，统一使用 `const` / `let`。
+- 保持格式化一致性：遵循 Prettier，组件文件末尾保留空行。
 
 
 按本教程执行即可保持项目结构一致、类型安全、主题/国际化完备，且零 ESLint 警告。

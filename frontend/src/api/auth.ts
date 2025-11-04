@@ -13,11 +13,7 @@ export interface RegisterRequest {
   agree: boolean
 }
 
-export interface ApiResponse<T = any> {
-  code: number
-  message: string
-  data: T
-}
+// ApiResponse<T> 已统一在 src/types/api.ts 定义，如需使用请从 '@/types/api' 引入
 
 // 登录接口
 export const login = (data: LoginRequest) =>

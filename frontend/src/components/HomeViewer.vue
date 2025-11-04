@@ -123,7 +123,7 @@ import TreeNavigation from './TreeNavigation.vue'
 import { getChapters, getFeedData, getRecentNotes } from '@/api/home'
 import { getNoteContent } from '@/api/notes'
 import MarkdownViewer from '@/components/MarkdownViewer.vue'
-import type { Chapter, FeedItem, RecentNote } from '@/mock/home'
+import type { Chapter, FeedItem, RecentNote } from '@/types/home'
 
 // 使用主题store和i18n
 useThemeStore()

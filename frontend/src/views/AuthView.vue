@@ -238,7 +238,7 @@ import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
 import { useUserStore } from '@/stores/user'
 import PasswordStrength from '@/components/PasswordStrength.vue'
-import type { ApiResponse } from '@/api/auth'
+import type { ApiResponse } from '@/types/api'
 import { login, register } from '@/api/auth'
 import { IconLogo, IconGithub } from '@/components/icons'
 

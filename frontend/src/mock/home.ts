@@ -4,52 +4,14 @@ import Mock from 'mockjs'
 import chaptersData from '@/data/chapters.json'
 import feedData from '@/data/feed-data.json'
 import recentNotesData from '@/data/recent-quiz.json'
+import type { Chapter, FeedItem, RecentNote } from '@/types/home'
 
-// 章节数据类型定义
-export interface Topic {
-  id: string
-  title: string
-}
-
-export interface Chapter {
-  id: string
-  title: string
-  topics: Topic[]
-}
-
-// 学习动态数据类型定义
-export interface FeedStat {
-  icon: string
-  text: string
-  type: string
-}
-
-export interface FeedItem {
-  id: number
-  username: string
-  action: string
-  time: string
-  timeValue?: number
-  avatar: string
-  title: string
-  description: string
-  tags: string[]
-  stats: FeedStat[]
-}
-
-// 最新题目数据类型定义
-export interface RecentNote {
-  id: number
-  title: string
-  time: string
-  preview: string
-  tags: string[]
-}
+// 类型已统一到 src/types/home.ts
 
 // 从JSON文件获取数据
-const mockChapters: Chapter[] = chaptersData
-const mockFeedData: FeedItem[] = feedData
-const mockRecentNotes: RecentNote[] = recentNotesData
+const mockChapters: Chapter[] = chaptersData as Chapter[]
+const mockFeedData: FeedItem[] = feedData as FeedItem[]
+const mockRecentNotes: RecentNote[] = recentNotesData as RecentNote[]
 
 // 设置Mock接口
 Mock.mock('/api/home/chapters', 'get', {

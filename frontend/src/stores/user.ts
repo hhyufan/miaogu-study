@@ -1,19 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { PersistenceOptions } from 'pinia-plugin-persistedstate'
-
-export interface User {
-  id: number
-  username: string
-  phone?: string
-  email: string
-  avatar?: string
-}
-
-export interface UserState {
-  user: User | null
-  token: string | null
-}
+import type { User } from '@/types/user'
 
 export const useUserStore = defineStore(
   'user',
