@@ -1,7 +1,7 @@
 <template>
   <div class="about-container">
     <div class="about-card">
-      <h1 class="page-title">个人信息</h1>
+      <h1 class="page-title">{{ t('about.title') }}</h1>
 
       <div v-if="userStore.userInfo" class="user-profile">
         <div class="avatar-section">
@@ -14,22 +14,22 @@
 
         <div class="info-section">
           <div class="info-item">
-            <label>用户名</label>
+            <label>{{ t('about.username') }}</label>
             <div class="info-value">{{ userStore.userInfo.username }}</div>
           </div>
 
           <div class="info-item">
-            <label>邮箱</label>
+            <label>{{ t('about.email') }}</label>
             <div class="info-value">{{ userStore.userInfo.email }}</div>
           </div>
 
           <div v-if="userStore.userInfo.phone" class="info-item">
-            <label>手机号</label>
+            <label>{{ t('about.phone') }}</label>
             <div class="info-value">{{ userStore.userInfo.phone }}</div>
           </div>
 
           <div class="info-item">
-            <label>用户ID</label>
+            <label>{{ t('about.userId') }}</label>
             <div class="info-value">#{{ userStore.userInfo.id }}</div>
           </div>
         </div>
@@ -37,14 +37,14 @@
         <div class="actions">
           <el-button size="large" type="danger" @click="handleLogout">
             <el-icon><SwitchButton /></el-icon>
-            退出登录
+            {{ t('about.logout') }}
           </el-button>
         </div>
       </div>
 
       <div v-else class="no-user">
-        <p>未找到用户信息</p>
-        <router-link class="btn btn-primary" to="/auth">去登录</router-link>
+        <p>{{ t('about.noUserInfo') }}</p>
+        <router-link class="btn btn-primary" to="/auth">{{ t('about.goToLogin') }}</router-link>
       </div>
     </div>
   </div>
@@ -63,9 +63,9 @@ const { t } = useI18n()
 
 const handleLogout = async () => {
   try {
-    await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm(t('about.logoutConfirm'), t('common.confirm'), {
+      confirmButtonText: t('about.confirm'),
+      cancelButtonText: t('about.cancel'),
       type: 'warning',
     })
 

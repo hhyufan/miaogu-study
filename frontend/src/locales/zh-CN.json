@@ -61,7 +61,23 @@
     }
   },
   "common": {
-    "searchPlaceholder": "输入 / 进行搜索"
+    "searchPlaceholder": "输入 / 进行搜索",
+    "confirm": "提示",
+    "new": "新建",
+    "quiz": "题目",
+    "toggleLanguage": "切换语言",
+    "toggleTheme": "切换主题",
+    "viewProfile": "查看个人资料"
+  },
+  "breadcrumb": {
+    "home": "首页",
+    "auth": "登录",
+    "about": "关于",
+    "profile": "个人资料",
+    "quiz": "题目",
+    "note": "笔记",
+    "notes": "笔记",
+    "user": "用户"
   },
   "messages": {
     "logoutSuccess": "已退出登录",
@@ -78,11 +94,15 @@
       "copyFailed": "复制失败",
       "loadDataFailed": "加载数据失败，请稍后重试",
       "loadNoteFailed": "加载笔记失败",
-      "noteNotFound": "未找到笔记文件映射：{topicId}"
+      "noteNotFound": "未找到笔记文件映射：{topicId}",
+      "userNotFound": "用户 \"{username}\" 不存在",
+      "noteNotInUser": "用户 \"{username}\" 下没有笔记 \"{noteId}\"",
+      "noteNotExist": "笔记 \"{noteId}\" 不存在"
     }
   },
   "home": {
     "myNotes": "我的笔记",
+    "userNotes": "{username} 的笔记",
     "newNote": "新建",
     "searchNotes": "搜索笔记...",
     "learningActivity": "学习动态",
@@ -111,5 +131,18 @@
       "justNow": "刚刚"
     },
     "noData": "暂无数据"
+  },
+  "about": {
+    "title": "个人信息",
+    "username": "用户名",
+    "email": "邮箱",
+    "phone": "手机号",
+    "userId": "用户ID",
+    "logout": "退出登录",
+    "noUserInfo": "未找到用户信息",
+    "goToLogin": "去登录",
+    "logoutConfirm": "确定要退出登录吗？",
+    "confirm": "确定",
+    "cancel": "取消"
   }
 }

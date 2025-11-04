@@ -61,7 +61,23 @@
     }
   },
   "common": {
-    "searchPlaceholder": "Type / to search"
+    "searchPlaceholder": "Type / to search",
+    "confirm": "Confirm",
+    "new": "New",
+    "quiz": "Quiz",
+    "toggleLanguage": "Toggle Language",
+    "toggleTheme": "Toggle Theme",
+    "viewProfile": "View Profile"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "auth": "Login",
+    "about": "About",
+    "profile": "Profile",
+    "quiz": "Quiz",
+    "note": "Note",
+    "notes": "Notes",
+    "user": "User"
   },
   "messages": {
     "logoutSuccess": "Logged out successfully",
@@ -78,11 +94,15 @@
       "copyFailed": "Copy failed",
       "loadDataFailed": "Failed to load data, please try again later",
       "loadNoteFailed": "Failed to load note",
-      "noteNotFound": "Note file mapping not found: {topicId}"
+      "noteNotFound": "Note file mapping not found: {topicId}",
+      "userNotFound": "User \"{username}\" does not exist",
+      "noteNotInUser": "User \"{username}\" does not have note \"{noteId}\"",
+      "noteNotExist": "Note \"{noteId}\" does not exist"
     }
   },
   "home": {
     "myNotes": "My Notes",
+    "userNotes": "{username}'s Notes",
     "newNote": "New",
     "searchNotes": "Search notes...",
     "learningActivity": "Learning Activity",
@@ -111,5 +131,18 @@
       "justNow": "just now"
     },
     "noData": "No data available"
+  },
+  "about": {
+    "title": "Personal Information",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "userId": "User ID",
+    "logout": "Logout",
+    "noUserInfo": "No user information found",
+    "goToLogin": "Go to Login",
+    "logoutConfirm": "Are you sure you want to log out?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }

@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
+import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
+import { getChapters } from '@/api/home'
+import type { Chapter } from '@/types/home'
 import IconPlus from './icons/IconPlus.vue'
 import IconSearch from './icons/IconSearch.vue'
 import IconQuestionFilled from './icons/IconQuestionFilled.vue'
@@ -14,11 +17,63 @@ import IconOperation from './icons/IconOperation.vue'
 import IconLanguage from './icons/IconLanguage.vue'
 
 const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
 const themeStore = useThemeStore()
 const languageStore = useLanguageStore()
+const userStore = useUserStore()
 const searchQuery = ref('')
 const searchInputRef = ref<HTMLInputElement>()
+
+// 章节数据，用于查找笔记标题
+const chapters = ref<Chapter[]>([])
+
+// 获取当前用户名
+const getCurrentUsername = () => {
+  // 从用户存储获取当前用户名
+  return userStore.userInfo?.username || 'miaogu'
+}
+
+// 获取章节数据
+const loadChapters = async () => {
+  try {
+    // 获取当前路由中的用户名
+    const routeUsername = route.params.username as string
+    
+    // 获取章节数据
+    const chaptersData = await import('@/data/chapters.json')
+    
+    // 根据当前访问的用户获取对应的章节数据
+    let targetChapters = []
+    
+    if (routeUsername) {
+      // 如果有路由用户名，优先使用路由中的用户名
+      const userChapters = (chaptersData as any).userChapters[routeUsername]
+      targetChapters = userChapters || (chaptersData as any).defaultChapters || []
+    } else {
+      // 如果没有路由用户名，使用当前登录用户的章节数据
+      const currentUsername = getCurrentUsername()
+      const userChapters = (chaptersData as any).userChapters[currentUsername]
+      targetChapters = userChapters || (chaptersData as any).defaultChapters || []
+    }
+    
+    chapters.value = targetChapters
+  } catch (error) {
+    console.error('加载章节数据失败:', error)
+  }
+}
+
+// 根据笔记ID查找笔记标题
+const getNoteTitle = (noteId: string): string => {
+  for (const chapter of chapters.value) {
+    const topic = chapter.topics.find(topic => topic.id === noteId)
+    if (topic) {
+      // 移除.md后缀
+      return topic.title.replace('.md', '')
+    }
+  }
+  return noteId // 如果找不到，返回ID本身
+}
 
 // 切换主题
 const toggleTheme = () => {
@@ -67,14 +122,60 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 }
 
+// 监听路由变化，当用户名改变时重新加载章节数据
+watch(
+  () => route.params.username,
+  (newUsername) => {
+    if (newUsername) {
+      loadChapters()
+    }
+  }
+)
+
 // 添加键盘事件监听
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
+  loadChapters()
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
 })
+
+// 面包屑导航数据
+const breadcrumbs = computed(() => {
+  const matched = route.matched
+  return matched.map((item) => {
+    let title = t(`breadcrumb.${String(item.name)}`)
+    
+    // 如果是用户笔记路由
+    if (item.name === 'user-note') {
+      const username = route.params.username as string
+      const noteId = route.params.noteId as string
+      
+      if (noteId) {
+        // 如果有笔记ID，显示用户名和笔记标题
+        title = `${username} / ${getNoteTitle(noteId)}`
+      } else {
+        // 只有用户名
+        title = username
+      }
+    }
+    
+    return {
+      name: item.name as string,
+      path: item.path,
+      title
+    }
+  }).filter(breadcrumb => breadcrumb.name !== 'home') // 过滤掉 home 路由，避免重复显示
+})
+
+// 处理面包屑点击
+const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
+  if (breadcrumb.path && breadcrumb.path !== route.path) {
+    router.push(breadcrumb.path)
+  }
+}
 </script>
 
 <template>
@@ -88,8 +189,17 @@ onUnmounted(() => {
         >
           <IconOperation />
         </el-button>
-        <div class="logo">
-          <span class="current-location">Home</span>
+        <div class="breadcrumb-container">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item
+              v-for="(item, index) in breadcrumbs"
+              :key="item.name"
+              :to="index < breadcrumbs.length - 1 ? item.path : undefined"
+              @click="index < breadcrumbs.length - 1 && handleBreadcrumbClick(item)"
+            >
+              {{ item.title }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
         </div>
       </div>
 
@@ -112,7 +222,7 @@ onUnmounted(() => {
         <div class="action-buttons">
           <el-button
             circle
-            title="新建"
+            :title="t('common.new')"
             class="action-btn"
           >
             <IconPlus />
@@ -120,7 +230,7 @@ onUnmounted(() => {
 
           <el-button
             circle
-            title="题目"
+            :title="t('common.quiz')"
             @click="goToQuiz"
             class="action-btn"
           >
@@ -129,7 +239,7 @@ onUnmounted(() => {
 
           <el-button
             circle
-            title="切换语言"
+            :title="t('common.toggleLanguage')"
             @click="toggleLanguage"
             class="action-btn"
           >
@@ -138,7 +248,7 @@ onUnmounted(() => {
 
           <el-button
             circle
-            title="切换主题"
+            :title="t('common.toggleTheme')"
             @click="toggleTheme"
             class="action-btn"
           >
@@ -151,7 +261,7 @@ onUnmounted(() => {
             :size="40"
             class="user-avatar"
             @click="goToProfile"
-            title="查看个人资料"
+            :title="t('common.viewProfile')"
           />
         </div>
       </div>
@@ -218,6 +328,37 @@ onUnmounted(() => {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-container :deep(.el-breadcrumb__item) {
+  color: var(--text-secondary);
+}
+
+.breadcrumb-container :deep(.el-breadcrumb__inner) {
+  color: var(--text-secondary);
+  font-weight: normal;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-container :deep(.el-breadcrumb__inner:hover) {
+  color: var(--primary-color);
+}
+
+.breadcrumb-container :deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner) {
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: default;
+}
+
+.breadcrumb-container :deep(.el-breadcrumb__separator) {
+  color: var(--text-secondary);
+  margin: 0 8px;
 }
 
 .header-center {

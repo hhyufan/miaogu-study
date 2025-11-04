@@ -27,19 +27,25 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- 只在非Auth页面显示header -->
-  <AppHeader v-if="!isAuthPage" />
+  <div id="app">
+    <!-- 只在非Auth页面显示header -->
+    <AppHeader v-if="!isAuthPage" />
 
-  <div :class="{ 'main-wrapper': true, 'with-header': !isAuthPage }">
-    <RouterView />
+    <div :class="{ 'main-wrapper': true, 'with-header': !isAuthPage }">
+      <RouterView />
+    </div>
   </div>
+
 </template>
 
 <style scoped>
 * {
   box-sizing: border-box;
 }
-
+#app{
+  width: 100vw;
+  height: 100vh;
+}
 body, html {
   margin: 0;
   padding: 0;

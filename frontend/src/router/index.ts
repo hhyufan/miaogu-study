@@ -18,9 +18,21 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/profile',
+      name: 'profile',
       component: () => import('../views/AboutView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: () => import('../views/AboutView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/:username/:noteId?',
+      name: 'user-note',
+      component: () => import('../views/HomeView.vue'),
       meta: { requiresAuth: true },
     },
   ],

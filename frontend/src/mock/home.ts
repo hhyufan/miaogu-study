@@ -4,32 +4,33 @@ import Mock from 'mockjs'
 import chaptersData from '@/data/chapters.json'
 import feedData from '@/data/feed-data.json'
 import recentNotesData from '@/data/recent-quiz.json'
-import type { Chapter, FeedItem, RecentNote } from '@/types/home'
 
-// 类型已统一到 src/types/home.ts
-
-// 从JSON文件获取数据
-const mockChapters: Chapter[] = chaptersData as Chapter[]
-const mockFeedData: FeedItem[] = feedData as FeedItem[]
-const mockRecentNotes: RecentNote[] = recentNotesData as RecentNote[]
-
-// 设置Mock接口
-Mock.mock('/api/home/chapters', 'get', {
-  code: 200,
-  message: 'success',
-  data: mockChapters
+// 设置Mock接口 - 根据用户返回不同的章节数据
+Mock.mock('/api/home/chapters', 'get', (options: any) => {
+  // 从请求中获取用户名参数（如果有）
+  const url = new URL('http://localhost' + options.url)
+  const username = url.searchParams.get('username') || 'admin' // 默认为admin用户
+  
+  // 根据用户名返回对应的章节数据
+  const userChapters = (chaptersData as any).userChapters[username] || (chaptersData as any).defaultChapters
+  
+  return {
+    code: 200,
+    message: 'success',
+    data: userChapters
+  }
 })
 
 Mock.mock('/api/home/feed', 'get', {
   code: 200,
   message: 'success',
-  data: mockFeedData
+  data: feedData
 })
 
 Mock.mock('/api/home/recent-notes', 'get', {
   code: 200,
   message: 'success',
-  data: mockRecentNotes
+  data: recentNotesData
 })
 
 // 支持分页的feed数据接口
@@ -40,17 +41,17 @@ Mock.mock(/\/api\/home\/feed\?page=\d+&size=\d+/, 'get', (options: any) => {
 
   const start = (page - 1) * size
   const end = start + size
-  const paginatedData = mockFeedData.slice(start, end)
+  const paginatedData = feedData.slice(start, end)
 
   return {
     code: 200,
     message: 'success',
     data: {
       items: paginatedData,
-      total: mockFeedData.length,
+      total: feedData.length,
       page,
       size,
-      totalPages: Math.ceil(mockFeedData.length / size)
+      totalPages: Math.ceil(feedData.length / size)
     }
   }
 })
@@ -60,13 +61,14 @@ Mock.mock(/\/api\/home\/chapters\/search\?keyword=.*/, 'get', (options: any) => 
   const url = new URL('http://localhost' + options.url)
   const keyword = url.searchParams.get('keyword') || ''
 
-  const filteredChapters = mockChapters.map(chapter => ({
+  const allChapters = (chaptersData as any).defaultChapters || []
+  const filteredChapters = allChapters.map((chapter: any) => ({
     ...chapter,
-    topics: chapter.topics.filter(topic =>
+    topics: chapter.topics.filter((topic: any) =>
       topic.title.toLowerCase().includes(keyword.toLowerCase()) ||
       chapter.title.toLowerCase().includes(keyword.toLowerCase())
     )
-  })).filter(chapter => chapter.topics.length > 0)
+  })).filter((chapter: any) => chapter.topics.length > 0)
 
   return {
     code: 200,
@@ -75,4 +77,4 @@ Mock.mock(/\/api\/home\/chapters\/search\?keyword=.*/, 'get', (options: any) => 
   }
 })
 
-export { mockChapters, mockFeedData, mockRecentNotes }
+export { chaptersData, feedData, recentNotesData }

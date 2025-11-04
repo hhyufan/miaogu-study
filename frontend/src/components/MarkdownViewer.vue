@@ -7,8 +7,7 @@
       width: '100%',
       height: '100%',
       backgroundColor: 'transparent',
-      padding: '24px',
-      paddingTop: isHeaderVisible ? '40px' : '16px',
+      paddingTop: isHeaderVisible ? '40px' : '0px',
       paddingRight: '80px',
       zoom: zoomLevel,
       overflow: 'auto'

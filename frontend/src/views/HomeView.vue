@@ -4,7 +4,7 @@
     <!-- 左侧边栏 - 我的笔记 -->
     <aside class="left-sidebar">
       <div class="sidebar-header">
-        <h2>{{ t('home.myNotes') }}</h2>
+        <h2>{{ sidebarTitle }}</h2>
         <el-button type="primary" class="new-btn">
           <el-icon><Plus /></el-icon>
           {{ t('home.newNote') }}
@@ -122,20 +122,76 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useI18n } from 'vue-i18n'
+import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { ElButton, ElButtonGroup, ElIcon, ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import TreeNavigation from '@/components/TreeNavigation.vue'
 import { getChapters, getFeedData, getRecentNotes } from '@/api/home'
 import { getNoteContent } from '@/api/notes'
+import noteData from '@/data/note.json'
 import MarkdownViewer from '@/components/MarkdownViewer.vue'
 import type { Chapter, FeedItem, RecentNote } from '@/types/home'
 
 // 使用主题store和i18n
 useThemeStore()
 const { t } = useI18n()
+const userStore = useUserStore()
+
+// 使用路由
+const router = useRouter()
+const route = useRoute()
+
+// 获取当前用户名
+const getCurrentUsername = () => {
+  // 从用户存储获取当前用户名
+  return userStore.userInfo?.username || 'miaogu'
+}
+
+// 计算属性：左侧栏标题
+const sidebarTitle = computed(() => {
+  const routeUsername = route.params.username as string
+  const currentUsername = getCurrentUsername()
+  
+  // 如果没有路由参数中的用户名，显示当前用户的笔记
+  if (!routeUsername) {
+    return t('home.myNotes')
+  }
+  
+  // 如果访问的是当前用户的笔记
+  if (routeUsername === currentUsername) {
+    return t('home.myNotes')
+  }
+  
+  // 访问其他用户的笔记
+  return t('home.userNotes', { username: routeUsername })
+})
+
+// 验证用户名是否有效
+const isValidUsername = (username: string): boolean => {
+  // 这里可以添加实际的用户验证逻辑，比如从后端获取用户列表
+  // 暂时允许所有用户名，实际项目中应该从后端验证
+  return true
+}
+
+// 获取用户拥有的笔记列表
+const getUserNotes = (username: string): string[] => {
+  const userNotes: string[] = []
+  for (const [noteId, noteInfo] of Object.entries(noteData)) {
+    if (noteInfo.author === username) {
+      userNotes.push(noteId)
+    }
+  }
+  return userNotes
+}
+
+// 检查用户是否拥有指定笔记
+const userHasNote = (username: string, noteId: string): boolean => {
+  return getUserNotes(username).includes(noteId)
+}
 
 // 搜索查询
 const searchQuery = ref('')
@@ -166,30 +222,182 @@ const feedData = ref<FeedItem[]>([])
 // 最新题目数据
 const recentNotes = ref<RecentNote[]>([])
 
-// 加载数据的方法
-const loadData = async () => {
-  loading.value = true
-  try {
-    const [chaptersResp, feedResp, recentNotesResp] = await Promise.all([
-      getChapters(),
-      getFeedData(),
-      getRecentNotes(),
-    ])
+// 导入章节数据
+import chaptersData from '@/data/chapters.json'
 
-    chapters.value = chaptersResp.data
-    feedData.value = feedResp.data
-    recentNotes.value = recentNotesResp.data
-  } catch (error) {
-    console.error('加载数据失败:', error)
-    ElMessage.error(t('messages.error.loadDataFailed') || '加载数据失败，请稍后重试')
+// 根据用户动态生成章节结构
+const generateUserChapters = (username: string) => {
+  console.log('生成用户章节，用户名:', username)
+  console.log('章节数据结构:', chaptersData)
+  
+  // 从新的数据结构中获取用户专属的章节
+  const userChapters = (chaptersData as any).userChapters[username]
+  console.log('用户专属章节:', userChapters)
+  
+  // 如果找到用户专属章节，返回它；否则返回默认章节
+  const result = userChapters || (chaptersData as any).defaultChapters || []
+  console.log('最终返回的章节:', result)
+  
+  return result
+}
+
+// 从章节数据中查找笔记标题
+const getNoteTitleFromChapters = (noteId: string): string => {
+  for (const chapter of chapters.value) {
+    const topic = chapter.topics.find(topic => topic.id === noteId)
+    if (topic) {
+      return topic.title.replace('.md', '')
+    }
+  }
+  return noteId
+}
+
+// 加载 Markdown 内容
+const loadMarkdown = async (topicId: string, title: string) => {
+  try {
+    loading.value = true
+
+    selectedNoteContent.value = await getNoteContent(topicId)
+    selectedFileName.value = title
+    showMarkdown.value = true
+  } catch (error: any) {
+    console.error('加载Markdown失败:', error)
+    let errorMessage = error?.message || t('messages.error.loadNoteFailed') || '加载笔记失败'
+    // 处理 note_not_found 错误
+    if (errorMessage.startsWith('note_not_found:')) {
+      const topicId = errorMessage.split(':')[1]
+      errorMessage =
+        t('messages.error.noteNotFound', { topicId }) || `未找到笔记文件映射：${topicId}`
+    }
+    ElMessage.error(errorMessage)
+    
+    // 如果笔记加载失败，回退到上一个路由
+    router.back()
+    showMarkdown.value = false
+    selectedTopic.value = ''
   } finally {
     loading.value = false
   }
 }
 
+// 错误消息防抖控制
+let lastErrorMessage = ''
+let errorMessageTimeout: number | null = null
+
+// 显示错误消息（带防抖）
+const showErrorMessage = (message: string) => {
+  // 如果和上次消息相同，且在短时间内，则不重复显示
+  if (message === lastErrorMessage && errorMessageTimeout) {
+    return
+  }
+  
+  lastErrorMessage = message
+  ElMessage.error(message)
+  
+  // 设置防抖时间（2秒）
+  if (errorMessageTimeout) {
+    clearTimeout(errorMessageTimeout)
+  }
+  errorMessageTimeout = window.setTimeout(() => {
+    lastErrorMessage = ''
+    errorMessageTimeout = null
+  }, 2000)
+}
+
+// 处理路由中的笔记参数
+const handleRouteNote = () => {
+  const noteId = route.params.noteId as string
+  const username = route.params.username as string
+  
+  // 检查用户名是否存在
+  if (username) {
+    // 验证用户名是否有效
+    if (!isValidUsername(username)) {
+      showErrorMessage(t('messages.error.userNotFound', { username }))
+      // 回退到上一个路由
+      router.back()
+      return
+    }
+    
+    // 当用户名改变时，重新生成章节结构
+    const currentUsername = getCurrentUsername()
+    if (username !== currentUsername) {
+      // 更新用户存储中的当前用户（如果需要的话）
+      // 重新生成章节结构
+      chapters.value = generateUserChapters(username)
+    }
+    
+    if (noteId) {
+      // 如果有笔记ID，先检查用户是否拥有这个笔记
+      if (!userHasNote(username, noteId)) {
+        showErrorMessage(t('messages.error.noteNotInUser', { username, noteId }))
+        // 导航到不带笔记参数的用户路径
+        router.push(`/${username}`)
+        return
+      }
+      
+      // 用户拥有这个笔记，加载对应笔记
+      selectedTopic.value = noteId
+      // 查找对应的标题
+      const noteTitle = getNoteTitleFromChapters(noteId)
+      if (noteTitle) {
+        loadMarkdown(noteId, noteTitle)
+      } else {
+        showErrorMessage(t('messages.error.noteNotExist', { noteId }))
+        // 导航到不带笔记参数的用户路径
+        router.push(`/${username}`)
+      }
+    } else {
+      // 只有用户名，没有笔记ID，显示用户的主页内容
+      showMarkdown.value = false
+      selectedTopic.value = ''
+      console.log(`显示用户 "${username}" 的主页`)
+    }
+  }
+}
+
+// 加载数据的方法
+const loadData = async () => {
+  loading.value = true
+  try {
+    const [feedResp, recentNotesResp] = await Promise.all([
+      getFeedData(),
+      getRecentNotes(),
+    ])
+
+    console.log('getFeedData() =>', feedResp)
+    console.log('getRecentNotes() =>', recentNotesResp)
+
+    // 使用路由参数中的用户名，如果没有则使用当前登录用户
+    const routeUsername = route.params.username as string
+    const targetUsername = routeUsername || getCurrentUsername()
+    chapters.value = generateUserChapters(targetUsername)
+    
+    feedData.value = feedResp.data
+    recentNotes.value = recentNotesResp.data
+  } catch (error) {
+    console.error('加载数据失败:', error)
+    showErrorMessage(t('messages.error.loadDataFailed') || '加载数据失败，请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+// 监听路由变化
+watch(
+  () => route.params,
+  (newParams) => {
+    console.log('路由参数变化:', newParams)
+    handleRouteNote()
+  },
+  { immediate: true }
+)
+
 // 组件挂载时加载数据
 onMounted(() => {
   loadData()
+  // 处理直接访问笔记路由的情况
+  handleRouteNote()
 })
 
 // 计算属性：过滤后的动态
@@ -202,6 +410,11 @@ const filteredFeed = computed(() => {
 const handleTopicSelect = (topic: { id: string; title: string }) => {
   selectedTopic.value = topic.id
   console.log('选择主题:', topic)
+  // 使用路由参数中的用户名，如果没有则使用当前登录用户
+  const routeUsername = route.params.username as string
+  const username = routeUsername || getCurrentUsername()
+  // 更新URL到新的路由格式：/用户名/笔记ID
+  router.push(`/${username}/${topic.id}`)
   // 加载并显示 Markdown
   loadMarkdown(topic.id, topic.title)
 }
@@ -240,29 +453,6 @@ const getStatText = (stat: any) => {
   }
   return stat.text
 }
-
-// 加载 Markdown 内容
-const loadMarkdown = async (topicId: string, title: string) => {
-  try {
-    loading.value = true
-
-    selectedNoteContent.value = await getNoteContent(topicId)
-    selectedFileName.value = title
-    showMarkdown.value = true
-  } catch (error: any) {
-    console.error('加载Markdown失败:', error)
-    let errorMessage = error?.message || t('messages.error.loadNoteFailed') || '加载笔记失败'
-    // 处理 note_not_found 错误
-    if (errorMessage.startsWith('note_not_found:')) {
-      const topicId = errorMessage.split(':')[1]
-      errorMessage =
-        t('messages.error.noteNotFound', { topicId }) || `未找到笔记文件映射：${topicId}`
-    }
-    ElMessage.error(errorMessage)
-  } finally {
-    loading.value = false
-  }
-}
 </script>
 
 <style scoped>
@@ -278,7 +468,7 @@ const loadMarkdown = async (topicId: string, title: string) => {
   width: 100%;
   height: calc(100vh - 60px);
   margin: 0;
-  padding: 24px 0 24px 0;
+  padding: 24px 0 0 0;
   display: flex;
   background-color: var(--home-main-bg);
   color: var(--text-primary);
@@ -701,7 +891,7 @@ const loadMarkdown = async (topicId: string, title: string) => {
 }
 
 .notes-list {
-  padding: 0;
+  padding: 8px 0 0 0;
   flex: 1;
   overflow: auto; /* 右侧仅列表滚动 */
 }
