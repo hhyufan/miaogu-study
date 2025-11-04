@@ -34,8 +34,7 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { ElButton, ElIcon } from 'element-plus'
 import { Document } from '@element-plus/icons-vue'
 import { IconChevronRight } from './icons'
@@ -201,36 +200,12 @@ const selectTopic = (topic: Topic) => {
 }
 
 /* Element Plus按钮重置样式 */
-.topic-item.el-button {
-  margin: 0 0 4px 0 !important;
-  padding: 6px 12px !important;
-  height: auto !important;
-  line-height: normal !important;
-  min-height: auto !important;
-  font-weight: normal !important;
-}
-
-.topic-item.el-button + .el-button {
-  margin-left: 0 !important; /* 移除Element Plus默认的按钮间距 */
-}
 
 .topic-item:hover {
   background: var(--home-hover-bg, rgba(255, 255, 255, 0.05)) !important;
   color: var(--text-primary, #e6edf3) !important;
   transform: translateX(4px);
   border: 1px solid var(--home-hover-border, rgba(255, 255, 255, 0.1)) !important;
-}
-
-.topic-item.is-type-primary {
-  background: var(--primary-color, #58a6ff) !important;
-  color: #ffffff !important;
-  border: 1px solid var(--primary-color, #58a6ff) !important;
-  font-weight: 500 !important;
-}
-
-.topic-item.is-type-primary:hover {
-  background: var(--primary-hover, #4493e1) !important;
-  transform: translateX(4px);
 }
 
 .topic-icon {
@@ -251,34 +226,6 @@ const selectTopic = (topic: Topic) => {
 
 .topic-item.active .topic-icon {
   opacity: 1;
-}
-
-/* 过渡动画 */
-.slide-fade-enter-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.slide-fade-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-  max-height: 0;
-}
-
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-5px);
-  max-height: 0;
-}
-
-.slide-fade-enter-to,
-.slide-fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-  max-height: 500px;
 }
 
 /* 响应式设计 */

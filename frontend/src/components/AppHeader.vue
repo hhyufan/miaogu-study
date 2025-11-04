@@ -333,19 +333,4 @@ onUnmounted(() => {
     gap: 4px;
   }
 }
-
-@media (max-width: 480px) {
-  .search-input {
-    width: 120px;
-  }
-
-  :deep(.el-button.is-circle) {
-    padding: 6px;
-  }
-
-  :deep(.el-avatar) {
-    width: 32px;
-    height: 32px;
-  }
-}
 </style>

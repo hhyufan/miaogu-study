@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import mermaid from 'mermaid'
 import { useI18n } from 'vue-i18n'
 
@@ -57,20 +57,6 @@ const elementRef = ref<HTMLElement>()
 const loading = ref(true)
 const error = ref<string | null>(null)
 const svgContent = ref('')
-
-/* 暴露常量给模板 v-bind */
-const GLASS_LIGHT = {
-  bg: 'rgba(255, 255, 255, 0.2)',
-  border: '1px solid rgba(255, 255, 255, 0.2)'
-}
-const GLASS_DARK = {
-  bg: 'rgba(0, 0, 0, 0.2)',
-  border: '1px solid rgba(255, 255, 255, 0.1)'
-}
-const CARD_SHADOW_LIGHT = '0 8px 32px rgba(0, 0, 0, 0.1)'
-const CARD_SHADOW_DARK  = '0 8px 32px rgba(0, 0, 0, 0.3)'
-const BORDER_RADIUS_LG = '12px'
-const BORDER_RADIUS_SM = '4px'
 
 // Initialize mermaid configuration
 mermaid.initialize({
@@ -155,19 +141,7 @@ onMounted(() => {
   width: 100%;
   overflow-x: auto;
   margin: 16px 0;
-  /* 毛玻璃背景效果 - 亮色主题 */
-  background: v-bind('GLASS_LIGHT.bg') !important;
-  border: v-bind('GLASS_LIGHT.border') !important;
-  box-shadow: v-bind('CARD_SHADOW_LIGHT') !important;
-  border-radius: v-bind('BORDER_RADIUS_LG') !important;
   padding: 1em;
-}
-
-/* 暗黑主题下的样式调整 */
-.mermaid-container.dark {
-  background: v-bind('GLASS_DARK.bg') !important;
-  border: v-bind('GLASS_DARK.border') !important;
-  box-shadow: v-bind('CARD_SHADOW_DARK') !important;
 }
 
 .mermaid-container.dark svg {
@@ -183,66 +157,6 @@ onMounted(() => {
   stroke: #30363d;
   stroke-width: 2px;
 }
-
-/* 节点文本 */
-.mermaid-container.dark .node .label,
-.mermaid-container.dark .nodeLabel {
-  color: #c9d1d9;
-  fill: #c9d1d9;
-}
-
-/* 关系线 */
-.mermaid-container.dark .edgePath .path {
-  stroke: #58a6ff;
-  stroke-width: 2px;
-}
-
-/* 关系标签 */
-.mermaid-container.dark .edgeLabel {
-  background-color: #0d1117;
-  color: #c9d1d9;
-  fill: #c9d1d9;
-}
-
-/* 流程图特定样式 */
-.mermaid-container.dark .flowchart-link {
-  stroke: #58a6ff;
-}
-
-/* 序列图特定样式 */
-.mermaid-container.dark .actor {
-  fill: #21262d;
-  stroke: #30363d;
-}
-
-.mermaid-container.dark .actor-line {
-  stroke: #30363d;
-}
-
-.mermaid-container.dark .messageLine0,
-.mermaid-container.dark .messageLine1 {
-  stroke: #58a6ff;
-}
-
-.mermaid-container.dark .messageText {
-  fill: #c9d1d9;
-}
-
-/* 甘特图特定样式 */
-.mermaid-container.dark .section0,
-.mermaid-container.dark .section1,
-.mermaid-container.dark .section2,
-.mermaid-container.dark .section3 {
-  fill: #21262d;
-}
-
-.mermaid-container.dark .task0,
-.mermaid-container.dark .task1,
-.mermaid-container.dark .task2,
-.mermaid-container.dark .task3 {
-  fill: #58a6ff;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .mermaid-container {
@@ -261,11 +175,6 @@ onMounted(() => {
 
 .mermaid-container::-webkit-scrollbar-thumb {
   background: #30363d;
-  border-radius: v-bind('BORDER_RADIUS_SM') !important;
-}
-
-.mermaid-container.dark::-webkit-scrollbar-thumb {
-  background: #484f58;
 }
 
 .mermaid-container::-webkit-scrollbar-thumb:hover {

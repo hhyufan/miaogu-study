@@ -59,32 +59,13 @@ import { useThemeStore } from '@/stores/theme'
 const FONT_FAMILY = "'Poppins', sans-serif"
 const CODE_FONT_FAMILY = "'Fira Code', 'Monaco', 'Consolas', monospace"
 
-const CARD_SHADOW_LIGHT = '0 8px 32px rgba(0, 0, 0, 0.1)'
-const CARD_SHADOW_DARK  = '0 8px 32px rgba(0, 0, 0, 0.3)'
-
 const BORDER_RADIUS_LG = '12px'
 const BORDER_RADIUS_SM = '4px'
-
-const GLASS_LIGHT = {
-  bg: 'rgba(255, 255, 255, 0.2)',
-  border: '1px solid rgba(255, 255, 255, 0.2)'
-}
-const GLASS_DARK = {
-  bg: 'rgba(0, 0, 0, 0.2)',
-  border: '1px solid rgba(255, 255, 255, 0.1)'
-}
 const CODE_BORDER = '1px solid var(--border-color)'
-// 语言标签颜色（复用 HomeViewer 同款）
-const LANG_LABEL_BG_LIGHT = '#dbeafe'
-const LANG_LABEL_TEXT_LIGHT = '#1e40af'
-const LANG_LABEL_BG_DARK = '#3b0764'
-const LANG_LABEL_TEXT_DARK = '#c084fc'
 
 // 动态加载 Prism 主题：One Light / One Dark
 import oneLightUrl from 'prism-themes/themes/prism-one-light.css?url'
 import oneDarkUrl from 'prism-themes/themes/prism-one-dark.css?url'
-import MermaidRenderer from './MermaidRenderer.vue'
-
 interface Props {
   content: string
   fileName?: string
@@ -157,7 +138,8 @@ const md = new MarkdownIt({
           Prism.highlight(str, Prism.languages[lang] || Prism.languages.markup, lang) +
           '</code></pre>'
       }
-    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       // ignore
     }
     return `<pre class="language-text"><code>` + str.replace(/[&<>]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[s] as string)) + '</code></pre>'
@@ -428,23 +410,20 @@ const renderedVnode = computed(() => {
 if (!Prism.languages.vue && Prism.languages.markup) {
   Prism.languages.vue = Prism.languages.markup
 }
-
-// 移除未使用的 remark/rehype 配置（已改用 markdown-it 直渲染）
-
 // Get display language name
 const getDisplayLanguage = (langKey: string = '') => {
   const lowerLang = langKey.toLowerCase()
-  
+
   if (LANGUAGE_DISPLAY_MAP[lowerLang]) {
     return LANGUAGE_DISPLAY_MAP[lowerLang]
   }
-  
+
   // Handle versioned languages like python3, cpp17
   const versionMatch = lowerLang.match(/^(\D+)(\d+)$/)
   if (versionMatch) {
     return `${(versionMatch[1] || '').charAt(0).toUpperCase()}${(versionMatch[1] || '').slice(1)} ${versionMatch[2] || ''}`
   }
-  
+
   return langKey.charAt(0).toUpperCase() + langKey.slice(1)
 }
 
@@ -453,7 +432,8 @@ const handleCopyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
     ElMessage.success(t('messages.success.copiedToClipboard') || 'Copied to clipboard')
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     ElMessage.error(t('messages.error.copyFailed') || 'Copy failed')
   }
 }
@@ -462,7 +442,7 @@ const handleCopyToClipboard = async (text: string) => {
 const handleLinkClick = async (href: string, event: Event) => {
   event.preventDefault()
   event.stopPropagation()
-  
+
   if (href && href.startsWith('#')) {
     // Handle anchor links
     const targetId = href.substring(1)
@@ -489,33 +469,33 @@ const highlightCode = () => {
 // Add language labels to code blocks
 const addLanguageLabels = () => {
   if (!markdownContainerRef.value) return
-  
+
   // Remove existing labels
   const existingLabels = markdownContainerRef.value.querySelectorAll('.lang-tag')
   existingLabels.forEach(label => label.remove())
-  
+
   // Add new labels
   const codeBlocks = markdownContainerRef.value.querySelectorAll('pre code')
   codeBlocks.forEach((code) => {
     const pre = code.closest('pre')
     if (!pre) return
-    
+
     // Extract language from class
     const langClass = [...code.classList].find((c) => c.startsWith('language-'))
     const rawLang = langClass ? langClass.split('-')[1] || '' : ''
     const displayLang = getDisplayLanguage(rawLang)
-    
+
     if (displayLang && displayLang !== 'Text') {
       // Create language tag
       const tag = document.createElement('button')
       tag.className = 'lang-tag'
       tag.textContent = displayLang
-      
+
       // Add click event to copy code
       tag.addEventListener('click', () => {
         handleCopyToClipboard(code.textContent || '')
       })
-      
+
       // Style the pre element
       pre.style.position = 'relative'
       pre.appendChild(tag)
@@ -592,13 +572,13 @@ onMounted(() => {
   processMarkdown()
   // 初始注入正确的代码高亮主题
   applyPrismTheme(themeStore.currentTheme)
-  
+
   // Add event listeners
   if (containerRef.value) {
     containerRef.value.addEventListener('wheel', handleWheel, { passive: false })
     containerRef.value.addEventListener('scroll', handleScroll, { passive: true })
   }
-  
+
   document.addEventListener('keydown', handleKeyDown)
 })
 
@@ -608,7 +588,7 @@ onUnmounted(() => {
     containerRef.value.removeEventListener('wheel', handleWheel)
     containerRef.value.removeEventListener('scroll', handleScroll)
   }
-  
+
   document.removeEventListener('keydown', handleKeyDown)
   // 清理注入的样式
   if (prismLinkEl.value) {
