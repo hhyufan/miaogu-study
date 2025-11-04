@@ -70,7 +70,16 @@
       "light": "Switched to light theme"
     },
     "languageSwitch": "Language switched to {language}",
-    "searchInfo": "Search: {query}"
+    "searchInfo": "Search: {query}",
+    "success": {
+      "copiedToClipboard": "Copied to clipboard"
+    },
+    "error": {
+      "copyFailed": "Copy failed",
+      "loadDataFailed": "Failed to load data, please try again later",
+      "loadNoteFailed": "Failed to load note",
+      "noteNotFound": "Note file mapping not found: {topicId}"
+    }
   },
   "home": {
     "myNotes": "My Notes",

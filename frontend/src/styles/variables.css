@@ -44,7 +44,7 @@
   --home-feed-header-bg: var(--card-bg);  /* Feed头部背景 */
   --home-accent-color: var(--primary-color);  /* 强调色 */
   --home-link-color: var(--primary-color);  /* 链接颜色 */
-  --home-hover-bg: rgba(0, 0, 0, 0.05);  /* 悬停背景 */
+  --home-hover-bg: rgba(112, 105, 105, 0.05);  /* 悬停背景 */
   --home-hover-border: var(--primary-color);  /* 悬停边框 */
 
   /* Element Plus 主题变量覆盖 */
@@ -67,7 +67,7 @@
   --page-bg: #0d1117;  /* 使用HomeViewer的黑色背景 */
   --card-bg: #161b22;  /* 更深的卡片背景 */
   --header-bg: #050608;  /* AppHeader专用背景，比HomeViewer更深 */
-  
+
   --bg-secondary: #21262d;  /* 次要背景色 */
   --bg-tertiary: #171b22;  /* 第三级背景色，用于内容区域 */
 
@@ -104,28 +104,24 @@
   /* HomeViewer 特有颜色 */
   --home-main-bg: #0d1117;  /* 主容器背景 */
   --home-feed-bg: #0d1117;  /* Feed项目背景 */
-  --home-feed-content-bg: #171b22;  /* Feed内容背景 */
+  --home-feed-content-bg: #141921;  /* Feed内容背景 */
   --home-feed-header-bg: #0d1117;  /* Feed头部背景 */
   --home-accent-color: #7c3aed;  /* 强调色（紫色） */
   --home-link-color: #58a6ff;  /* 链接颜色 */
-  --home-hover-bg: rgba(255, 255, 255, 0.05);  /* 悬停背景 */
+  --home-hover-bg: rgba(35, 28, 28, 0.05);  /* 悬停背景 */
   --home-hover-border: rgba(124, 58, 237, 0.4);  /* 悬停边框 */
 
   /* Element Plus 深色主题变量覆盖 */
-  --el-color-primary: var(--primary-color);
-  --el-color-primary-light-3: var(--primary-hover);
-  --el-color-primary-dark-2: var(--primary-active);
-  --el-bg-color: var(--card-bg);
-  --el-bg-color-page: var(--page-bg);
-  --el-text-color-primary: var(--text-primary);
-  --el-text-color-regular: var(--text-secondary);
-  --el-text-color-secondary: var(--text-tertiary);
-  --el-border-color: var(--border-color);
-  --el-border-color-light: var(--border-light);
-  --el-box-shadow: 0 8px 32px var(--shadow-color);
   --el-fill-color-blank: var(--card-bg);
   --el-fill-color-light: var(--bg-secondary);
   --el-fill-color: var(--bg-tertiary);
+  
+  /* 滚动条变量 */
+  --scrollbar-track: var(--bg-secondary);
+  --scrollbar-thumb: var(--text-tertiary);
+  --scrollbar-thumb-hover: var(--text-secondary);
+  --scrollbar-width: 6px;
+  --scrollbar-border-radius: 3px;
 }
 
 /* 主题切换动画 */

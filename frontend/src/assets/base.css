@@ -58,6 +58,17 @@
   font-weight: normal;
 }
 
+/* 全局滚动条重置 - 彻底隐藏滚动条箭头 */
+* {
+  scrollbar-arrow-color: transparent !important;
+  scrollbar-base-color: transparent !important;
+  scrollbar-3dlight-color: transparent !important;
+  scrollbar-highlight-color: transparent !important;
+  scrollbar-track-color: transparent !important;
+  scrollbar-shadow-color: transparent !important;
+  scrollbar-darkshadow-color: transparent !important;
+}
+
 body {
   min-height: 100vh;
   color: var(--color-text);

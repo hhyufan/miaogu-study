@@ -380,8 +380,8 @@ const handleLogin = async () => {
 
       ElMessage.success(t('auth.loginSuccess'))
 
-      // 跳转到welcome页面
-      await router.push('/welcome')
+      // 跳转到首页
+      await router.push('/')
     } else {
       ElMessage.error(response.message || t('auth.loginFailed'))
     }

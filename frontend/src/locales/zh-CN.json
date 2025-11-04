@@ -70,7 +70,16 @@
       "light": "已切换到浅色主题"
     },
     "languageSwitch": "语言已切换到 {language}",
-    "searchInfo": "搜索: {query}"
+    "searchInfo": "搜索: {query}",
+    "success": {
+      "copiedToClipboard": "已复制到剪贴板"
+    },
+    "error": {
+      "copyFailed": "复制失败",
+      "loadDataFailed": "加载数据失败，请稍后重试",
+      "loadNoteFailed": "加载笔记失败",
+      "noteNotFound": "未找到笔记文件映射：{topicId}"
+    }
   },
   "home": {
     "myNotes": "我的笔记",

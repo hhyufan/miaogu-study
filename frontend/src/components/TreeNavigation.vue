@@ -104,12 +104,15 @@ const selectTopic = (topic: Topic) => {
 <style scoped>
 .tree-navigation {
   width: 100%;
-  overflow: hidden; /* 防止整个组件溢出 */
+  height: 100%;
+  flex: 1 1 auto; /* 填满左侧栏剩余空间 */
+  overflow: auto; /* 将滚动职责交给树状图自身 */
   box-sizing: border-box; /* 确保盒模型计算正确 */
 }
 
 .chapter-list {
   margin-top: 16px;
+
 }
 
 .chapter-item {

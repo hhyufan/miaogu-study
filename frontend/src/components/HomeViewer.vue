@@ -31,7 +31,7 @@
     <!-- 中间内容区域 -->
     <section class="main-content">
       <!-- 动态内容 -->
-      <div class="content-header">
+      <div class="content-header" v-show="!showMarkdown">
         <h2>{{ t('home.learningActivity') }}</h2>
         <el-button-group class="filter-buttons">
           <el-button
@@ -46,34 +46,45 @@
         </el-button-group>
       </div>
 
-      <div class="feed" v-loading="loading">
+      <!-- Markdown 主体内容 -->
+      <div v-if="showMarkdown" class="markdown-content-container">
+        <MarkdownViewer
+          :content="selectedNoteContent"
+          :file-name="selectedFileName"
+          :is-header-visible="false"
+        />
+      </div>
+
+      <div class="feed" v-show="!showMarkdown" v-loading="loading">
         <div v-if="!loading && filteredFeed.length === 0" class="empty-state">
           <p>{{ t('home.noData') }}</p>
         </div>
-        <div class="feed-item" v-for="item in filteredFeed" :key="item.id">
-          <div class="feed-header-info">
-            <img :src="item.avatar" alt="用户头像" class="user-avatar">
-            <div class="user-details">
-              <div class="first-line">
-                <span class="username">{{ item.username }}</span>
-                <span class="action">{{ t(`home.actions.${item.action}`) }}</span>
+        <div class="feed-list">
+          <div class="feed-item" v-for="item in filteredFeed" :key="item.id">
+            <div class="feed-header-info">
+              <img :src="item.avatar" alt="用户头像" class="user-avatar">
+              <div class="user-details">
+                <div class="first-line">
+                  <span class="username">{{ item.username }}</span>
+                  <span class="action">{{ t(`home.actions.${item.action}`) }}</span>
+                </div>
+                <span class="time">{{ getTimeText(item) }}</span>
               </div>
-              <span class="time">{{ getTimeText(item) }}</span>
             </div>
-          </div>
-          <div class="feed-content">
-            <div class="content-title">
-              <h4>{{ item.title }}</h4>
-            </div>
-            <div class="content-description">
-              <p>{{ item.description }}</p>
-              <div class="content-tags">
-                <el-tag v-for="tag in item.tags" :key="tag" size="small" type="primary">{{ tag }}</el-tag>
+            <div class="feed-content">
+              <div class="content-title">
+                <h4>{{ item.title }}</h4>
               </div>
-              <div class="feed-stats">
-                <span v-for="stat in item.stats" :key="stat.icon">
-                  <i :class="stat.icon"></i> {{ getStatText(stat) }}
-                </span>
+              <div class="content-description">
+                <p>{{ item.description }}</p>
+                <div class="content-tags">
+                  <el-tag v-for="tag in item.tags" :key="tag" size="small" type="primary">{{ tag }}</el-tag>
+                </div>
+                <div class="feed-stats">
+                  <span v-for="stat in item.stats" :key="stat.icon">
+                    <i :class="stat.icon"></i> {{ getStatText(stat) }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -82,7 +93,7 @@
     </section>
 
     <!-- 右侧边栏 -->
-    <aside class="right-sidebar">
+    <aside class="right-sidebar" v-show="!showMarkdown">
       <div class="sidebar-header">
         <h2>{{ t('home.latestQuestions') }}</h2>
       </div>
@@ -110,6 +121,8 @@ import { ElButton, ElButtonGroup, ElIcon, ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import TreeNavigation from './TreeNavigation.vue'
 import { getChapters, getFeedData, getRecentNotes } from '@/api/home'
+import { getNoteContent } from '@/api/notes'
+import MarkdownViewer from '@/components/MarkdownViewer.vue'
 import type { Chapter, FeedItem, RecentNote } from '@/mock/home'
 
 // 使用主题store和i18n
@@ -124,6 +137,11 @@ const expandedChapters = ref<string[]>([])
 
 // 选中的主题
 const selectedTopic = ref<string>('')
+
+// Markdown 显示与内容
+const showMarkdown = ref(false)
+const selectedNoteContent = ref('')
+const selectedFileName = ref('')
 
 // 当前激活的过滤器
 const activeFilter = ref('all')
@@ -155,7 +173,7 @@ const loadData = async () => {
     recentNotes.value = recentNotesData
   } catch (error) {
     console.error('加载数据失败:', error)
-    ElMessage.error('加载数据失败，请稍后重试')
+    ElMessage.error(t('messages.error.loadDataFailed') || '加载数据失败，请稍后重试')
   } finally {
     loading.value = false
   }
@@ -176,7 +194,8 @@ const filteredFeed = computed(() => {
 const handleTopicSelect = (topic: { id: string; title: string }) => {
   selectedTopic.value = topic.id
   console.log('选择主题:', topic)
-  // 这里可以实现笔记详情显示逻辑
+  // 加载并显示 Markdown
+  loadMarkdown(topic.id, topic.title)
 }
 
 // 方法：处理章节展开折叠
@@ -213,6 +232,28 @@ const getStatText = (stat: any) => {
   }
   return stat.text
 }
+
+// 加载 Markdown 内容
+const loadMarkdown = async (topicId: string, title: string) => {
+  try {
+    loading.value = true
+    const content = await getNoteContent(topicId)
+    selectedNoteContent.value = content
+    selectedFileName.value = title
+    showMarkdown.value = true
+  } catch (error: any) {
+    console.error('加载Markdown失败:', error)
+    let errorMessage = error?.message || t('messages.error.loadNoteFailed') || '加载笔记失败'
+    // 处理 note_not_found 错误
+    if (errorMessage.startsWith('note_not_found:')) {
+      const topicId = errorMessage.split(':')[1]
+      errorMessage = t('messages.error.noteNotFound', { topicId }) || `未找到笔记文件映射：${topicId}`
+    }
+    ElMessage.error(errorMessage)
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <style scoped>
@@ -226,7 +267,7 @@ const getStatText = (stat: any) => {
 /* 主要内容区域 */
 .main-container {
   width: 100%;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
   margin: 0;
   padding: 24px 0 24px 0;
   display: flex;
@@ -235,6 +276,7 @@ const getStatText = (stat: any) => {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
   line-height: 1.5;
   box-sizing: border-box;
+  overflow: hidden !important;
 }
 
 /* 左侧边栏 */
@@ -244,6 +286,10 @@ const getStatText = (stat: any) => {
   margin-left: 16px;
   margin-right: 24px;
   background-color: transparent;
+  height: 100%;
+  overflow: hidden; /* 不滚动，由树状图自身滚动 */
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-header {
@@ -339,6 +385,10 @@ const getStatText = (stat: any) => {
 .main-content {
   flex: 1;
   background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* 不作为滚动容器 */
 }
 
 .content-header {
@@ -385,10 +435,23 @@ const getStatText = (stat: any) => {
   color: white !important;
 }
 
+.markdown-content-container {
+  flex: 1;
+  overflow: auto; /* 在这里滚动 */
+}
+
 /* Feed 区域 */
 .feed {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  flex: 1;
+  overflow: hidden; /* 不滚动，由内部列表滚动 */
+}
+
+.feed-list {
+  flex: 1;
+  overflow: auto; /* 列表滚动 */
 }
 
 .feed-item {
@@ -603,6 +666,10 @@ const getStatText = (stat: any) => {
   margin-left: 24px;
   margin-right: 16px;
   background-color: transparent;
+  height: 100%;
+  overflow: hidden; /* 不滚动，由列表滚动 */
+  display: flex;
+  flex-direction: column;
 }
 
 .right-sidebar .sidebar-header h2 {
@@ -625,11 +692,13 @@ const getStatText = (stat: any) => {
 
 .notes-list {
   padding: 0;
+  flex: 1;
+  overflow: auto; /* 右侧仅列表滚动 */
 }
 
 .note-item {
   background: var(--home-hover-bg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 12px;

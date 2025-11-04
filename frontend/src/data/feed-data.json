@@ -24,7 +24,7 @@
     "description": "本周学习重点：React Hooks 深入理解与实践应用，包括自定义Hook的设计模式",
     "tags": ["React", "学习计划", "Hooks"],
     "stats": [
-      { "icon": "fas fa-tasks", "text": "75%", "type": "progress" }
+      { "icon": "fas fa-list", "text": "75%", "type": "progress" }
     ]
   }
 ]
