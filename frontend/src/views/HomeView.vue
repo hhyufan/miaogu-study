@@ -319,13 +319,8 @@ const handleRouteNote = () => {
       return
     }
     
-    // 当用户名改变时，重新生成章节结构
-    const currentUsername = getCurrentUsername()
-    if (username !== currentUsername) {
-      // 更新用户存储中的当前用户（如果需要的话）
-      // 重新生成章节结构
-      chapters.value = generateUserChapters(username)
-    }
+    // 始终根据当前路由用户名生成章节结构，避免同步不及时
+    chapters.value = generateUserChapters(username)
     
     if (noteId) {
       // 如果有笔记ID，先检查用户是否拥有这个笔记

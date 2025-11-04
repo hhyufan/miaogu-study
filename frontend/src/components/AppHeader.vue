@@ -6,6 +6,7 @@ import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
 import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
+import { getUserSuggestions, getNoteSuggestions, findNoteByUserAndTags } from '@/api/search'
 import { getChapters } from '@/api/home'
 import type { Chapter } from '@/types/home'
 import IconPlus from './icons/IconPlus.vue'
@@ -22,8 +23,15 @@ const { t } = useI18n()
 const themeStore = useThemeStore()
 const languageStore = useLanguageStore()
 const userStore = useUserStore()
-const searchQuery = ref('')
-const searchInputRef = ref<HTMLInputElement>()
+const searchTags = ref<string[]>([])
+const currentInput = ref('')
+const dropdownVisible = ref(false)
+type SuggestionItem = { label: string; value: string; kind: 'user' | 'note'; username?: string; noteId?: string }
+const suggestions = ref<SuggestionItem[]>([])
+const searchInputRef = ref<any>()
+const lastAddedTag = ref<string | null>(null)
+// 防止标签规范化导致的递归触发
+const isNormalizingTag = ref(false)
 
 // 章节数据，用于查找笔记标题
 const chapters = ref<Chapter[]>([])
@@ -31,7 +39,7 @@ const chapters = ref<Chapter[]>([])
 // 获取当前用户名
 const getCurrentUsername = () => {
   // 从用户存储获取当前用户名
-  return userStore.userInfo?.username || 'miaogu'
+  return userStore.userInfo?.username || 'admin'
 }
 
 // 获取章节数据
@@ -104,21 +112,191 @@ const goToProfile = () => {
   router.push('/profile')
 }
 
-// 搜索功能
-const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    // 这里可以添加搜索逻辑
-    ElMessage.info(t('messages.searchInfo', { query: searchQuery.value }))
+// 从标签中解析用户与普通标签
+const getUserFromTags = (): string | undefined => {
+  const userTag = searchTags.value.find((tag) => tag.startsWith('user:'))
+  if (!userTag) return undefined
+  const username = userTag.split(':')[1]?.trim()
+  return username || undefined
+}
+
+const getNoteTags = (): string[] => searchTags.value.filter((tag) => !tag.startsWith('user:'))
+
+// 拉取综合建议（用户 + 笔记）
+const fetchSuggestions = async (keyword: string) => {
+  try {
+    const username = getUserFromTags() || getCurrentUsername()
+    const tags = getNoteTags()
+
+    const list: SuggestionItem[] = []
+
+    // 用户建议
+    if (keyword) {
+      const userRes = await getUserSuggestions({ keyword })
+      // 提供直接输入的 user:keyword 作为快速添加项
+      list.push({ label: `user: ${keyword}`, value: `user: ${keyword}`, kind: 'user' as const })
+      list.push(
+        ...userRes.data.map((u) => ({
+          label: `user: ${u.username}`,
+          value: `user: ${u.username}`,
+          kind: 'user' as const,
+        }))
+      )
+    }
+
+    // 笔记建议（基于用户、标签与关键字）
+    const noteRes = await getNoteSuggestions({ user: username, tags, keyword })
+    list.push(
+      ...noteRes.data.map((n) => ({
+        label: `${n.username} / ${n.title}`,
+        value: `note:${n.noteId}`,
+        kind: 'note' as const,
+        username: n.username,
+        noteId: n.noteId,
+      }))
+    )
+
+    // 按 value 去重，避免重复键导致渲染警告
+    const seen = new Set<string>()
+    const deduped: SuggestionItem[] = []
+    for (const it of list) {
+      if (!seen.has(it.value)) {
+        seen.add(it.value)
+        deduped.push(it)
+      }
+    }
+    suggestions.value = deduped
+    // 输入时保持展开，由选择或清空来决定关闭
+    dropdownVisible.value = true
+  } catch (e) {
+    suggestions.value = []
+    // 输入阶段保持展开，显示空占位
+    dropdownVisible.value = true
   }
 }
+
+// 标签输入事件
+const handleTagInput = async (val: string) => {
+  currentInput.value = val
+  await fetchSuggestions(val)
+}
+
+// 选择建议加入标签
+const selectSuggestion = async (item: SuggestionItem) => {
+  if (item.kind === 'user') {
+    // 如果刚刚通过空格生成了一个标签，选择建议应替换该标签
+    if (lastAddedTag.value) {
+      const idx = searchTags.value.lastIndexOf(lastAddedTag.value)
+      if (idx !== -1) {
+        searchTags.value.splice(idx, 1)
+      }
+      lastAddedTag.value = null
+    }
+
+    // 保证只有一个 user: 标签
+    searchTags.value = searchTags.value.filter((t) => !t.startsWith('user:'))
+    searchTags.value.push(item.value)
+    currentInput.value = ''
+    // 切换用户后重新拉取相关笔记建议，并在数据就绪后再决定展开
+    await fetchSuggestions('')
+    dropdownVisible.value = true
+  } else if (item.kind === 'note') {
+    // 直接跳转到该笔记
+    if (item.username && item.noteId) {
+      await router.push(`/${item.username}/${item.noteId}`)
+    }
+    // 路由跳转后隐藏并清空下拉建议
+    suggestions.value = []
+    dropdownVisible.value = false
+    currentInput.value = ''
+    // 清空输入框内的标签
+    searchTags.value = []
+  }
+}
+
+const handleRemoveTag = () => {
+  if (searchTags.value.length === 0) dropdownVisible.value = false
+}
+
+// 执行搜索并路由跳转
+const handleTagSearch = async () => {
+  const username = getUserFromTags() || getCurrentUsername()
+  const tags = getNoteTags()
+  try {
+    if (!tags.length) {
+      await router.push(`/${username}`)
+      // 路由跳转后隐藏并清空下拉建议
+      suggestions.value = []
+      dropdownVisible.value = false
+      currentInput.value = ''
+      // 清空输入框内的标签
+      searchTags.value = []
+      return
+    }
+    const res = await findNoteByUserAndTags({ user: username, tags })
+    const result = res.data
+    if (result && result.noteId && result.username) {
+      await router.push(`/${result.username}/${result.noteId}`)
+      // 路由跳转后隐藏并清空下拉建议
+      suggestions.value = []
+      dropdownVisible.value = false
+      currentInput.value = ''
+      // 清空输入框内的标签
+      searchTags.value = []
+    }
+  } catch (e) {
+    ElMessage.error('搜索失败，请稍后重试')
+  }
+}
+
+// 当标签被新增（通过空格分隔）时自动触发搜索
+watch(
+  () => searchTags.value.slice(),
+  async (newTags, oldTags) => {
+    if (isNormalizingTag.value) return
+    if (newTags.length > (oldTags?.length || 0)) {
+      // 记录刚新增的标签，用于选择下拉建议时替换
+      const added = newTags[newTags.length - 1]
+      lastAddedTag.value = added ?? null
+
+      // 如果新增标签是现有用户名，则自动转为 user:username
+      if (added && !added.startsWith('user:')) {
+        try {
+          const userRes = await getUserSuggestions({ keyword: added })
+          const exact = userRes.data.find((u: any) => u.username === added)
+          if (exact) {
+            isNormalizingTag.value = true
+            // 移除刚新增的原始标签
+            const idx = searchTags.value.lastIndexOf(added)
+            if (idx !== -1) searchTags.value.splice(idx, 1)
+            // 保证只有一个 user: 标签
+            searchTags.value = searchTags.value.filter((t) => !t.startsWith('user:'))
+            const normalized = `user:${added}`
+            searchTags.value.push(normalized)
+            lastAddedTag.value = normalized
+            isNormalizingTag.value = false
+            // 切换用户后重新拉取相关笔记建议，并在数据就绪后再决定展开
+            await fetchSuggestions('')
+            dropdownVisible.value = true
+            return
+          }
+        } catch (e) {
+          // 忽略建议接口错误，退回默认行为
+        }
+      }
+
+      // 默认：新增普通标签后展示匹配的笔记建议
+      await fetchSuggestions(currentInput.value)
+      dropdownVisible.value = suggestions.value.length > 0
+    }
+  }
+)
 
 // 键盘快捷键 - 按 / 键聚焦搜索
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === '/') {
     event.preventDefault()
-    if (searchInputRef.value) {
-      searchInputRef.value.focus()
-    }
+    searchInputRef.value?.focus?.()
   }
 }
 
@@ -128,6 +306,10 @@ watch(
   (newUsername) => {
     if (newUsername) {
       loadChapters()
+      // 任意路由变化后隐藏并清空下拉建议
+      suggestions.value = []
+      dropdownVisible.value = false
+      currentInput.value = ''
     }
   }
 )
@@ -207,17 +389,36 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
       </div>
 
       <div class="header-right">
-        <el-input
-            v-model="searchQuery"
+        <el-dropdown v-model:visible="dropdownVisible" placement="bottom-start" :hide-on-click="false" :teleported="false" popper-class="app-header-dropdown">
+          <el-input-tag
+            v-model="searchTags"
             :placeholder="t('common.searchPlaceholder')"
             class="search-input"
             ref="searchInputRef"
-            @keyup.enter="handleSearch"
+            delimiter=" "
+            @input="handleTagInput"
+            @remove-tag="handleRemoveTag"
+            @keyup.enter="handleTagSearch"
           >
             <template #prefix>
               <IconSearch />
             </template>
-          </el-input>
+          </el-input-tag>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <template v-if="suggestions.length">
+                <el-dropdown-item
+                  v-for="item in suggestions"
+                  :key="item.kind + ':' + item.value"
+                  @click="selectSuggestion(item)"
+                >
+                  {{ item.label }}
+                </el-dropdown-item>
+              </template>
+              <el-dropdown-item v-else disabled>暂无匹配</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
 
         <div class="action-buttons">
           <el-button
@@ -403,6 +604,59 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
 
 .search-input:focus-within :deep(.el-input__wrapper) {
   box-shadow: 0 0 0 1px var(--primary-color) inset;
+}
+
+/* 适配标签输入（el-input-tag）与主题 */
+.search-input :deep(.el-tag) {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.search-input :deep(.el-tag .el-tag__close) {
+  color: var(--text-secondary);
+}
+
+.search-input :deep(.el-tag .el-tag__close:hover) {
+  color: var(--primary-color);
+}
+
+/* 下拉菜单主题适配 */
+:deep(.el-dropdown__popper .el-dropdown-menu) {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--el-box-shadow);
+}
+
+:deep(.el-dropdown__popper .el-dropdown-menu__item) {
+  color: var(--text-primary);
+}
+
+:deep(.el-dropdown__popper .el-dropdown-menu__item:hover,
+      .el-dropdown__popper .el-dropdown-menu__item:focus,
+      .el-dropdown__popper .el-dropdown-menu__item.is-hover,
+      .app-header-dropdown .el-dropdown-menu__item:hover,
+      .app-header-dropdown .el-dropdown-menu__item:focus,
+      .app-header-dropdown .el-dropdown-menu__item.is-hover) {
+  background-color: var(--bg-secondary) !important;
+  color: var(--primary-color) !important;
+}
+
+/* 兼容自动弹出时的高亮类（selected/active/hover） */
+:deep(.el-dropdown__popper .el-dropdown-menu__item.hover),
+:deep(.el-dropdown__popper .el-dropdown-menu__item.selected),
+:deep(.el-dropdown__popper .el-dropdown-menu__item.is-active),
+:deep(.app-header-dropdown .el-dropdown-menu__item.hover),
+:deep(.app-header-dropdown .el-dropdown-menu__item.selected),
+:deep(.app-header-dropdown .el-dropdown-menu__item.is-active) {
+  background-color: var(--bg-secondary) !important;
+  color: var(--primary-color) !important;
+}
+
+/* 下拉箭头主题适配 */
+:deep(.el-dropdown__popper .el-popper__arrow::before) {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
 }
 
 .action-buttons {

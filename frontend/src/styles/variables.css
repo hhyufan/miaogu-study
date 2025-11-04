@@ -51,6 +51,8 @@
   --el-color-primary: var(--primary-color);
   --el-color-primary-light-3: var(--primary-hover);
   --el-color-primary-dark-2: var(--primary-active);
+  /* 主色浅9阶（用于部分组件的active高亮），浅色沿用默认偏浅蓝 */
+  --el-color-primary-light-9: #ecf5ff;
   --el-bg-color: var(--card-bg);
   --el-bg-color-page: var(--page-bg);
   --el-text-color-primary: var(--text-primary);
@@ -59,6 +61,8 @@
   --el-border-color: var(--border-color);
   --el-border-color-light: var(--border-light);
   --el-box-shadow: 0 8px 32px var(--shadow-color);
+  /* 弹出层背景（下拉、气泡等） */
+  --el-bg-color-overlay: var(--card-bg);
 }
 
 /* 深色主题 */
@@ -115,6 +119,10 @@
   --el-fill-color-blank: var(--card-bg);
   --el-fill-color-light: var(--bg-secondary);
   --el-fill-color: var(--bg-tertiary);
+  /* 主色浅9阶（用于部分组件的active高亮），深色改为暗色背景以避免白底 */
+  --el-color-primary-light-9: var(--bg-secondary);
+  /* 弹出层背景（下拉、气泡等） */
+  --el-bg-color-overlay: var(--card-bg);
   
   /* 滚动条变量 */
   --scrollbar-track: var(--bg-secondary);

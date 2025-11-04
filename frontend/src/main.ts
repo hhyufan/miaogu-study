@@ -21,6 +21,7 @@ import './styles/variables.css'
 // 导入mock数据
 import './mock/auth'
 import './mock/home'
+import './mock/search'
 
 const app = createApp(App)
 

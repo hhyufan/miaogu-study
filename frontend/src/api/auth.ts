@@ -1,5 +1,5 @@
 import request from './request'
-import type { ApiResponse } from '@/types/api.ts'
+import type { ApiResponse } from '@/types/api'
 
 export interface LoginRequest {
   username: string
