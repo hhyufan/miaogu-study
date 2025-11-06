@@ -22,6 +22,8 @@ import './styles/variables.css'
 import './mock/auth'
 import './mock/home'
 import './mock/search'
+// 全局图标注册插件（Element Plus + 自定义）
+import IconsPlugin from './components/icons'
 
 const app = createApp(App)
 
@@ -36,6 +38,7 @@ app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 app.use(i18n)
+app.use(IconsPlugin)
 
 // 初始化stores
 const languageStore = useLanguageStore()

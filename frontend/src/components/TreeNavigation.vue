@@ -2,28 +2,21 @@
   <div class="tree-navigation">
     <div class="chapter-list">
       <div class="chapter-item" v-for="chapter in chapters" :key="chapter.id">
-        <el-button
-          class="chapter-header"
-          text
-          @click="toggleChapter(chapter.id)">
-          <IconChevronRight
-            class="chapter-arrow"
-            :expanded="isExpanded(chapter.id)"
-          />
+        <el-button class="chapter-header" text @click="toggleChapter(chapter.id)">
+          <IconChevronRight class="chapter-arrow" :expanded="isExpanded(chapter.id)" />
           <span>{{ chapter.title }}</span>
         </el-button>
         <transition name="slide-fade">
-          <div class="topic-list"
-               v-show="isExpanded(chapter.id)"
-               :id="`topics-${chapter.id}`">
+          <div class="topic-list" v-show="isExpanded(chapter.id)" :id="`topics-${chapter.id}`">
             <el-button
-                 class="topic-item"
-                 text
-                 v-for="topic in chapter.topics"
-                 :key="topic.id"
-                 :type="selectedTopic === topic.id ? 'primary' : 'default'"
-                 @click="selectTopic(topic)">
-              <el-icon class="topic-icon"><Document /></el-icon>
+              class="topic-item"
+              text
+              v-for="topic in chapter.topics"
+              :key="topic.id"
+              :type="selectedTopic === topic.id ? 'primary' : 'default'"
+              @click="selectTopic(topic)"
+            >
+              <IconDocument class="app-icon app-icon--sm topic-icon" />
               <span>{{ topic.title }}</span>
             </el-button>
           </div>
@@ -35,10 +28,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElButton, ElIcon } from 'element-plus'
-import { Document } from '@element-plus/icons-vue'
-import { IconChevronRight } from './icons'
-
+import { ElButton } from 'element-plus'
+import {IconDocument, IconChevronRight} from '@/components/icons'
 // 定义接口
 interface Topic {
   id: string
@@ -61,7 +52,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   chapters: () => [],
   defaultExpanded: () => [],
-  selectedTopic: ''
+  selectedTopic: '',
 })
 
 // Emits
@@ -111,7 +102,6 @@ const selectTopic = (topic: Topic) => {
 
 .chapter-list {
   margin-top: 16px;
-
 }
 
 .chapter-item {

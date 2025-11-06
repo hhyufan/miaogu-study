@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useMockDataStore } from '@/stores/mockData.ts'
+import { useNotesStore } from '@/stores/notes.ts'
+import noteData from '@/data/note.json'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -26,7 +29,7 @@ const router = createRouter({
     {
       path: '/quiz',
       name: 'quiz',
-      component: () => import('../views/AboutView.vue'),
+      component: () => import('../views/NotFoundView.vue'),
       meta: { requiresAuth: true },
     },
     {
@@ -34,6 +37,45 @@ const router = createRouter({
       name: 'user-note',
       component: () => import('../views/HomeView.vue'),
       meta: { requiresAuth: true },
+      // 验证用户名与笔记ID的有效性，不符合则跳到 404
+      beforeEnter: (to) => {
+        const mockStore = useMockDataStore()
+        const notesStore = useNotesStore()
+        const username = String(to.params.username || '').trim()
+        const noteId = String(to.params.noteId || '').trim()
+
+        // 检查用户名是否存在
+        const user = mockStore.findUser(username)
+        if (!user) {
+          return { path: '/404' }
+        }
+
+        // 如果包含笔记ID，检查该用户是否拥有该笔记（静态或动态）
+        if (noteId) {
+          const hasStatic = !!(noteData as any)[noteId] && (noteData as any)[noteId].author === username
+          const dyn = notesStore.notes[noteId]
+          const hasDynamic = !!(dyn && dyn.username === username)
+          if (!hasStatic && !hasDynamic) {
+            return { path: '/404' }
+          }
+        }
+
+        return true
+      },
+    },
+    // 显式 404 页面，便于程序化跳转
+    {
+      path: '/404',
+      name: '404',
+      component: () => import('../views/NotFoundView.vue'),
+      meta: { requiresAuth: false },
+    },
+    // 未匹配的路由兜底到 404 页面
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue'),
+      meta: { requiresAuth: false },
     },
   ],
 })

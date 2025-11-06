@@ -36,7 +36,7 @@
 
         <div class="actions">
           <el-button size="large" type="danger" @click="handleLogout">
-            <el-icon><SwitchButton /></el-icon>
+<IconSwitchButton class="app-icon app-icon--md" />
             {{ t('about.logout') }}
           </el-button>
         </div>
@@ -54,8 +54,9 @@
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { SwitchButton } from '@element-plus/icons-vue'
+// 全局注册的图标组件无需导入
 import { useI18n } from 'vue-i18n'
+import { IconSwitchButton } from '@/components/icons'
 
 const userStore = useUserStore()
 const router = useRouter()

@@ -145,4 +145,41 @@
     "confirm": "确定",
     "cancel": "取消"
   }
+  ,
+  "newNoteViewer": {
+    "title": "新建笔记",
+    "form": {
+      "id": "ID",
+      "idPlaceholder": "可选，不填将自动生成",
+      "name": "名称",
+      "namePlaceholder": "笔记名称（可选，默认使用导入文件名）",
+      "group": "分组",
+      "groupPlaceholder": "请选择或输入分组",
+      "tags": "标签",
+      "tagsPlaceholder": "可选：选择或输入标签",
+      "markdown": "Markdown"
+    },
+    "upload": {
+      "dragTextPrefix": "将 Markdown 文件拖拽到此处，或",
+      "clickToImport": "点击导入",
+      "tip": "仅支持 .md 文件，大小建议 ≤ 2MB"
+    },
+    "actions": {
+      "save": "保存",
+      "reset": "重置"
+    },
+    "created": {
+      "prefix": "已创建："
+    },
+    "messages": {
+      "mdOnly": "仅支持 Markdown (.md) 文件",
+      "readFail": "读取文件失败，请重试",
+      "uploadRequired": "请导入 Markdown 文件",
+      "saveSuccess": "已保存至前端数据（本地持久化）",
+      "idExists": "笔记ID已存在：{id}，不能新建"
+    },
+    "validation": {
+      "chooseOrEnterGroup": "请选择或输入分组"
+    }
+  }
 }

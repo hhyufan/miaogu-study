@@ -5,8 +5,8 @@
     <aside class="left-sidebar">
       <div class="sidebar-header">
         <h2>{{ sidebarTitle }}</h2>
-        <el-button type="primary" class="new-btn">
-          <el-icon><Plus /></el-icon>
+        <el-button type="primary" class="new-btn" @click="startNewNote">
+          <IconPlus class="app-icon app-icon--sm app-icon--white app-icon--mr" />
           {{ t('home.newNote') }}
         </el-button>
       </div>
@@ -31,37 +31,38 @@
     <!-- 中间内容区域 -->
     <section class="main-content">
       <!-- 动态内容 -->
-      <div class="content-header" v-show="!showMarkdown">
+      <div class="content-header" v-show="!showMarkdown && !showNewNote">
         <h2>{{ t('home.learningActivity') }}</h2>
         <el-button-group class="filter-buttons">
           <el-button
             :type="activeFilter === 'all' ? 'primary' : 'default'"
             @click="setFilter('all')"
-          >{{ t('home.filters.all') }}</el-button
+            >{{ t('home.filters.all') }}</el-button
           >
           <el-button
             :type="activeFilter === 'latest' ? 'primary' : 'default'"
             @click="setFilter('latest')"
-          >{{ t('home.filters.latest') }}</el-button
+            >{{ t('home.filters.latest') }}</el-button
           >
           <el-button
             :type="activeFilter === 'notes' ? 'primary' : 'default'"
             @click="setFilter('notes')"
-          >{{ t('home.filters.notes') }}</el-button
+            >{{ t('home.filters.notes') }}</el-button
           >
         </el-button-group>
       </div>
 
       <!-- Markdown 主体内容 -->
       <div v-if="showMarkdown" class="markdown-content-container">
-        <MarkdownViewer
-          :content="selectedNoteContent"
-          :file-name="selectedFileName"
-          :is-header-visible="false"
-        />
+        <MarkdownViewer :content="selectedNoteContent" :file-name="selectedFileName" />
       </div>
 
-      <div class="feed" v-show="!showMarkdown" v-loading="loading">
+      <!-- 新建笔记主区域（替换学习动态） -->
+      <div v-if="!showMarkdown && showNewNote" class="markdown-content-container">
+        <NewNoteViewer @note-created="handleNoteCreated" />
+      </div>
+
+      <div class="feed" v-show="!showMarkdown && !showNewNote" v-loading="loading">
         <div v-if="!loading && filteredFeed.length === 0" class="empty-state">
           <p>{{ t('home.noData') }}</p>
         </div>
@@ -85,8 +86,8 @@
                 <p>{{ item.description }}</p>
                 <div class="content-tags">
                   <el-tag v-for="tag in item.tags" :key="tag" size="small" type="primary">{{
-                      tag
-                    }}</el-tag>
+                    tag
+                  }}</el-tag>
                 </div>
                 <div class="feed-stats">
                   <span v-for="stat in item.stats" :key="stat.icon">
@@ -101,7 +102,7 @@
     </section>
 
     <!-- 右侧边栏 -->
-    <aside class="right-sidebar" v-show="!showMarkdown">
+    <aside class="right-sidebar" v-show="!showMarkdown && !showNewNote">
       <div class="sidebar-header">
         <h2>{{ t('home.latestQuestions') }}</h2>
       </div>
@@ -125,21 +126,27 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { ElButton, ElButtonGroup, ElIcon, ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import { useMockDataStore } from '@/stores/mockData.ts'
+import { ElButton, ElButtonGroup, ElMessage } from 'element-plus'
 import TreeNavigation from '@/components/TreeNavigation.vue'
-import { getChapters, getFeedData, getRecentNotes } from '@/api/home'
+import { getFeedData, getRecentNotes } from '@/api/home'
 import { getNoteContent } from '@/api/notes'
 import noteData from '@/data/note.json'
 import MarkdownViewer from '@/components/MarkdownViewer.vue'
+import NewNoteViewer from '@/components/NewNoteViewer.vue'
+import { useNotesStore } from '@/stores/notes.ts'
 import type { Chapter, FeedItem, RecentNote } from '@/types/home'
-
+// 导入章节数据
+import chaptersData from '@/data/chapters.json'
+import { IconPlus } from '@/components/icons'
 // 使用主题store和i18n
 useThemeStore()
 const { t } = useI18n()
 const userStore = useUserStore()
+const mockDataStore = useMockDataStore()
+const notesStore = useNotesStore()
 
 // 使用路由
 const router = useRouter()
@@ -155,26 +162,24 @@ const getCurrentUsername = () => {
 const sidebarTitle = computed(() => {
   const routeUsername = route.params.username as string
   const currentUsername = getCurrentUsername()
-  
+
   // 如果没有路由参数中的用户名，显示当前用户的笔记
   if (!routeUsername) {
     return t('home.myNotes')
   }
-  
+
   // 如果访问的是当前用户的笔记
   if (routeUsername === currentUsername) {
     return t('home.myNotes')
   }
-  
+
   // 访问其他用户的笔记
   return t('home.userNotes', { username: routeUsername })
 })
 
-// 验证用户名是否有效
+// 验证用户名是否有效（使用本地 mock 数据）
 const isValidUsername = (username: string): boolean => {
-  // 这里可以添加实际的用户验证逻辑，比如从后端获取用户列表
-  // 暂时允许所有用户名，实际项目中应该从后端验证
-  return true
+  return !!mockDataStore.findUser(username)
 }
 
 // 获取用户拥有的笔记列表
@@ -188,9 +193,12 @@ const getUserNotes = (username: string): string[] => {
   return userNotes
 }
 
-// 检查用户是否拥有指定笔记
+// 检查用户是否拥有指定笔记（包含动态笔记）
 const userHasNote = (username: string, noteId: string): boolean => {
-  return getUserNotes(username).includes(noteId)
+  const hasStatic = getUserNotes(username).includes(noteId)
+  const dyn = notesStore.notes[noteId]
+  const hasDynamic = !!(dyn && dyn.username === username)
+  return hasStatic || hasDynamic
 }
 
 // 搜索查询
@@ -206,6 +214,8 @@ const selectedTopic = ref<string>('')
 const showMarkdown = ref(false)
 const selectedNoteContent = ref('')
 const selectedFileName = ref('')
+// 新建笔记视图开关
+const showNewNote = ref(false)
 
 // 当前激活的过滤器
 const activeFilter = ref('all')
@@ -222,29 +232,65 @@ const feedData = ref<FeedItem[]>([])
 // 最新题目数据
 const recentNotes = ref<RecentNote[]>([])
 
-// 导入章节数据
-import chaptersData from '@/data/chapters.json'
-
-// 根据用户动态生成章节结构
+// 根据用户动态生成章节结构（与持久化分组一致地合并）
 const generateUserChapters = (username: string) => {
-  console.log('生成用户章节，用户名:', username)
-  console.log('章节数据结构:', chaptersData)
-  
-  // 从新的数据结构中获取用户专属的章节
   const userChapters = (chaptersData as any).userChapters[username]
-  console.log('用户专属章节:', userChapters)
-  
-  // 如果找到用户专属章节，返回它；否则返回默认章节
-  const result = userChapters || (chaptersData as any).defaultChapters || []
-  console.log('最终返回的章节:', result)
-  
-  return result
+  const staticChapters: Chapter[] = userChapters || (chaptersData as any).defaultChapters || []
+
+  // 1) 先将预设分组写入持久化分组列表，确保初始状态一致
+  staticChapters.forEach((c) => {
+    notesStore.addGroup(username, String(c.title || '').trim())
+  })
+
+  const titleKey = (s: string) =>
+    String(s || '')
+      .trim()
+      .toLowerCase()
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '')
+
+  // 2) 构建静态分组映射，便于向已有分组追加动态笔记
+  const byTitle: Record<string, Chapter> = {}
+  staticChapters.forEach((c) => {
+    byTitle[titleKey(c.title)] = {
+      id: c.id,
+      title: c.title,
+      topics: Array.isArray(c.topics) ? [...c.topics] : [],
+    }
+  })
+
+  // 3) 遍历动态笔记，如果分组已存在于静态分组，则追加到该分组；否则记录为新增分组
+  const dynamicNotes = notesStore.listNotesByUser(username)
+  const newGroups: Record<string, Chapter> = {}
+  dynamicNotes.forEach((n: { id: string; group?: string; filename?: string; name?: string }) => {
+    const g = (n.group || '未分组').trim()
+    const key = titleKey(g)
+    const tTitle = n.filename ? n.filename : n.name
+
+    if (byTitle[key]) {
+      byTitle[key].topics.push({ id: n.id, title: tTitle || '' })
+    } else {
+      if (!newGroups[key]) {
+        newGroups[key] = { id: `dyn_${slugify(g)}`, title: g, topics: [] }
+      }
+      newGroups[key].topics.push({ id: n.id, title: tTitle || '' })
+    }
+    // 确保持久化分组也包含该分组名称
+    notesStore.addGroup(username, g)
+  })
+
+  // 4) 合并结果：保持预设分组的原顺序，再追加新增的动态分组
+
+  return [...Object.values(byTitle), ...Object.values(newGroups)]
 }
 
 // 从章节数据中查找笔记标题
 const getNoteTitleFromChapters = (noteId: string): string => {
   for (const chapter of chapters.value) {
-    const topic = chapter.topics.find(topic => topic.id === noteId)
+    const topic = chapter.topics.find((topic) => topic.id === noteId)
     if (topic) {
       return topic.title.replace('.md', '')
     }
@@ -256,7 +302,20 @@ const getNoteTitleFromChapters = (noteId: string): string => {
 const loadMarkdown = async (topicId: string, title: string) => {
   try {
     loading.value = true
+    // 进入阅读模式时关闭新建视图
+    showNewNote.value = false
 
+    // 先尝试读取动态笔记
+    const notesStore = useNotesStore()
+    const dynamic = notesStore.getNoteContentById(topicId)
+    if (dynamic) {
+      selectedNoteContent.value = dynamic
+      selectedFileName.value = title
+      showMarkdown.value = true
+      return
+    }
+
+    // 回退到静态资源
     selectedNoteContent.value = await getNoteContent(topicId)
     selectedFileName.value = title
     showMarkdown.value = true
@@ -270,7 +329,7 @@ const loadMarkdown = async (topicId: string, title: string) => {
         t('messages.error.noteNotFound', { topicId }) || `未找到笔记文件映射：${topicId}`
     }
     ElMessage.error(errorMessage)
-    
+
     // 如果笔记加载失败，回退到上一个路由
     router.back()
     showMarkdown.value = false
@@ -278,6 +337,12 @@ const loadMarkdown = async (topicId: string, title: string) => {
   } finally {
     loading.value = false
   }
+}
+
+// 开始新建笔记，替换 Learning Activity 主区域
+const startNewNote = () => {
+  showMarkdown.value = false
+  showNewNote.value = true
 }
 
 // 错误消息防抖控制
@@ -290,10 +355,10 @@ const showErrorMessage = (message: string) => {
   if (message === lastErrorMessage && errorMessageTimeout) {
     return
   }
-  
+
   lastErrorMessage = message
   ElMessage.error(message)
-  
+
   // 设置防抖时间（2秒）
   if (errorMessageTimeout) {
     clearTimeout(errorMessageTimeout)
@@ -308,29 +373,29 @@ const showErrorMessage = (message: string) => {
 const handleRouteNote = () => {
   const noteId = route.params.noteId as string
   const username = route.params.username as string
-  
+
   // 检查用户名是否存在
   if (username) {
     // 验证用户名是否有效
     if (!isValidUsername(username)) {
       showErrorMessage(t('messages.error.userNotFound', { username }))
-      // 回退到上一个路由
-      router.back()
+      // 跳转到 404 页面
+      router.replace('/404')
       return
     }
-    
+
     // 始终根据当前路由用户名生成章节结构，避免同步不及时
     chapters.value = generateUserChapters(username)
-    
+
     if (noteId) {
       // 如果有笔记ID，先检查用户是否拥有这个笔记
       if (!userHasNote(username, noteId)) {
         showErrorMessage(t('messages.error.noteNotInUser', { username, noteId }))
-        // 导航到不带笔记参数的用户路径
-        router.push(`/${username}`)
+        // 跳转到 404 页面
+        router.replace('/404')
         return
       }
-      
+
       // 用户拥有这个笔记，加载对应笔记
       selectedTopic.value = noteId
       // 查找对应的标题
@@ -339,14 +404,14 @@ const handleRouteNote = () => {
         loadMarkdown(noteId, noteTitle)
       } else {
         showErrorMessage(t('messages.error.noteNotExist', { noteId }))
-        // 导航到不带笔记参数的用户路径
-        router.push(`/${username}`)
+        // 跳转到 404 页面
+        router.replace('/404')
       }
     } else {
       // 只有用户名，没有笔记ID，显示用户的主页内容
       showMarkdown.value = false
       selectedTopic.value = ''
-      console.log(`显示用户 "${username}" 的主页`)
+
     }
   }
 }
@@ -355,19 +420,16 @@ const handleRouteNote = () => {
 const loadData = async () => {
   loading.value = true
   try {
-    const [feedResp, recentNotesResp] = await Promise.all([
-      getFeedData(),
-      getRecentNotes(),
-    ])
+    const [feedResp, recentNotesResp] = await Promise.all([getFeedData(), getRecentNotes()])
 
-    console.log('getFeedData() =>', feedResp)
-    console.log('getRecentNotes() =>', recentNotesResp)
+
+
 
     // 使用路由参数中的用户名，如果没有则使用当前登录用户
     const routeUsername = route.params.username as string
     const targetUsername = routeUsername || getCurrentUsername()
     chapters.value = generateUserChapters(targetUsername)
-    
+
     feedData.value = feedResp.data
     recentNotes.value = recentNotesResp.data
   } catch (error) {
@@ -382,10 +444,10 @@ const loadData = async () => {
 watch(
   () => route.params,
   (newParams) => {
-    console.log('路由参数变化:', newParams)
+
     handleRouteNote()
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // 组件挂载时加载数据
@@ -404,7 +466,7 @@ const filteredFeed = computed(() => {
 // 方法：处理主题选择
 const handleTopicSelect = (topic: { id: string; title: string }) => {
   selectedTopic.value = topic.id
-  console.log('选择主题:', topic)
+
   // 使用路由参数中的用户名，如果没有则使用当前登录用户
   const routeUsername = route.params.username as string
   const username = routeUsername || getCurrentUsername()
@@ -414,18 +476,17 @@ const handleTopicSelect = (topic: { id: string; title: string }) => {
   loadMarkdown(topic.id, topic.title)
 }
 
-// 方法：处理章节展开折叠
-const handleChapterToggle = (chapterId: string, isExpanded: boolean) => {
-  console.log('章节切换:', chapterId, isExpanded ? '展开' : '折叠')
+// 新建后刷新章节树
+const handleNoteCreated = (payload: { id: string; username: string; group: string }) => {
+  const routeUsername = route.params.username as string
+  const targetUsername = payload?.username || routeUsername || getCurrentUsername()
+  chapters.value = generateUserChapters(targetUsername)
 }
 
-// 方法：显示笔记详情（保留兼容性）
-// const showNoteDetail = (noteId: string) => {
-//   selectedTopic.value = noteId
-//   console.log('显示笔记详情:', noteId)
-//   // 这里可以实现笔记详情显示逻辑
-// }
+// 方法：处理章节展开折叠
+const handleChapterToggle = (chapterId: string, isExpanded: boolean) => {
 
+}
 // 方法：设置过滤器
 const setFilter = (filter: string) => {
   activeFilter.value = filter
@@ -525,10 +586,6 @@ const getStatText = (stat: any) => {
   align-items: center;
   gap: 8px;
   transition: background-color 0.2s;
-}
-
-.new-btn .el-icon {
-  margin-right: 6px;
 }
 
 .new-btn:hover {

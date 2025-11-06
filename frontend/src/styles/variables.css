@@ -162,6 +162,62 @@ select:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+/* Element Plus Select & Tag 主题适配（全局） */
+/* 下拉弹层（Popper）透明背景 + 主题边框与文字 */
+.el-select__popper .el-select-dropdown {
+  background-color: transparent !important;
+  border: 1px solid var(--border-color) !important;
+}
+.el-select__popper .el-select-dropdown__item {
+  color: var(--text-primary) !important;
+}
+.el-select__popper .el-select-dropdown__item.is-selected {
+  color: var(--home-link-color) !important;
+}
+.el-select__wrapper {
+  background-color: transparent !important;
+}
+
+/* 输入框与选择框透明背景（全局） */
+.el-select .el-input__wrapper,
+.el-input .el-input__wrapper {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 选择框中的标签（chips）随主题变色 + 取消背景 */
+.el-select .el-tag {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-radius: 6px !important;
+}
+.el-select  .el-tag .el-tag__close {
+  color: var(--text-primary) !important;
+  background: var(--card-bg) !important;
+}
+
+/* el-select 内部输入框与选区（selection）主题适配 */
+.el-select__input {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  caret-color: var(--home-link-color);
+}
+.el-select__input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+.el-select__selection {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+.el-select .el-input__wrapper.is-focus,
+.el-select .el-input__wrapper:hover {
+  border-color: var(--home-link-color) !important;
+}
+.el-select__tags {
+  gap: 6px;
+}
+
 /* Element Plus 输入框自动填充样式修复 */
 .el-input__inner:-webkit-autofill,
 .el-input__inner:-webkit-autofill:hover,

@@ -145,4 +145,41 @@
     "confirm": "Confirm",
     "cancel": "Cancel"
   }
+  ,
+  "newNoteViewer": {
+    "title": "New Note",
+    "form": {
+      "id": "ID",
+      "idPlaceholder": "Optional, auto-generated if empty",
+      "name": "Name",
+      "namePlaceholder": "Note name (optional, defaults to imported filename)",
+      "group": "Group",
+      "groupPlaceholder": "Select or enter a group",
+      "tags": "Tags",
+      "tagsPlaceholder": "Optional: select or enter tags",
+      "markdown": "Markdown"
+    },
+    "upload": {
+      "dragTextPrefix": "Drag Markdown file here, or",
+      "clickToImport": "click to import",
+      "tip": "Only .md supported, size ≤ 2MB"
+    },
+    "actions": {
+      "save": "Save",
+      "reset": "Reset"
+    },
+    "created": {
+      "prefix": "Created: "
+    },
+    "messages": {
+      "mdOnly": "Only Markdown (.md) files are supported",
+      "readFail": "Failed to read file, please retry",
+      "uploadRequired": "Please import a Markdown file",
+      "saveSuccess": "Saved to local persistent data",
+      "idExists": "Note ID already exists: {id}. Cannot create"
+    },
+    "validation": {
+      "chooseOrEnterGroup": "Please select or enter a group"
+    }
+  }
 }

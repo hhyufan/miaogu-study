@@ -1,9 +1,7 @@
 <template>
   <svg
     fill="none"
-    :height="size"
     viewBox="0 0 24 24"
-    :width="size"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
@@ -29,11 +27,5 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  size?: string | number
-}
-
-withDefaults(defineProps<Props>(), {
-  size: '80'
-})
+// 移除内部尺寸控制，改为由外部样式/类控制
 </script>

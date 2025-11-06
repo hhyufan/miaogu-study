@@ -173,22 +173,6 @@
         transform: translateY(-4px);
       }
 
-      .el-icon {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 16px;
-        padding: 16px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.25);
-          transform: scale(1.1);
-          box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-        }
-      }
-
       span {
         font-size: 13px;
         font-weight: 600;
@@ -221,9 +205,6 @@
       margin-top: 30px;
 
       .icon-item {
-        .el-icon {
-          padding: 12px;
-        }
 
         span {
           font-size: 11px;
@@ -564,10 +545,6 @@
     color: var(--primary-color);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .el-icon {
-    font-size: 18px;
   }
 }
 

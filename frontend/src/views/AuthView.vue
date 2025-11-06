@@ -5,20 +5,19 @@
       <div class="auth-welcome">
         <div class="welcome-content">
           <div class="logo">
-            <IconLogo />
+            <IconLogo class="app-icon" style="width: 80px; height: 80px" />
           </div>
           <h1>{{ $t('auth.welcome') }}</h1>
           <p>{{ $t('auth.subtitle') }}</p>
 
           <!-- 主题和语言切换控件 -->
           <div class="auth-controls">
-            <el-button
-              :icon="currentTheme === 'light' ? 'Sunny' : 'Moon'"
-              class="control-btn theme-toggle-btn"
-              size="small"
-              text
-              @click="toggleTheme"
-            />
+            <el-button class="control-btn theme-toggle-btn" size="small" text @click="toggleTheme">
+              <template #icon>
+                <IconSunny v-if="currentTheme === 'light'" class="app-icon app-icon--sm" />
+                <IconMoon v-else class="app-icon app-icon--sm" />
+              </template>
+            </el-button>
             <span class="control-divider">|</span>
             <el-button class="control-btn" size="small" text @click="toggleLanguage">
               {{ currentLanguage === 'zh-CN' ? 'EN' : '中文' }}
@@ -106,7 +105,7 @@
                 @click="handleGithubAuth"
               >
                 <template #icon>
-                  <IconGithub />
+                  <IconGithub class="app-icon app-icon--sm" />
                 </template>
                 {{ $t('auth.loginWithGithub') }}
               </el-button>
@@ -240,10 +239,10 @@ import { useUserStore } from '@/stores/user'
 import PasswordStrength from '@/components/PasswordStrength.vue'
 import type { ApiResponse } from '@/types/api'
 import { login, register } from '@/api/auth'
-import { IconLogo, IconGithub } from '@/components/icons'
 
 // 导入样式
 import '@/styles/auth.scss'
+import { IconGithub, IconLogo, IconMoon, IconSunny } from '@/components/icons'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -454,7 +453,6 @@ const handleRegister = async () => {
 const handleGithubAuth = () => {
   ElMessage.info(t('auth.githubAuthNotImplemented'))
   // 这里应该处理 GitHub OAuth 登录
-  console.log('GitHub auth clicked')
 }
 
 const handleForgotPassword = async () => {
@@ -472,7 +470,6 @@ const handleForgotPassword = async () => {
     ElMessage.success(t('auth.resetEmailSent'))
 
     // 这里应该处理实际的密码重置逻辑
-    console.log('Forgot password form:', forgotForm.value)
 
     // 发送成功后切换到登录页面
     switchTab('login')

@@ -7,15 +7,17 @@ import { useLanguageStore } from '@/stores/language'
 import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
 import { getUserSuggestions, getNoteSuggestions, findNoteByUserAndTags } from '@/api/search'
-import { getChapters } from '@/api/home'
 import type { Chapter } from '@/types/home'
-import IconPlus from './icons/IconPlus.vue'
-import IconSearch from './icons/IconSearch.vue'
-import IconQuestionFilled from './icons/IconQuestionFilled.vue'
-import IconMoon from './icons/IconMoon.vue'
-import IconSunny from './icons/IconSunny.vue'
-import IconOperation from './icons/IconOperation.vue'
-import IconLanguage from './icons/IconLanguage.vue'
+import {
+  IconLanguage,
+  IconMoon,
+  IconOperation,
+  IconPlus,
+  IconQuestionFilled,
+  IconSearch,
+  IconSunny,
+} from '@/components/icons'
+// 全局注册的图标组件无需导入
 
 const router = useRouter()
 const route = useRoute()
@@ -26,7 +28,13 @@ const userStore = useUserStore()
 const searchTags = ref<string[]>([])
 const currentInput = ref('')
 const dropdownVisible = ref(false)
-type SuggestionItem = { label: string; value: string; kind: 'user' | 'note'; username?: string; noteId?: string }
+type SuggestionItem = {
+  label: string
+  value: string
+  kind: 'user' | 'note'
+  username?: string
+  noteId?: string
+}
 const suggestions = ref<SuggestionItem[]>([])
 const searchInputRef = ref<any>()
 const lastAddedTag = ref<string | null>(null)
@@ -47,13 +55,13 @@ const loadChapters = async () => {
   try {
     // 获取当前路由中的用户名
     const routeUsername = route.params.username as string
-    
+
     // 获取章节数据
     const chaptersData = await import('@/data/chapters.json')
-    
+
     // 根据当前访问的用户获取对应的章节数据
-    let targetChapters = []
-    
+    let targetChapters: any[]
+
     if (routeUsername) {
       // 如果有路由用户名，优先使用路由中的用户名
       const userChapters = (chaptersData as any).userChapters[routeUsername]
@@ -64,7 +72,7 @@ const loadChapters = async () => {
       const userChapters = (chaptersData as any).userChapters[currentUsername]
       targetChapters = userChapters || (chaptersData as any).defaultChapters || []
     }
-    
+
     chapters.value = targetChapters
   } catch (error) {
     console.error('加载章节数据失败:', error)
@@ -74,7 +82,7 @@ const loadChapters = async () => {
 // 根据笔记ID查找笔记标题
 const getNoteTitle = (noteId: string): string => {
   for (const chapter of chapters.value) {
-    const topic = chapter.topics.find(topic => topic.id === noteId)
+    const topic = chapter.topics.find((topic) => topic.id === noteId)
     if (topic) {
       // 移除.md后缀
       return topic.title.replace('.md', '')
@@ -140,7 +148,7 @@ const fetchSuggestions = async (keyword: string) => {
           label: `user: ${u.username}`,
           value: `user: ${u.username}`,
           kind: 'user' as const,
-        }))
+        })),
       )
     }
 
@@ -153,7 +161,7 @@ const fetchSuggestions = async (keyword: string) => {
         kind: 'note' as const,
         username: n.username,
         noteId: n.noteId,
-      }))
+      })),
     )
 
     // 按 value 去重，避免重复键导致渲染警告
@@ -168,7 +176,8 @@ const fetchSuggestions = async (keyword: string) => {
     suggestions.value = deduped
     // 输入时保持展开，由选择或清空来决定关闭
     dropdownVisible.value = true
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     suggestions.value = []
     // 输入阶段保持展开，显示空占位
     dropdownVisible.value = true
@@ -244,7 +253,8 @@ const handleTagSearch = async () => {
       // 清空输入框内的标签
       searchTags.value = []
     }
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     ElMessage.error('搜索失败，请稍后重试')
   }
 }
@@ -280,7 +290,8 @@ watch(
             dropdownVisible.value = true
             return
           }
-        } catch (e) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (_) {
           // 忽略建议接口错误，退回默认行为
         }
       }
@@ -289,7 +300,7 @@ watch(
       await fetchSuggestions(currentInput.value)
       dropdownVisible.value = suggestions.value.length > 0
     }
-  }
+  },
 )
 
 // 键盘快捷键 - 按 / 键聚焦搜索
@@ -311,7 +322,7 @@ watch(
       dropdownVisible.value = false
       currentInput.value = ''
     }
-  }
+  },
 )
 
 // 添加键盘事件监听
@@ -327,29 +338,31 @@ onUnmounted(() => {
 // 面包屑导航数据
 const breadcrumbs = computed(() => {
   const matched = route.matched
-  return matched.map((item) => {
-    let title = t(`breadcrumb.${String(item.name)}`)
-    
-    // 如果是用户笔记路由
-    if (item.name === 'user-note') {
-      const username = route.params.username as string
-      const noteId = route.params.noteId as string
-      
-      if (noteId) {
-        // 如果有笔记ID，显示用户名和笔记标题
-        title = `${username} / ${getNoteTitle(noteId)}`
-      } else {
-        // 只有用户名
-        title = username
+  return matched
+    .map((item) => {
+      let title = t(`breadcrumb.${String(item.name)}`)
+
+      // 如果是用户笔记路由
+      if (item.name === 'user-note') {
+        const username = route.params.username as string
+        const noteId = route.params.noteId as string
+
+        if (noteId) {
+          // 如果有笔记ID，显示用户名和笔记标题
+          title = `${username} / ${getNoteTitle(noteId)}`
+        } else {
+          // 只有用户名
+          title = username
+        }
       }
-    }
-    
-    return {
-      name: item.name as string,
-      path: item.path,
-      title
-    }
-  }).filter(breadcrumb => breadcrumb.name !== 'home') // 过滤掉 home 路由，避免重复显示
+
+      return {
+        name: item.name as string,
+        path: item.path,
+        title,
+      }
+    })
+    .filter((breadcrumb) => breadcrumb.name !== 'home') // 过滤掉 home 路由，避免重复显示
 })
 
 // 处理面包屑点击
@@ -364,12 +377,8 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
   <el-header class="app-header">
     <div class="header-container">
       <div class="header-left">
-        <el-button
-          class="menu-btn"
-          @click="toggleSidebar"
-          circle
-        >
-          <IconOperation />
+        <el-button class="menu-btn" @click="toggleSidebar" circle>
+          <IconOperation class="app-icon app-icon--md app-icon--hoverable" />
         </el-button>
         <div class="breadcrumb-container">
           <el-breadcrumb separator="/">
@@ -385,11 +394,16 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
         </div>
       </div>
 
-      <div class="header-center">
-      </div>
+      <div class="header-center"></div>
 
       <div class="header-right">
-        <el-dropdown v-model:visible="dropdownVisible" placement="bottom-start" :hide-on-click="false" :teleported="false" popper-class="app-header-dropdown">
+        <el-dropdown
+          v-model:visible="dropdownVisible"
+          placement="bottom-start"
+          :hide-on-click="false"
+          :teleported="false"
+          popper-class="app-header-dropdown"
+        >
           <el-input-tag
             v-model="searchTags"
             :placeholder="t('common.searchPlaceholder')"
@@ -401,7 +415,7 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
             @keyup.enter="handleTagSearch"
           >
             <template #prefix>
-              <IconSearch />
+              <IconSearch class="app-icon app-icon--sm" />
             </template>
           </el-input-tag>
           <template #dropdown>
@@ -421,21 +435,12 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
         </el-dropdown>
 
         <div class="action-buttons">
-          <el-button
-            circle
-            :title="t('common.new')"
-            class="action-btn"
-          >
-            <IconPlus />
+          <el-button circle :title="t('common.new')" class="action-btn">
+            <IconPlus class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
-          <el-button
-            circle
-            :title="t('common.quiz')"
-            @click="goToQuiz"
-            class="action-btn"
-          >
-            <IconQuestionFilled />
+          <el-button circle :title="t('common.quiz')" @click="goToQuiz" class="action-btn">
+            <IconQuestionFilled class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
           <el-button
@@ -444,7 +449,10 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
             @click="toggleLanguage"
             class="action-btn"
           >
-            <IconLanguage :current-language="languageStore.currentLanguage === 'zh-CN' ? 'zh' : 'en'" />
+            <IconLanguage
+              :current-language="languageStore.currentLanguage === 'zh-CN' ? 'zh' : 'en'"
+              class="app-icon app-icon--md app-icon--hoverable"
+            />
           </el-button>
 
           <el-button
@@ -453,8 +461,8 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
             @click="toggleTheme"
             class="action-btn"
           >
-            <IconSunny v-if="themeStore.isDark" />
-            <IconMoon v-else />
+            <IconSunny v-if="themeStore.isDark" class="app-icon app-icon--md app-icon--hoverable" />
+            <IconMoon v-else class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
           <el-avatar
@@ -517,18 +525,6 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
   background-color: var(--bg-secondary);
   border-color: var(--primary-color);
   color: var(--primary-color);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.current-location {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
 }
 
 .breadcrumb-container {
@@ -632,12 +628,14 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
   color: var(--text-primary);
 }
 
-:deep(.el-dropdown__popper .el-dropdown-menu__item:hover,
-      .el-dropdown__popper .el-dropdown-menu__item:focus,
-      .el-dropdown__popper .el-dropdown-menu__item.is-hover,
-      .app-header-dropdown .el-dropdown-menu__item:hover,
-      .app-header-dropdown .el-dropdown-menu__item:focus,
-      .app-header-dropdown .el-dropdown-menu__item.is-hover) {
+:deep(
+  .el-dropdown__popper .el-dropdown-menu__item:hover,
+  .el-dropdown__popper .el-dropdown-menu__item:focus,
+  .el-dropdown__popper .el-dropdown-menu__item.is-hover,
+  .app-header-dropdown .el-dropdown-menu__item:hover,
+  .app-header-dropdown .el-dropdown-menu__item:focus,
+  .app-header-dropdown .el-dropdown-menu__item.is-hover
+) {
   background-color: var(--bg-secondary) !important;
   color: var(--primary-color) !important;
 }

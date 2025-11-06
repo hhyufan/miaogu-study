@@ -1,0 +1,55 @@
+.app-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  /* 默认：浅色主题使用纯黑 */
+  color: #000;
+  transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+/* 默认尺寸（可在使用处通过类覆盖）。
+   同时支持类直接加在 svg 元素上或其父容器上。*/
+.app-icon:where(svg), .app-icon :where(svg) { width: 1em; height: 1em; }
+
+/* 尺寸变体（直接设置内部 svg 的宽高）；
+   选择器同时匹配 .app-icon--* 应用在 svg 或其父容器两种情况。*/
+.app-icon--xs:where(svg), .app-icon--xs :where(svg) { width: 12px; height: 12px; }
+.app-icon--sm:where(svg), .app-icon--sm :where(svg) { width: 14px; height: 14px; }
+.app-icon--md:where(svg), .app-icon--md :where(svg) { width: 18px; height: 18px; }
+.app-icon--lg:where(svg), .app-icon--lg :where(svg) { width: 24px; height: 24px; }
+.app-icon--xl:where(svg), .app-icon--xl :where(svg) { width: 32px; height: 32px; }
+
+/* 尺寸变体（通过字体大小驱动） */
+.app-icon--xs { font-size: 12px; }
+.app-icon--sm { font-size: 14px; }
+.app-icon--md { font-size: 18px; }
+.app-icon--lg { font-size: 24px; }
+.app-icon--xl { font-size: 28px; }
+
+/* 颜色变体（使用项目主题变量） */
+.app-icon--primary { color: var(--home-link-color); }
+.app-icon--accent  { color: var(--home-accent-color); }
+.app-icon--muted   { color: var(--text-tertiary); }
+.app-icon--danger  { color: #e34d59; }
+.app-icon--white { color: #fff; }
+
+/* 外边距控制*/
+.app-icon--ml { margin-left: 8px; }
+.app-icon--mr { margin-right: 8px; }
+
+/* 可点击/悬停反馈 */
+.app-icon--clickable { cursor: pointer; }
+.app-icon--hoverable:hover {
+  /* 默认 hover 提亮可以被颜色类覆盖 */
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+/* 在暗色模式下的轻微过渡（如果使用 data-theme 或 .dark 包裹） */
+.dark .app-icon,
+[data-theme="dark"] .app-icon {
+  /* 深色主题默认使用纯白 */
+  color: #fff;
+  transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}

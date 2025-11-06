@@ -38,8 +38,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick, h } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Top } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { Top, Edit } from '@element-plus/icons-vue'
+import { ElMessage, ElTag, ElButton } from 'element-plus'
 import MarkdownIt from 'markdown-it'
 import Prism from 'prismjs'
 // 按需加载常用语言（Vue 用 markup-templating 增强 HTML 即可）
@@ -53,6 +53,9 @@ import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-markdown'
 // markup-templating 已内置在 prismjs 完整包，无需额外引入
 import { useThemeStore } from '@/stores/theme'
+import { useRoute, useRouter } from 'vue-router'
+import noteData from '@/data/note.json'
+import { useNotesStore } from '@/stores/notes'
 
 /* 迁移自 md_react 的设计变量 */
 const FONT_FAMILY = "'Poppins', sans-serif"
@@ -86,8 +89,25 @@ const markdownContainerRef = ref<HTMLElement>()
 const zoomLevel = ref(1)
 const showBackToTop = ref(false)
 const themeStore = useThemeStore()
+const route = useRoute()
+const router = useRouter()
 const prismLinkEl = ref<HTMLLinkElement | null>(null)
+const notesStore = useNotesStore()
 
+// 将任意时间字符串格式化为仅日期（YYYY-MM-DD）
+function toDateOnly(value: any): string {
+  const s = String(value || '').trim()
+  if (!s) return ''
+  const d = new Date(s)
+  if (!isNaN(d.getTime())) {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+  // Fallback: 直接截取 ISO 或简单日期字符串
+  return s?.split('T')[0]?.split(' ')[0] ?? '';
+}
 // Language display mapping
 const LANGUAGE_DISPLAY_MAP: Record<string, string> = {
   html: 'HTML',
@@ -148,6 +168,7 @@ const md = new MarkdownIt({
 // 完整 tokens -> VNode 渲染器
 function tokens2Vnode(tokens: any[]): any[] {
   const vnodes: any[] = []
+  let insertedMetaUnderH1 = false
   let i = 0
   while (i < tokens.length) {
     const t = tokens[i]
@@ -167,6 +188,42 @@ function tokens2Vnode(tokens: any[]): any[] {
           paddingBottom: level === 1 ? '0.5rem' : '0'
         }
       }, content))
+      // 在首个 H1 标题下插入笔记元信息（创建时间、标签、编辑按钮）
+      if (level === 1 && !insertedMetaUnderH1) {
+        const noteId = (route.params.noteId as string) || ''
+        // 优先从持久化 store 读取动态笔记的元信息（tags、createTime），否则回退到 note.json
+        let meta: any = null
+        if (noteId) {
+          const dyn = (notesStore as any).notes?.[noteId]
+          if (dyn) {
+            meta = {
+              createTime: dyn.createTime,
+              tags: Array.isArray(dyn.tags) ? dyn.tags : []
+            }
+          } else {
+            meta = (noteData as any)[noteId] || null
+          }
+        }
+        const onEdit = () => {
+          if (noteId) {
+            router.push(`/admin/${noteId}`)
+          } else {
+            ElMessage.info('未识别当前笔记ID')
+          }
+        }
+
+        const tags = (meta?.tags || []) as string[]
+
+        const dateOnly = toDateOnly(meta?.createTime)
+        vnodes.push(h('div', { class: 'note-meta-bar' }, [
+          h('div', { class: 'note-meta-tags' }, [
+            dateOnly ? h(ElTag as any, { size: 'small', type: 'primary' }, () => `创建时间: ${dateOnly}`) : null,
+            ...tags.map(tag => h(ElTag as any, { size: 'small', type: 'primary', key: tag }, () => tag))
+          ].filter(Boolean)),
+          h(ElButton as any, { size: 'small', type: 'primary', text: true, icon: Edit, onClick: onEdit, class: 'note-edit-btn' })
+        ]))
+        insertedMetaUnderH1 = true
+      }
       i++ // skip heading_close
     }
     // ---- paragraph ----
@@ -609,6 +666,78 @@ watch(() => themeStore.currentTheme, (theme) => {
 <style scoped>
 .markdown-viewer-container {
   font-family: 'Poppins', sans-serif;
+}
+
+/* 标题下方的笔记元信息条 */
+.note-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 12px 0;
+}
+
+.note-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 统一 tag 配色，沿用 HomeView 的 content-tags 风格 */
+.note-meta-tags :deep(.el-tag) {
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 12px;
+  border: none;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.note-meta-tags :deep(.el-tag:hover) {
+  cursor: pointer;
+}
+
+/* 浅色模式 - 淡蓝色半透明背景，蓝色文字 */
+:root .note-meta-tags :deep(.el-tag--primary) {
+  background: rgba(88, 166, 255, 0.1);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.2);
+}
+
+:root .note-meta-tags :deep(.el-tag--primary:hover) {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+/* 深色模式 - 紫色半透明背景，紫色文字 */
+[data-theme='dark'] .note-meta-tags :deep(.el-tag--primary) {
+  background: rgba(124, 58, 237, 0.2);
+  color: #7c3aed;
+}
+
+[data-theme='dark'] .note-meta-tags :deep(.el-tag--primary:hover) {
+  background: rgba(124, 58, 237, 0.3);
+}
+
+/* 编辑按钮样式与主题联动 */
+.note-edit-btn {
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.note-edit-btn :deep(.el-icon) {
+  font-size: 20px; /* 图标更大 */
+  transition: color 0.2s ease;
+}
+
+/* 浅色模式 - 蓝色图标 */
+:root .note-edit-btn :deep(.el-icon) {
+  color: #58a6ff;
+}
+
+/* 深色模式 - 紫色图标 */
+[data-theme='dark'] .note-edit-btn :deep(.el-icon) {
+  color: #7c3aed;
 }
 
 /* Language tag 样式：与 HomeViewer 的 tag 风格一致 */
