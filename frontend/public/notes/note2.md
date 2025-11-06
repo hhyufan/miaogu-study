@@ -5,6 +5,7 @@
 ## 函数声明与表达式
 
 ### 函数声明
+
 ```javascript
 function greet(name) {
   return `Hello, ${name}!`;
@@ -15,6 +16,7 @@ console.log(greet("张三")); // "Hello, 张三!"
 ```
 
 ### 函数表达式
+
 ```javascript
 const add = function(a, b) {
   return a + b;
@@ -24,6 +26,7 @@ const multiply = (a, b) => a * b;
 ```
 
 ### 默认参数
+
 ```javascript
 function greet(name = "访客", greeting = "你好") {
   return `${greeting}，${name}！`;
@@ -36,6 +39,7 @@ console.log(greet("小明")); // "你好，小明！"
 ## 作用域类型
 
 ### 1. 全局作用域
+
 ```javascript
 const globalVar = "我是全局变量";
 
@@ -45,6 +49,7 @@ function testGlobal() {
 ```
 
 ### 2. 函数作用域
+
 ```javascript
 function testScope() {
   const localVar = "我是局部变量";
@@ -55,6 +60,7 @@ console.log(localVar); // 错误！无法访问
 ```
 
 ### 3. 块级作用域（ES6+）
+
 ```javascript
 if (true) {
   let blockVar = "我是块级变量";

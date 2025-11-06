@@ -1,12 +1,12 @@
-<script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+<script lang="ts" setup>
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
 import { useUserStore } from '@/stores/user'
 import { ElMessage } from 'element-plus'
-import { getUserSuggestions, getNoteSuggestions, findNoteByUserAndTags } from '@/api/search'
+import { findNoteByUserAndTags, getNoteSuggestions, getUserSuggestions } from '@/api/search'
 import type { Chapter } from '@/types/home'
 import {
   IconLanguage,
@@ -15,7 +15,7 @@ import {
   IconPlus,
   IconQuestionFilled,
   IconSearch,
-  IconSunny,
+  IconSunny
 } from '@/components/icons'
 // 全局注册的图标组件无需导入
 
@@ -377,7 +377,7 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
   <el-header class="app-header">
     <div class="header-container">
       <div class="header-left">
-        <el-button class="menu-btn" @click="toggleSidebar" circle>
+        <el-button circle class="menu-btn" @click="toggleSidebar">
           <IconOperation class="app-icon app-icon--md app-icon--hoverable" />
         </el-button>
         <div class="breadcrumb-container">
@@ -399,16 +399,16 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
       <div class="header-right">
         <el-dropdown
           v-model:visible="dropdownVisible"
-          placement="bottom-start"
           :hide-on-click="false"
           :teleported="false"
+          placement="bottom-start"
           popper-class="app-header-dropdown"
         >
           <el-input-tag
+            ref="searchInputRef"
             v-model="searchTags"
             :placeholder="t('common.searchPlaceholder')"
             class="search-input"
-            ref="searchInputRef"
             delimiter=" "
             @input="handleTagInput"
             @remove-tag="handleRemoveTag"
@@ -435,19 +435,19 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
         </el-dropdown>
 
         <div class="action-buttons">
-          <el-button circle :title="t('common.new')" class="action-btn">
+          <el-button :title="t('common.new')" circle class="action-btn">
             <IconPlus class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
-          <el-button circle :title="t('common.quiz')" @click="goToQuiz" class="action-btn">
+          <el-button :title="t('common.quiz')" circle class="action-btn" @click="goToQuiz">
             <IconQuestionFilled class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
           <el-button
-            circle
             :title="t('common.toggleLanguage')"
-            @click="toggleLanguage"
+            circle
             class="action-btn"
+            @click="toggleLanguage"
           >
             <IconLanguage
               :current-language="languageStore.currentLanguage === 'zh-CN' ? 'zh' : 'en'"
@@ -456,21 +456,21 @@ const handleBreadcrumbClick = (breadcrumb: { name: string; path: string }) => {
           </el-button>
 
           <el-button
-            circle
             :title="t('common.toggleTheme')"
-            @click="toggleTheme"
+            circle
             class="action-btn"
+            @click="toggleTheme"
           >
             <IconSunny v-if="themeStore.isDark" class="app-icon app-icon--md app-icon--hoverable" />
             <IconMoon v-else class="app-icon app-icon--md app-icon--hoverable" />
           </el-button>
 
           <el-avatar
-            :src="'/hhyufan.jpg'"
             :size="40"
+            :src="'/hhyufan.jpg'"
+            :title="t('common.viewProfile')"
             class="user-avatar"
             @click="goToProfile"
-            :title="t('common.viewProfile')"
           />
         </div>
       </div>

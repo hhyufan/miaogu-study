@@ -1,6 +1,6 @@
 # 项目开发规范与教程
 
->**项目规范事项** ：
+> **项目规范事项** ：
 >1. 页面放到views目录，组件放到components目录，图标以svg矢量图的形式放到components/icons目录
 >2. 使用mock.js模拟后端数据响应，写好mock响应和axios api数据请求，数据存放到src目录下的data。
 >3. 使用TypeScript作为前端语言，请按照Ts规范声明好类型,类型统一管理在src的types目录下。
@@ -13,6 +13,7 @@
 
 **a. 静态数据**  
 在 `src/data/report.json` 写入：
+
 ```json
 [
   { "id": 1, "title": "Week 1", "score": 92 },
@@ -22,6 +23,7 @@
 
 **b. 类型声明**  
 在 `src/types/report.ts` 写入：
+
 ```typescript
 export interface ReportItem {
   id: number
@@ -33,6 +35,7 @@ export interface ReportItem {
 ### 2. 编写 API 与 Mock
 
 **a. API 封装**  `src/api/report.ts`
+
 ```typescript
 import request from './request'
 import type { ReportItem } from '@/types/report'
@@ -48,6 +51,7 @@ export const getReport = (): Promise<ReportItem[]> =>
 ```
 
 **b. Mock 拦截**  `src/mock/report.ts`
+
 ```typescript
 import Mock from 'mockjs'
 import reportData from '@/data/report.json'
@@ -60,6 +64,7 @@ Mock.mock('/api/report', 'get', () => ({
 ```
 
 **c. 注册 mock**  在 `src/main.ts` 追加：
+
 ```ts
 // 导入其它 mock 后，按同样方式加入
 import './mock/report'
@@ -68,6 +73,7 @@ import './mock/report'
 ### 3. 创建页面组件
 
 `src/views/ReportView.vue`
+
 ```vue
 <template>
   <div class="report-container">
@@ -106,6 +112,7 @@ onMounted(async () => {
 ### 4. 配置路由
 
 在 `src/router/index.ts` 追加：
+
 ```typescript
 {
   path: '/report',
@@ -118,6 +125,7 @@ onMounted(async () => {
 ### 5. 国际化
 
 `src/locales/zh-CN.json`
+
 ```json
 {
   "report": {
@@ -127,6 +135,7 @@ onMounted(async () => {
 ```
 
 `src/locales/en-US.json`
+
 ```json
 {
   "report": {
@@ -138,6 +147,7 @@ onMounted(async () => {
 ### 6. 主题变量（可选）
 
 如需新增色值，在 `src/styles/variables.css` 追加：
+
 ```css
 :root {
   --color-report-primary: #409eff;
@@ -145,6 +155,7 @@ onMounted(async () => {
 ```
 
 并在深色主题下覆盖：
+
 ```css
 [data-theme="dark"] {
   --color-report-primary: #79bbff;
@@ -181,6 +192,7 @@ onMounted(async () => {
 ### 9.Pinia 状态模板
 
 `src/stores/report.ts`
+
 ```typescript
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -198,6 +210,7 @@ export const useReportStore = defineStore('report', () => {
 ```
 
 页面内使用：
+
 ```typescript
 import { useReportStore } from '@/stores/report'
 const reportStore = useReportStore()
@@ -205,6 +218,7 @@ reportStore.setList(res.data)
 ```
 
 如需持久化，请为 store 添加 `persist` 选项（项目已启用 `pinia-plugin-persistedstate`）：
+
 ```ts
 export const useReportStore = defineStore(
   'report',
@@ -222,6 +236,5 @@ export const useReportStore = defineStore(
 - 清理调试日志：开发中可使用 `console.info`/`console.error`，提交前移除多余 `console.log`；用户提示使用 `ElMessage`。
 - 不使用 `var`，统一使用 `const` / `let`。
 - 保持格式化一致性：遵循 Prettier，组件文件末尾保留空行。
-
 
 按本教程执行即可保持项目结构一致、类型安全、主题/国际化完备，且零 ESLint 警告。

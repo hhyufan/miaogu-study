@@ -7,6 +7,7 @@ JavaScript 中的变量和数据类型是基础中的基础。理解它们对于
 JavaScript 有 7 种基本数据类型：
 
 ### 1. Number（数字）
+
 ```javascript
 let age = 25;
 let price = 99.99;
@@ -16,6 +17,7 @@ let notNumber = NaN;
 ```
 
 ### 2. String（字符串）
+
 ```javascript
 let name = "张三";
 let message = 'Hello World';
@@ -23,6 +25,7 @@ let template = `你好，${name}！`;
 ```
 
 ### 3. Boolean（布尔值）
+
 ```javascript
 let isStudent = true;
 let hasPermission = false;
@@ -30,18 +33,21 @@ let isAdult = age >= 18;
 ```
 
 ### 4. Undefined（未定义）
+
 ```javascript
 let undefinedVar;
 console.log(undefinedVar); // undefined
 ```
 
 ### 5. Null（空值）
+
 ```javascript
 let emptyValue = null;
 console.log(emptyValue); // null
 ```
 
 ### 6. Symbol（符号）
+
 ```javascript
 const sym1 = Symbol('description');
 const sym2 = Symbol('description');
@@ -49,6 +55,7 @@ console.log(sym1 === sym2); // false
 ```
 
 ### 7. BigInt（大整数）
+
 ```javascript
 const bigNumber = 123456789012345678901234567890n;
 console.log(typeof bigNumber); // "bigint"

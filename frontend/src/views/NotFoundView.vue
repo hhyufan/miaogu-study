@@ -24,11 +24,11 @@
 
       <!-- 操作按钮组 -->
       <div class="nf-actions">
-        <button @click="goToHome" class="btn-primary">
+        <button class="btn-primary" @click="goToHome">
           <IconHomeFilled class="app-icon app-icon--md" />
           <span>返回首页</span>
         </button>
-        <button @click="goBack" class="btn-secondary">
+        <button class="btn-secondary" @click="goBack">
           <IconArrowLeftBold class="app-icon app-icon--md" />
           <span>返回上一页</span>
         </button>
@@ -86,7 +86,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* 根容器：渐变背景与居中布局（使用主题变量） */
 .notfound-container {
   position: relative;

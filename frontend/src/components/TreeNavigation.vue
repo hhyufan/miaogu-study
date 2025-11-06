@@ -1,19 +1,19 @@
 <template>
   <div class="tree-navigation">
     <div class="chapter-list">
-      <div class="chapter-item" v-for="chapter in chapters" :key="chapter.id">
+      <div v-for="chapter in chapters" :key="chapter.id" class="chapter-item">
         <el-button class="chapter-header" text @click="toggleChapter(chapter.id)">
-          <IconChevronRight class="chapter-arrow" :expanded="isExpanded(chapter.id)" />
+          <IconChevronRight :expanded="isExpanded(chapter.id)" class="chapter-arrow" />
           <span>{{ chapter.title }}</span>
         </el-button>
         <transition name="slide-fade">
-          <div class="topic-list" v-show="isExpanded(chapter.id)" :id="`topics-${chapter.id}`">
+          <div v-show="isExpanded(chapter.id)" :id="`topics-${chapter.id}`" class="topic-list">
             <el-button
-              class="topic-item"
-              text
               v-for="topic in chapter.topics"
               :key="topic.id"
               :type="selectedTopic === topic.id ? 'primary' : 'default'"
+              class="topic-item"
+              text
               @click="selectTopic(topic)"
             >
               <IconDocument class="app-icon app-icon--sm topic-icon" />
@@ -26,10 +26,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import { ElButton } from 'element-plus'
-import {IconDocument, IconChevronRight} from '@/components/icons'
+import { IconChevronRight, IconDocument } from '@/components/icons'
+
 // 定义接口
 interface Topic {
   id: string

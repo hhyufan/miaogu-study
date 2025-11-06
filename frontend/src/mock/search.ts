@@ -30,7 +30,11 @@ Mock.mock('/api/search/notes', 'post', (options: { body: string }) => {
 
   const byUser = notes.filter((n) => String(n.author || '').toLowerCase() === user)
   const byTags = tags.length
-    ? byUser.filter((n) => Array.isArray(n.tags) && tags.every((t) => n.tags.map((x: string) => x.toLowerCase()).includes(t)))
+    ? byUser.filter(
+        (n) =>
+          Array.isArray(n.tags) &&
+          tags.every((t) => n.tags.map((x: string) => x.toLowerCase()).includes(t)),
+      )
     : byUser
 
   if (byTags.length === 1) {
@@ -73,7 +77,11 @@ Mock.mock(/\/api\/search\/note_suggestions.*/, 'get', (options: any) => {
   const byUser = user ? notes.filter((n) => String(n.author || '').toLowerCase() === user) : notes
   // 过滤标签
   const byTags = tags.length
-    ? byUser.filter((n) => Array.isArray(n.tags) && tags.every((t) => n.tags.map((x: string) => x.toLowerCase()).includes(t)))
+    ? byUser.filter(
+        (n) =>
+          Array.isArray(n.tags) &&
+          tags.every((t) => n.tags.map((x: string) => x.toLowerCase()).includes(t)),
+      )
     : byUser
   // 过滤关键字（标题或描述或标签）
   const byKeyword = keyword
@@ -82,7 +90,12 @@ Mock.mock(/\/api\/search\/note_suggestions.*/, 'get', (options: any) => {
         const desc = String(n.description || '').toLowerCase()
         const tagStr = Array.isArray(n.tags) ? n.tags.join(',').toLowerCase() : ''
         const idStr = String(n.id || '').toLowerCase()
-        return title.includes(keyword) || desc.includes(keyword) || tagStr.includes(keyword) || idStr.includes(keyword)
+        return (
+          title.includes(keyword) ||
+          desc.includes(keyword) ||
+          tagStr.includes(keyword) ||
+          idStr.includes(keyword)
+        )
       })
     : byTags
 

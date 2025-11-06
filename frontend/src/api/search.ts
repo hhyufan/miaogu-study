@@ -1,16 +1,16 @@
 import request from './request'
 import type { ApiResponse } from '@/types/api'
 import type {
-  UserSuggestion,
   NoteSearchRequest,
   NoteSearchResult,
-  NoteSuggestionRequest,
   NoteSuggestion,
+  NoteSuggestionRequest,
+  UserSuggestion,
 } from '@/types/search'
 
-export const getUserSuggestions = (
-  params: { keyword: string }
-): Promise<ApiResponse<UserSuggestion[]>> =>
+export const getUserSuggestions = (params: {
+  keyword: string
+}): Promise<ApiResponse<UserSuggestion[]>> =>
   request({
     url: '/api/search/users',
     method: 'get',
@@ -18,7 +18,7 @@ export const getUserSuggestions = (
   })
 
 export const findNoteByUserAndTags = (
-  data: NoteSearchRequest
+  data: NoteSearchRequest,
 ): Promise<ApiResponse<NoteSearchResult | null>> =>
   request({
     url: '/api/search/notes',
@@ -27,7 +27,7 @@ export const findNoteByUserAndTags = (
   })
 
 export const getNoteSuggestions = (
-  params: NoteSuggestionRequest
+  params: NoteSuggestionRequest,
 ): Promise<ApiResponse<NoteSuggestion[]>> =>
   request({
     url: '/api/search/note_suggestions',

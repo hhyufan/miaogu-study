@@ -15,7 +15,7 @@ export interface RegisterRequest {
 }
 
 // 登录接口
-export const login = (data: LoginRequest) : Promise<ApiResponse> =>
+export const login = (data: LoginRequest): Promise<ApiResponse> =>
   request({
     url: '/api/auth/login',
     method: 'post',
@@ -23,7 +23,7 @@ export const login = (data: LoginRequest) : Promise<ApiResponse> =>
   })
 
 // 注册接口
-export const register = (data: RegisterRequest) : Promise<ApiResponse> =>
+export const register = (data: RegisterRequest): Promise<ApiResponse> =>
   request({
     url: '/api/auth/register',
     method: 'post',
@@ -45,7 +45,10 @@ export const refreshToken = (): Promise<ApiResponse> =>
   })
 
 // 修改密码接口
-export const changePassword = (data: { oldPassword: string; newPassword: string }): Promise<ApiResponse> =>
+export const changePassword = (data: {
+  oldPassword: string
+  newPassword: string
+}): Promise<ApiResponse> =>
   request({
     url: '/api/auth/change-password',
     method: 'post',

@@ -144,8 +144,7 @@
     "logoutConfirm": "Are you sure you want to log out?",
     "confirm": "Confirm",
     "cancel": "Cancel"
-  }
-  ,
+  },
   "newNoteViewer": {
     "title": "New Note",
     "form": {

@@ -7,10 +7,22 @@
     "avatar": "/hhyufan.jpg",
     "title": "JavaScript 高级特性学习",
     "description": "深入学习了闭包、原型链和异步编程的核心概念，通过实际项目应用加深理解...",
-    "tags": ["JavaScript", "前端开发", "高级特性"],
+    "tags": [
+      "JavaScript",
+      "前端开发",
+      "高级特性"
+    ],
     "stats": [
-      { "icon": "fas fa-eye", "text": "23", "type": "views" },
-      { "icon": "fas fa-heart", "text": "5", "type": "likes" }
+      {
+        "icon": "fas fa-eye",
+        "text": "23",
+        "type": "views"
+      },
+      {
+        "icon": "fas fa-heart",
+        "text": "5",
+        "type": "likes"
+      }
     ]
   },
   {
@@ -22,9 +34,17 @@
     "avatar": "/hhyufan.jpg",
     "title": "v2025.9.15 学习计划更新",
     "description": "本周学习重点：React Hooks 深入理解与实践应用，包括自定义Hook的设计模式",
-    "tags": ["React", "学习计划", "Hooks"],
+    "tags": [
+      "React",
+      "学习计划",
+      "Hooks"
+    ],
     "stats": [
-      { "icon": "fas fa-list", "text": "75%", "type": "progress" }
+      {
+        "icon": "fas fa-list",
+        "text": "75%",
+        "type": "progress"
+      }
     ]
   }
 ]

@@ -5,7 +5,7 @@
     <aside class="left-sidebar">
       <div class="sidebar-header">
         <h2>{{ sidebarTitle }}</h2>
-        <el-button type="primary" class="new-btn" @click="startNewNote">
+        <el-button class="new-btn" type="primary" @click="startNewNote">
           <IconPlus class="app-icon app-icon--sm app-icon--white app-icon--mr" />
           {{ t('home.newNote') }}
         </el-button>
@@ -14,7 +14,7 @@
       <div class="search-section">
         <div class="search-box">
           <i class="fas fa-search"></i>
-          <input type="text" :placeholder="t('home.searchNotes')" v-model="searchQuery" />
+          <input v-model="searchQuery" :placeholder="t('home.searchNotes')" type="text" />
         </div>
       </div>
 
@@ -31,7 +31,7 @@
     <!-- 中间内容区域 -->
     <section class="main-content">
       <!-- 动态内容 -->
-      <div class="content-header" v-show="!showMarkdown && !showNewNote">
+      <div v-show="!showMarkdown && !showNewNote" class="content-header">
         <h2>{{ t('home.learningActivity') }}</h2>
         <el-button-group class="filter-buttons">
           <el-button
@@ -62,12 +62,12 @@
         <NewNoteViewer @note-created="handleNoteCreated" />
       </div>
 
-      <div class="feed" v-show="!showMarkdown && !showNewNote" v-loading="loading">
+      <div v-show="!showMarkdown && !showNewNote" v-loading="loading" class="feed">
         <div v-if="!loading && filteredFeed.length === 0" class="empty-state">
           <p>{{ t('home.noData') }}</p>
         </div>
         <div class="feed-list">
-          <div class="feed-item" v-for="item in filteredFeed" :key="item.id">
+          <div v-for="item in filteredFeed" :key="item.id" class="feed-item">
             <div class="feed-header-info">
               <img :src="item.avatar" alt="用户头像" class="user-avatar" />
               <div class="user-details">
@@ -102,12 +102,12 @@
     </section>
 
     <!-- 右侧边栏 -->
-    <aside class="right-sidebar" v-show="!showMarkdown && !showNewNote">
+    <aside v-show="!showMarkdown && !showNewNote" class="right-sidebar">
       <div class="sidebar-header">
         <h2>{{ t('home.latestQuestions') }}</h2>
       </div>
       <div class="notes-list">
-        <div class="note-item" v-for="note in recentNotes" :key="note.id">
+        <div v-for="note in recentNotes" :key="note.id" class="note-item">
           <div class="note-header">
             <h4>{{ note.title }}</h4>
             <span class="note-time">{{ note.time }}</span>
@@ -122,7 +122,7 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useI18n } from 'vue-i18n'
@@ -411,7 +411,6 @@ const handleRouteNote = () => {
       // 只有用户名，没有笔记ID，显示用户的主页内容
       showMarkdown.value = false
       selectedTopic.value = ''
-
     }
   }
 }
@@ -421,9 +420,6 @@ const loadData = async () => {
   loading.value = true
   try {
     const [feedResp, recentNotesResp] = await Promise.all([getFeedData(), getRecentNotes()])
-
-
-
 
     // 使用路由参数中的用户名，如果没有则使用当前登录用户
     const routeUsername = route.params.username as string
@@ -444,7 +440,6 @@ const loadData = async () => {
 watch(
   () => route.params,
   (newParams) => {
-
     handleRouteNote()
   },
   { immediate: true },
@@ -484,9 +479,7 @@ const handleNoteCreated = (payload: { id: string; username: string; group: strin
 }
 
 // 方法：处理章节展开折叠
-const handleChapterToggle = (chapterId: string, isExpanded: boolean) => {
-
-}
+const handleChapterToggle = (chapterId: string, isExpanded: boolean) => {}
 // 方法：设置过滤器
 const setFilter = (filter: string) => {
   activeFilter.value = filter

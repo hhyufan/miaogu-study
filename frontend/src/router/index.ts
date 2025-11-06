@@ -52,7 +52,8 @@ const router = createRouter({
 
         // 如果包含笔记ID，检查该用户是否拥有该笔记（静态或动态）
         if (noteId) {
-          const hasStatic = !!(noteData as any)[noteId] && (noteData as any)[noteId].author === username
+          const hasStatic =
+            !!(noteData as any)[noteId] && (noteData as any)[noteId].author === username
           const dyn = notesStore.notes[noteId]
           const hasDynamic = !!(dyn && dyn.username === username)
           if (!hasStatic && !hasDynamic) {

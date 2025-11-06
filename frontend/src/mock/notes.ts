@@ -6,7 +6,7 @@ Mock.mock('/api/notes', 'get', () => {
   return {
     code: 200,
     message: 'success',
-    data: Object.values(noteData)
+    data: Object.values(noteData),
   }
 })
 
@@ -18,7 +18,7 @@ Mock.mock(/\/api\/notes\/user\/\w+/, 'get', (options: any) => {
   return {
     code: 200,
     message: 'success',
-    data: userNotes
+    data: userNotes,
   }
 })
 
@@ -30,7 +30,7 @@ Mock.mock(/\/api\/notes\/tag\/.+/, 'get', (options: any) => {
   return {
     code: 200,
     message: 'success',
-    data: taggedNotes
+    data: taggedNotes,
   }
 })
 
@@ -39,15 +39,17 @@ Mock.mock(/\/api\/notes\/search\/users\?query=.*/, 'get', (options: any) => {
   const url = new URL('http://localhost' + options.url)
   const query = url.searchParams.get('query') || ''
 
-  const uniqueAuthors = [...new Set(Object.values(noteData).map((note: any) => (note as { author: string }).author))]
-  const matchingUsers = uniqueAuthors.filter(author =>
-    author.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 5) // 最多返回5个结果
+  const uniqueAuthors = [
+    ...new Set(Object.values(noteData).map((note: any) => (note as { author: string }).author)),
+  ]
+  const matchingUsers = uniqueAuthors
+    .filter((author) => author.toLowerCase().includes(query.toLowerCase()))
+    .slice(0, 5) // 最多返回5个结果
 
   return {
     code: 200,
     message: 'success',
-    data: matchingUsers
+    data: matchingUsers,
   }
 })
 
@@ -57,14 +59,14 @@ Mock.mock(/\/api\/notes\/search\/tags\?query=.*/, 'get', (options: any) => {
   const query = url.searchParams.get('query') || ''
 
   const allTags = [...new Set(Object.values(noteData).flatMap((note: any) => note.tags))]
-  const matchingTags = allTags.filter(tag =>
-    tag.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 5) // 最多返回5个结果
+  const matchingTags = allTags
+    .filter((tag) => tag.toLowerCase().includes(query.toLowerCase()))
+    .slice(0, 5) // 最多返回5个结果
 
   return {
     code: 200,
     message: 'success',
-    data: matchingTags
+    data: matchingTags,
   }
 })
 

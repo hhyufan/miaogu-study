@@ -5,6 +5,7 @@ ES6（ECMAScript 2015）及后续版本引入了许多强大的新特性，让 J
 ## let 和 const 声明
 
 ### let - 块级作用域变量
+
 ```javascript
 function testLet() {
   if (true) {
@@ -24,6 +25,7 @@ function testVar() {
 ```
 
 ### const - 常量声明
+
 ```javascript
 const PI = 3.14159;
 // PI = 3.14; // TypeError: Assignment to constant variable
@@ -63,6 +65,7 @@ const result = `5 + 3 = ${5 + 3}`; // "5 + 3 = 8"
 ## 解构赋值
 
 ### 数组解构
+
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
@@ -85,6 +88,7 @@ console.log(a, b); // 1 20
 ```
 
 ### 对象解构
+
 ```javascript
 const person = { name: "张三", age: 25, city: "北京" };
 
@@ -191,6 +195,7 @@ class Student extends Person {
 ## 模块导入导出
 
 ### 导出（export）
+
 ```javascript
 // math.js
 export const PI = 3.14159;
@@ -211,6 +216,7 @@ export { subtract };
 ```
 
 ### 导入（import）
+
 ```javascript
 // main.js
 import Calculator, { PI, add, subtract } from './math.js';
@@ -230,6 +236,7 @@ console.log(math.add(2, 3)); // 5
 ## 其他重要特性
 
 ### 展开运算符
+
 ```javascript
 // 数组展开
 const arr1 = [1, 2, 3];
@@ -245,6 +252,7 @@ const max = Math.max(...numbers); // 5
 ```
 
 ### 剩余参数
+
 ```javascript
 function sum(...numbers) {
   return numbers.reduce((total, num) => total + num, 0);
@@ -254,6 +262,7 @@ console.log(sum(1, 2, 3, 4, 5)); // 15
 ```
 
 ### 对象属性简写
+
 ```javascript
 const name = "张三";
 const age = 25;
@@ -278,6 +287,7 @@ const person2 = {
 ```
 
 ### Symbol 类型
+
 ```javascript
 const sym1 = Symbol("description");
 const sym2 = Symbol("description");

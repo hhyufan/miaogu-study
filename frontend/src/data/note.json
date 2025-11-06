@@ -6,7 +6,10 @@
     "authorId": 1,
     "createTime": "2025-01-25",
     "updateTime": "2025-01-25",
-    "tags": ["JavaScript", "基础"],
+    "tags": [
+      "JavaScript",
+      "基础"
+    ],
     "description": "JavaScript中的变量声明和数据类型详解"
   },
   "note2": {
@@ -16,7 +19,10 @@
     "authorId": 1,
     "createTime": "2025-01-26",
     "updateTime": "2025-01-26",
-    "tags": ["JavaScript", "基础"],
+    "tags": [
+      "JavaScript",
+      "基础"
+    ],
     "description": "JavaScript函数定义和作用域概念"
   },
   "note3": {
@@ -26,7 +32,10 @@
     "authorId": 1,
     "createTime": "2025-01-27",
     "updateTime": "2025-01-27",
-    "tags": ["JavaScript", "基础"],
+    "tags": [
+      "JavaScript",
+      "基础"
+    ],
     "description": "JavaScript对象和数组的操作方法"
   },
   "note4": {
@@ -36,7 +45,10 @@
     "authorId": 2,
     "createTime": "2025-01-28",
     "updateTime": "2025-01-28",
-    "tags": ["JavaScript", "异步"],
+    "tags": [
+      "JavaScript",
+      "异步"
+    ],
     "description": "Promise、async/await等异步编程概念"
   },
   "note5": {
@@ -46,7 +58,10 @@
     "authorId": 2,
     "createTime": "2025-01-29",
     "updateTime": "2025-01-29",
-    "tags": ["JavaScript", "ES6+"],
+    "tags": [
+      "JavaScript",
+      "ES6+"
+    ],
     "description": "ES6及以后版本的新特性介绍"
   },
   "note6": {
@@ -56,7 +71,10 @@
     "authorId": 1,
     "createTime": "2025-01-30",
     "updateTime": "2025-01-30",
-    "tags": ["React", "Hooks"],
+    "tags": [
+      "React",
+      "Hooks"
+    ],
     "description": "React Hooks的原理和最佳实践"
   },
   "note7": {
@@ -66,7 +84,10 @@
     "authorId": 1,
     "createTime": "2025-01-31",
     "updateTime": "2025-01-31",
-    "tags": ["React", "状态管理"],
+    "tags": [
+      "React",
+      "状态管理"
+    ],
     "description": "React应用中的状态管理方案"
   },
   "note8": {
@@ -76,7 +97,10 @@
     "authorId": 2,
     "createTime": "2025-02-01",
     "updateTime": "2025-02-01",
-    "tags": ["React", "设计模式"],
+    "tags": [
+      "React",
+      "设计模式"
+    ],
     "description": "React组件的设计模式和最佳实践"
   },
   "note9": {
@@ -86,7 +110,10 @@
     "authorId": 1,
     "createTime": "2025-02-02",
     "updateTime": "2025-02-02",
-    "tags": ["React", "性能"],
+    "tags": [
+      "React",
+      "性能"
+    ],
     "description": "React应用性能优化的方法和技巧"
   },
   "note10": {
@@ -96,7 +123,10 @@
     "authorId": 2,
     "createTime": "2025-02-03",
     "updateTime": "2025-02-03",
-    "tags": ["Vue.js", "Composition API"],
+    "tags": [
+      "Vue.js",
+      "Composition API"
+    ],
     "description": "Vue 3 Composition API的详细解析"
   },
   "note11": {
@@ -106,7 +136,10 @@
     "authorId": 1,
     "createTime": "2025-02-04",
     "updateTime": "2025-02-04",
-    "tags": ["Vue.js", "Router"],
+    "tags": [
+      "Vue.js",
+      "Router"
+    ],
     "description": "Vue Router的使用和配置详解"
   },
   "note12": {
@@ -116,7 +149,10 @@
     "authorId": 2,
     "createTime": "2025-02-05",
     "updateTime": "2025-02-05",
-    "tags": ["Vue.js", "Pinia"],
+    "tags": [
+      "Vue.js",
+      "Pinia"
+    ],
     "description": "Vue 3状态管理库Pinia的使用方法"
   },
   "note13": {
@@ -126,7 +162,10 @@
     "authorId": 1,
     "createTime": "2025-02-06",
     "updateTime": "2025-02-06",
-    "tags": ["Node.js", "后端"],
+    "tags": [
+      "Node.js",
+      "后端"
+    ],
     "description": "Node.js基础知识和核心概念"
   },
   "note14": {
@@ -136,7 +175,10 @@
     "authorId": 2,
     "createTime": "2025-02-07",
     "updateTime": "2025-02-07",
-    "tags": ["数据库", "设计"],
+    "tags": [
+      "数据库",
+      "设计"
+    ],
     "description": "数据库设计原则和最佳实践"
   },
   "note15": {
@@ -146,7 +188,10 @@
     "authorId": 1,
     "createTime": "2025-02-08",
     "updateTime": "2025-02-08",
-    "tags": ["API", "设计"],
+    "tags": [
+      "API",
+      "设计"
+    ],
     "description": "RESTful API设计规范和最佳实践"
   }
 }

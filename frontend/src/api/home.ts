@@ -17,7 +17,7 @@ import type { ApiResponse } from '@/types/api'
 export const getChapters = async (): Promise<ApiResponse<Chapter[]>> =>
   request({
     url: '/api/home/chapters',
-    method: 'get'
+    method: 'get',
   })
 
 /**
@@ -25,9 +25,11 @@ export const getChapters = async (): Promise<ApiResponse<Chapter[]>> =>
  * @param params 搜索参数
  * @returns Promise<ApiResponse<Chapter[]>>
  */
-export const searchChapters = async (params: SearchParams): Promise<ApiResponse<Chapter[]>> => request({
+export const searchChapters = async (params: SearchParams): Promise<ApiResponse<Chapter[]>> =>
+  request({
     url: '/api/home/chapters/search',
-    method: 'get', params
+    method: 'get',
+    params,
   })
 
 /**
@@ -37,7 +39,7 @@ export const searchChapters = async (params: SearchParams): Promise<ApiResponse<
 export const getFeedData = async (): Promise<ApiResponse<FeedItem[]>> =>
   request({
     url: '/api/home/feed',
-    method: 'get'
+    method: 'get',
   })
 
 /**
@@ -51,7 +53,7 @@ export const getFeedDataPaginated = async (
   request({
     url: '/api/home/feed',
     method: 'get',
-    params
+    params,
   })
 
 /**
@@ -61,7 +63,7 @@ export const getFeedDataPaginated = async (
 export const getRecentNotes = async (): Promise<ApiResponse<RecentNote[]>> =>
   request({
     url: '/api/home/recent-notes',
-    method: 'get'
+    method: 'get',
   })
 
 /**
@@ -72,7 +74,7 @@ export const getRecentNotes = async (): Promise<ApiResponse<RecentNote[]>> =>
 export const getChapterById = async (chapterId: string): Promise<Chapter | null> => {
   const chaptersRes = await getChapters()
   const chapters = chaptersRes.data
-  return chapters.find(chapter => chapter.id === chapterId) || null
+  return chapters.find((chapter) => chapter.id === chapterId) || null
 }
 
 /**
@@ -85,7 +87,7 @@ export const getTopicById = async (
 ): Promise<{ chapter: Chapter; topic: Topic } | null> => {
   const chaptersRes = await getChapters()
   for (const chapter of chaptersRes.data) {
-    const topic = chapter.topics.find(t => t.id === topicId)
+    const topic = chapter.topics.find((t) => t.id === topicId)
     if (topic) {
       return { chapter, topic }
     }
@@ -97,11 +99,12 @@ export const getTopicById = async (
  * 获取用户的学习统计数据
  * @returns Promise<{totalNotes: number, totalChapters: number, recentActivity: number}>
  */
-export const getLearningStats = async (): Promise<{totalNotes: number, totalChapters: number, recentActivity: number}> => {
-  const [chaptersRes, feedRes] = await Promise.all([
-    getChapters(),
-    getFeedData()
-  ])
+export const getLearningStats = async (): Promise<{
+  totalNotes: number
+  totalChapters: number
+  recentActivity: number
+}> => {
+  const [chaptersRes, feedRes] = await Promise.all([getChapters(), getFeedData()])
 
   const chapters = chaptersRes.data
   const feedData = feedRes.data
@@ -113,7 +116,7 @@ export const getLearningStats = async (): Promise<{totalNotes: number, totalChap
   return {
     totalNotes,
     totalChapters,
-    recentActivity
+    recentActivity,
   }
 }
 
@@ -126,5 +129,5 @@ export default {
   getRecentNotes,
   getChapterById,
   getTopicById,
-  getLearningStats
+  getLearningStats,
 }

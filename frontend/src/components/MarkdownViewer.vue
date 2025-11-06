@@ -1,7 +1,6 @@
 <template>
   <div
     ref="containerRef"
-    class="markdown-viewer-container"
     :data-theme="themeStore.currentTheme"
     :style="{
       width: '100%',
@@ -10,9 +9,9 @@
       paddingTop: isHeaderVisible ? '40px' : '0px',
       paddingRight: '80px',
       zoom: zoomLevel,
-      overflow: 'auto'
-    }
-"
+      overflow: 'auto',
+    }"
+    class="markdown-viewer-container"
   >
     <div ref="markdownContainerRef">
       <component :is="renderedVnode" />
@@ -21,25 +20,25 @@
     <!-- Back to top button -->
     <el-button
       v-if="showBackToTop && content"
-      type="primary"
-      circle
       :icon="Top"
-      @click="scrollToTop"
       :style="{
         position: 'fixed',
         bottom: '40px',
         right: '20px',
-        zIndex: 1000
+        zIndex: 1000,
       }"
+      circle
+      type="primary"
+      @click="scrollToTop"
     />
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick, h } from 'vue'
+<script lang="ts" setup>
+import { computed, h, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Top, Edit } from '@element-plus/icons-vue'
-import { ElMessage, ElTag, ElButton } from 'element-plus'
+import { Edit, Top } from '@element-plus/icons-vue'
+import { ElButton, ElMessage, ElTag } from 'element-plus'
 import MarkdownIt from 'markdown-it'
 import Prism from 'prismjs'
 // 按需加载常用语言（Vue 用 markup-templating 增强 HTML 即可）
@@ -56,6 +55,9 @@ import { useThemeStore } from '@/stores/theme'
 import { useRoute, useRouter } from 'vue-router'
 import noteData from '@/data/note.json'
 import { useNotesStore } from '@/stores/notes'
+// 动态加载 Prism 主题：One Light / One Dark
+import oneLightUrl from 'prism-themes/themes/prism-one-light.css?url'
+import oneDarkUrl from 'prism-themes/themes/prism-one-dark.css?url'
 
 /* 迁移自 md_react 的设计变量 */
 const FONT_FAMILY = "'Poppins', sans-serif"
@@ -65,9 +67,6 @@ const BORDER_RADIUS_LG = '12px'
 const BORDER_RADIUS_SM = '4px'
 const CODE_BORDER = '1px solid var(--border-color)'
 
-// 动态加载 Prism 主题：One Light / One Dark
-import oneLightUrl from 'prism-themes/themes/prism-one-light.css?url'
-import oneDarkUrl from 'prism-themes/themes/prism-one-dark.css?url'
 interface Props {
   content: string
   fileName?: string
@@ -80,7 +79,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   fileName: '',
   currentFolder: '',
-  isHeaderVisible: true
+  isHeaderVisible: true,
 })
 
 const { t } = useI18n()
@@ -106,7 +105,7 @@ function toDateOnly(value: any): string {
     return `${y}-${m}-${day}`
   }
   // Fallback: 直接截取 ISO 或简单日期字符串
-  return s?.split('T')[0]?.split(' ')[0] ?? '';
+  return s?.split('T')[0]?.split(' ')[0] ?? ''
 }
 // Language display mapping
 const LANGUAGE_DISPLAY_MAP: Record<string, string> = {
@@ -135,7 +134,7 @@ const LANGUAGE_DISPLAY_MAP: Record<string, string> = {
   rust: 'Rust',
   kotlin: 'Kotlin',
   swift: 'Swift',
-  mermaid: 'Mermaid'
+  mermaid: 'Mermaid',
 }
 
 // Process markdown content
@@ -153,16 +152,22 @@ const md = new MarkdownIt({
   highlight: (str: string, lang: string) => {
     try {
       if (lang && Prism.languages[lang]) {
-        return `<pre class="language-${lang}"><code class="language-${lang}">` +
+        return (
+          `<pre class="language-${lang}"><code class="language-${lang}">` +
           Prism.highlight(str, Prism.languages[lang] || Prism.languages.markup, lang) +
           '</code></pre>'
+        )
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       // ignore
     }
-    return `<pre class="language-text"><code>` + str.replace(/[&<>]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[s] as string)) + '</code></pre>'
-  }
+    return (
+      `<pre class="language-text"><code>` +
+      str.replace(/[&<>]/g, (s) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[s] as string) +
+      '</code></pre>'
+    )
+  },
 })
 
 // 完整 tokens -> VNode 渲染器
@@ -176,18 +181,25 @@ function tokens2Vnode(tokens: any[]): any[] {
     if (t.type === 'heading_open') {
       const level = Number(t.tag.slice(1))
       const content = tokens[++i].content
-      vnodes.push(h('h' + level, {
-        style: {
-          fontSize: level === 1 ? '2rem' : level === 2 ? '1.5rem' : '1.25rem',
-          fontWeight: 'bold',
-          margin: '1.2em 0 0.6em',
-          lineHeight: 1.2,
-          fontFamily: FONT_FAMILY,
-          color: isDarkMode.value ? '#f9fafb' : '#111827',
-          borderBottom: level === 1 ? `2px solid ${isDarkMode.value ? '#374151' : '#e5e7eb'}` : 'none',
-          paddingBottom: level === 1 ? '0.5rem' : '0'
-        }
-      }, content))
+      vnodes.push(
+        h(
+          'h' + level,
+          {
+            style: {
+              fontSize: level === 1 ? '2rem' : level === 2 ? '1.5rem' : '1.25rem',
+              fontWeight: 'bold',
+              margin: '1.2em 0 0.6em',
+              lineHeight: 1.2,
+              fontFamily: FONT_FAMILY,
+              color: isDarkMode.value ? '#f9fafb' : '#111827',
+              borderBottom:
+                level === 1 ? `2px solid ${isDarkMode.value ? '#374151' : '#e5e7eb'}` : 'none',
+              paddingBottom: level === 1 ? '0.5rem' : '0',
+            },
+          },
+          content,
+        ),
+      )
       // 在首个 H1 标题下插入笔记元信息（创建时间、标签、编辑按钮）
       if (level === 1 && !insertedMetaUnderH1) {
         const noteId = (route.params.noteId as string) || ''
@@ -198,7 +210,7 @@ function tokens2Vnode(tokens: any[]): any[] {
           if (dyn) {
             meta = {
               createTime: dyn.createTime,
-              tags: Array.isArray(dyn.tags) ? dyn.tags : []
+              tags: Array.isArray(dyn.tags) ? dyn.tags : [],
             }
           } else {
             meta = (noteData as any)[noteId] || null
@@ -215,13 +227,34 @@ function tokens2Vnode(tokens: any[]): any[] {
         const tags = (meta?.tags || []) as string[]
 
         const dateOnly = toDateOnly(meta?.createTime)
-        vnodes.push(h('div', { class: 'note-meta-bar' }, [
-          h('div', { class: 'note-meta-tags' }, [
-            dateOnly ? h(ElTag as any, { size: 'small', type: 'primary' }, () => `创建时间: ${dateOnly}`) : null,
-            ...tags.map(tag => h(ElTag as any, { size: 'small', type: 'primary', key: tag }, () => tag))
-          ].filter(Boolean)),
-          h(ElButton as any, { size: 'small', type: 'primary', text: true, icon: Edit, onClick: onEdit, class: 'note-edit-btn' })
-        ]))
+        vnodes.push(
+          h('div', { class: 'note-meta-bar' }, [
+            h(
+              'div',
+              { class: 'note-meta-tags' },
+              [
+                dateOnly
+                  ? h(
+                      ElTag as any,
+                      { size: 'small', type: 'primary' },
+                      () => `创建时间: ${dateOnly}`,
+                    )
+                  : null,
+                ...tags.map((tag) =>
+                  h(ElTag as any, { size: 'small', type: 'primary', key: tag }, () => tag),
+                ),
+              ].filter(Boolean),
+            ),
+            h(ElButton as any, {
+              size: 'small',
+              type: 'primary',
+              text: true,
+              icon: Edit,
+              onClick: onEdit,
+              class: 'note-edit-btn',
+            }),
+          ]),
+        )
         insertedMetaUnderH1 = true
       }
       i++ // skip heading_close
@@ -234,9 +267,15 @@ function tokens2Vnode(tokens: any[]): any[] {
         children.push(...renderInlineTokens(tokens, i))
         i++
       }
-      vnodes.push(h('p', {
-        style: { lineHeight: 1.8, margin: '1em 0', fontFamily: FONT_FAMILY }
-      }, children))
+      vnodes.push(
+        h(
+          'p',
+          {
+            style: { lineHeight: 1.8, margin: '1em 0', fontFamily: FONT_FAMILY },
+          },
+          children,
+        ),
+      )
       i++ // skip paragraph_close
     }
     // ---- code fence ----
@@ -246,22 +285,34 @@ function tokens2Vnode(tokens: any[]): any[] {
       const highlighted = md.options.highlight!(t.content, lang)
       vnodes.push(
         h('div', { style: { margin: '1.2em 0' } }, [
-          h('div', {
-            style: {
-              position: 'relative',
-              borderRadius: BORDER_RADIUS_LG,
-              overflow: 'hidden'
-            }
-          }, [
-            h('div', {
-              innerHTML: highlighted.replace(/<pre/, `<pre style="border:${CODE_BORDER};border-radius:${BORDER_RADIUS_LG}"`)
-            }),
-            displayLang !== 'Text' && h('button', {
-              class: 'lang-tag',
-              onClick: () => handleCopyToClipboard(t.content)
-            }, displayLang)
-          ])
-        ])
+          h(
+            'div',
+            {
+              style: {
+                position: 'relative',
+                borderRadius: BORDER_RADIUS_LG,
+                overflow: 'hidden',
+              },
+            },
+            [
+              h('div', {
+                innerHTML: highlighted.replace(
+                  /<pre/,
+                  `<pre style="border:${CODE_BORDER};border-radius:${BORDER_RADIUS_LG}"`,
+                ),
+              }),
+              displayLang !== 'Text' &&
+                h(
+                  'button',
+                  {
+                    class: 'lang-tag',
+                    onClick: () => handleCopyToClipboard(t.content),
+                  },
+                  displayLang,
+                ),
+            ],
+          ),
+        ]),
       )
       i++ // skip fence
     }
@@ -277,9 +328,15 @@ function tokens2Vnode(tokens: any[]): any[] {
             children.push(...renderInlineTokens(tokens, i))
             i++
           }
-          items.push(h('li', {
-            style: { lineHeight: 1.8, margin: '0.4em 0', fontFamily: FONT_FAMILY }
-          }, children))
+          items.push(
+            h(
+              'li',
+              {
+                style: { lineHeight: 1.8, margin: '0.4em 0', fontFamily: FONT_FAMILY },
+              },
+              children,
+            ),
+          )
           i++ // skip list_item_close
         } else i++
       }
@@ -298,9 +355,15 @@ function tokens2Vnode(tokens: any[]): any[] {
             children.push(...renderInlineTokens(tokens, i))
             i++
           }
-          items.push(h('li', {
-            style: { lineHeight: 1.8, margin: '0.4em 0', fontFamily: FONT_FAMILY }
-          }, children))
+          items.push(
+            h(
+              'li',
+              {
+                style: { lineHeight: 1.8, margin: '0.4em 0', fontFamily: FONT_FAMILY },
+              },
+              children,
+            ),
+          )
           i++ // skip list_item_close
         } else i++
       }
@@ -323,15 +386,21 @@ function tokens2Vnode(tokens: any[]): any[] {
           i++ // skip paragraph_close
         } else i++
       }
-      vnodes.push(h('blockquote', {
-        style: {
-          borderLeft: `4px solid ${isDarkMode.value ? '#4b5563' : '#d1d5db'}`,
-          paddingLeft: '1em',
-          margin: '1em 0',
-          color: isDarkMode.value ? '#9ca3af' : '#6b7280',
-          fontFamily: FONT_FAMILY
-        }
-      }, children))
+      vnodes.push(
+        h(
+          'blockquote',
+          {
+            style: {
+              borderLeft: `4px solid ${isDarkMode.value ? '#4b5563' : '#d1d5db'}`,
+              paddingLeft: '1em',
+              margin: '1em 0',
+              color: isDarkMode.value ? '#9ca3af' : '#6b7280',
+              fontFamily: FONT_FAMILY,
+            },
+          },
+          children,
+        ),
+      )
       i++ // skip blockquote_close
     }
     // ---- table ----
@@ -354,13 +423,19 @@ function tokens2Vnode(tokens: any[]): any[] {
                     children.push(...renderInlineTokens(tokens, i))
                     i++
                   }
-                  cells.push(h(tag, {
-                    style: {
-                      border: `1px solid ${isDarkMode.value ? '#374151' : '#e5e7eb'}`,
-                      padding: '6px 8px',
-                      fontFamily: FONT_FAMILY
-                    }
-                  }, children))
+                  cells.push(
+                    h(
+                      tag,
+                      {
+                        style: {
+                          border: `1px solid ${isDarkMode.value ? '#374151' : '#e5e7eb'}`,
+                          padding: '6px 8px',
+                          fontFamily: FONT_FAMILY,
+                        },
+                      },
+                      children,
+                    ),
+                  )
                   i++ // skip cell_close
                 } else i++
               }
@@ -371,14 +446,20 @@ function tokens2Vnode(tokens: any[]): any[] {
           i++ // skip thead/tbody close
         } else i++
       }
-      vnodes.push(h('table', {
-        style: {
-          width: '100%',
-          borderCollapse: 'collapse',
-          margin: '1em 0',
-          fontFamily: FONT_FAMILY
-        }
-      }, rows))
+      vnodes.push(
+        h(
+          'table',
+          {
+            style: {
+              width: '100%',
+              borderCollapse: 'collapse',
+              margin: '1em 0',
+              fontFamily: FONT_FAMILY,
+            },
+          },
+          rows,
+        ),
+      )
       i++ // skip table_close
     }
     // ---- mermaid ----
@@ -406,15 +487,21 @@ function renderInlineTokens(tokens: any[], idx: number): any[] {
     const it = inline[j]
     if (it.type === 'text') res.push(it.content)
     else if (it.type === 'code_inline') {
-      res.push(h('code', {
-        style: {
-          background: isDarkMode.value ? '#1f2937' : '#f3f4f6',
-          color: isDarkMode.value ? '#e5e7eb' : '#374151',
-          padding: '2px 4px',
-          borderRadius: BORDER_RADIUS_SM,
-          fontFamily: CODE_FONT_FAMILY
-        }
-      }, it.content))
+      res.push(
+        h(
+          'code',
+          {
+            style: {
+              background: isDarkMode.value ? '#1f2937' : '#f3f4f6',
+              color: isDarkMode.value ? '#e5e7eb' : '#374151',
+              padding: '2px 4px',
+              borderRadius: BORDER_RADIUS_SM,
+              fontFamily: CODE_FONT_FAMILY,
+            },
+          },
+          it.content,
+        ),
+      )
     } else if (it.type === 'strong_open') {
       const txt: string[] = []
       j++
@@ -439,19 +526,27 @@ function renderInlineTokens(tokens: any[], idx: number): any[] {
         txt.push(inline[j].type === 'text' ? inline[j].content : '')
         j++
       }
-      res.push(h('a', {
-        href,
-        onClick: (e: Event) => handleLinkClick(href, e),
-        style: { color: isDarkMode.value ? '#60a5fa' : '#2563eb', textDecoration: 'underline' }
-      }, txt.join('')))
+      res.push(
+        h(
+          'a',
+          {
+            href,
+            onClick: (e: Event) => handleLinkClick(href, e),
+            style: { color: isDarkMode.value ? '#60a5fa' : '#2563eb', textDecoration: 'underline' },
+          },
+          txt.join(''),
+        ),
+      )
     } else if (it.type === 'image') {
       const src = it.attrGet('src') || ''
       const alt = it.attrGet('alt') || ''
-      res.push(h('img', {
-        src,
-        alt,
-        style: { maxWidth: '100%', borderRadius: BORDER_RADIUS_SM }
-      }))
+      res.push(
+        h('img', {
+          src,
+          alt,
+          style: { maxWidth: '100%', borderRadius: BORDER_RADIUS_SM },
+        }),
+      )
     }
   }
   return res
@@ -506,7 +601,7 @@ const handleLinkClick = async (href: string, event: Event) => {
     if (targetElement) {
       targetElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'center'
+        block: 'center',
       })
     }
   } else if (href && props.openFile) {
@@ -528,7 +623,7 @@ const addLanguageLabels = () => {
 
   // Remove existing labels
   const existingLabels = markdownContainerRef.value.querySelectorAll('.lang-tag')
-  existingLabels.forEach(label => label.remove())
+  existingLabels.forEach((label) => label.remove())
 
   // Add new labels
   const codeBlocks = markdownContainerRef.value.querySelectorAll('pre code')
@@ -619,9 +714,12 @@ const applyPrismTheme = (theme: 'light' | 'dark') => {
 }
 
 // Watch for content changes
-watch(() => props.content, () => {
-  processMarkdown()
-})
+watch(
+  () => props.content,
+  () => {
+    processMarkdown()
+  },
+)
 
 // Lifecycle hooks
 onMounted(() => {
@@ -654,13 +752,16 @@ onUnmounted(() => {
 })
 
 // 监听主题变化，动态切换代码高亮主题
-watch(() => themeStore.currentTheme, (theme) => {
-  applyPrismTheme(theme)
-  // 主题切换后重新高亮，以确保样式刷新
-  nextTick(() => {
-    highlightCode()
-  })
-})
+watch(
+  () => themeStore.currentTheme,
+  (theme) => {
+    applyPrismTheme(theme)
+    // 主题切换后重新高亮，以确保样式刷新
+    nextTick(() => {
+      highlightCode()
+    })
+  },
+)
 </script>
 
 <style scoped>
@@ -751,7 +852,10 @@ watch(() => themeStore.currentTheme, (theme) => {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
   z-index: 10;
   /* 浅色模式：淡蓝底、蓝色文字 */
   background: rgba(88, 166, 255, 0.1) !important;
@@ -787,11 +891,11 @@ watch(() => themeStore.currentTheme, (theme) => {
 }
 
 /* Dark mode 下的非块级内联 code 轻微适配，避免与 Prism 冲突 */
-:deep([data-theme="dark"] .markdown-viewer-container) {
+:deep([data-theme='dark'] .markdown-viewer-container) {
   color: #d1d5db;
 }
 
-:deep([data-theme="dark"] code:not(pre code)) {
+:deep([data-theme='dark'] code:not(pre code)) {
   background: #1f2937;
   color: #9ca3af;
 }

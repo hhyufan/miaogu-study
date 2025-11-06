@@ -144,8 +144,7 @@
     "logoutConfirm": "确定要退出登录吗？",
     "confirm": "确定",
     "cancel": "取消"
-  }
-  ,
+  },
   "newNoteViewer": {
     "title": "新建笔记",
     "form": {

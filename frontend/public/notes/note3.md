@@ -5,6 +5,7 @@
 ## 对象（Object）
 
 ### 创建对象
+
 ```javascript
 // 对象字面量
 const person = {
@@ -24,6 +25,7 @@ const obj = Object.create(prototype);
 ```
 
 ### 访问属性
+
 ```javascript
 const person = { name: "张三", age: 25 };
 
@@ -39,6 +41,7 @@ console.log(person[prop]); // "张三"
 ```
 
 ### 对象方法
+
 ```javascript
 const calculator = {
   add: function(a, b) { return a + b; },
@@ -50,6 +53,7 @@ console.log(calculator.add(5, 3)); // 8
 ```
 
 ### 对象解构
+
 ```javascript
 const person = { name: "张三", age: 25, city: "北京" };
 
@@ -69,6 +73,7 @@ console.log(country); // "中国"
 ## 数组（Array）
 
 ### 创建数组
+
 ```javascript
 // 数组字面量
 const fruits = ["苹果", "香蕉", "橙子"];
@@ -84,6 +89,7 @@ const fromString = Array.from("hello"); // ["h", "e", "l", "l", "o"]
 ```
 
 ### 常用数组方法
+
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
@@ -114,6 +120,7 @@ console.log(numbers); // [1, 2, 3, 4, 5]
 ```
 
 ### 数组解构
+
 ```javascript
 const colors = ["红色", "绿色", "蓝色"];
 

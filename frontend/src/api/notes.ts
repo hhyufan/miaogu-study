@@ -14,5 +14,5 @@ export const getNoteContent = async (topicId: string): Promise<string> => {
 }
 
 export default {
-  getNoteContent
+  getNoteContent,
 }

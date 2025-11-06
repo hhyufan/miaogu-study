@@ -1,18 +1,18 @@
 <template>
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    
+  <svg
     :class="['chevron-icon', { 'expanded': expanded }]"
+    viewBox="0 0 24 24"
+
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path 
-      fill="currentColor" 
+    <path
       d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"
+      fill="currentColor"
     />
   </svg>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 interface Props {
   expanded?: boolean
 }

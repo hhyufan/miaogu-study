@@ -36,7 +36,7 @@
 
         <div class="actions">
           <el-button size="large" type="danger" @click="handleLogout">
-<IconSwitchButton class="app-icon app-icon--md" />
+            <IconSwitchButton class="app-icon app-icon--md" />
             {{ t('about.logout') }}
           </el-button>
         </div>

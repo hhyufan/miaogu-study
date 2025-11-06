@@ -2,7 +2,7 @@
   <div class="new-note-viewer-container">
     <h2 class="viewer-title">{{ t('newNoteViewer.title') }}</h2>
 
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="88px" class="new-note-form">
+    <el-form ref="formRef" :model="form" :rules="rules" class="new-note-form" label-width="88px">
       <el-row :gutter="12" class="form-row">
         <el-col :span="10">
           <el-form-item :label="t('newNoteViewer.form.id')" prop="id">
@@ -29,9 +29,9 @@
             <el-select
               v-model="form.selectedGroup"
               :placeholder="t('newNoteViewer.form.groupPlaceholder')"
-              filterable
               allow-create
               default-first-option
+              filterable
               style="width: 100%"
             >
               <el-option v-for="g in availableGroups" :key="g" :label="g" :value="g" />
@@ -42,12 +42,12 @@
           <el-form-item :label="t('newNoteViewer.form.tags')">
             <el-select
               v-model="form.tags"
-              multiple
-              filterable
+              :placeholder="t('newNoteViewer.form.tagsPlaceholder')"
               allow-create
               default-first-option
+              filterable
+              multiple
               style="width: 100%"
-              :placeholder="t('newNoteViewer.form.tagsPlaceholder')"
             >
               <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
             </el-select>
@@ -57,17 +57,17 @@
 
       <el-form-item :label="t('newNoteViewer.form.markdown')" prop="file">
         <el-upload
-          class="upload-area"
-          drag
-          action="#"
-          :multiple="false"
-          :limit="1"
           :auto-upload="false"
+          :before-upload="beforeUpload"
+          :file-list="fileList"
+          :limit="1"
+          :multiple="false"
+          :on-change="handleChange"
           :show-file-list="true"
           accept=".md"
-          :file-list="fileList"
-          :before-upload="beforeUpload"
-          :on-change="handleChange"
+          action="#"
+          class="upload-area"
+          drag
         >
           <IconUploadFilled class="app-icon app-icon--lg" />
           <div class="el-upload__text">
@@ -80,7 +80,7 @@
 
       <div class="actions">
         <el-button type="primary" @click="submit">{{ t('newNoteViewer.actions.save') }}</el-button>
-        <el-button @click="resetForm" :disabled="submitting">{{
+        <el-button :disabled="submitting" @click="resetForm">{{
           t('newNoteViewer.actions.reset')
         }}</el-button>
       </div>
@@ -92,7 +92,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
@@ -102,6 +102,7 @@ import chaptersData from '@/data/chapters.json'
 import noteData from '@/data/note.json'
 import notesIndex from '@/data/notes-index.json'
 import { IconUploadFilled } from '@/components/icons'
+
 const emit = defineEmits<{
   (e: 'note-created', payload: { id: string; username: string; group: string }): void
 }>()

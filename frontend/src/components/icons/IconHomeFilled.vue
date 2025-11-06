@@ -1,8 +1,8 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
     <path
-      fill="currentColor"
       d="M512 128 128 447.936V896h255.936V640H640v256h255.936V447.936z"
+      fill="currentColor"
     ></path>
   </svg>
 </template>
@@ -14,4 +14,4 @@ svg {
   margin-right: 10px;
 }
 </style>
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>

@@ -30,7 +30,7 @@ export default defineConfigWithVueTs(
     ...pluginPlaywright.configs['flat/recommended'],
     files: ['e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
-  
+
   // 全局规则配置
   {
     name: 'app/global-rules',
@@ -38,6 +38,6 @@ export default defineConfigWithVueTs(
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
-  
+
   skipFormatting,
 )

@@ -2,7 +2,7 @@
   <component :is="currentIcon" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 import IconChinese from './IconChinese.vue'
 import IconEnglish from './IconEnglish.vue'
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  currentLanguage: 'zh'
+  currentLanguage: 'zh',
 })
 
 // 根据当前语言显示对应的图标

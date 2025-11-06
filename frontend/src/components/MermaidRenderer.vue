@@ -11,35 +11,35 @@
 
   <div v-else-if="error" class="mermaid-container">
     <el-alert
-      :title="t('mermaid.renderFailed')"
       :description="error"
-      type="error"
       :show-icon="true"
       :style="{
         backgroundColor: isDarkMode ? '#21262d' : '#fff2f0',
         borderColor: isDarkMode ? '#f85149' : '#ffccc7',
-        color: isDarkMode ? '#f85149' : '#ff4d4f'
+        color: isDarkMode ? '#f85149' : '#ff4d4f',
       }"
+      :title="t('mermaid.renderFailed')"
+      type="error"
     />
   </div>
 
   <div
     v-else
-    :class="`mermaid-container ${isDarkMode ? 'dark' : 'light'}`"
     ref="elementRef"
-    v-html="svgContent"
+    :class="`mermaid-container ${isDarkMode ? 'dark' : 'light'}`"
     :style="{
       textAlign: 'center',
       padding: '16px',
       backgroundColor: isDarkMode ? '#0d1117' : '#ffffff',
       borderRadius: '8px',
-      border: `1px solid ${isDarkMode ? '#30363d' : '#e1e4e8'}`
+      border: `1px solid ${isDarkMode ? '#30363d' : '#e1e4e8'}`,
     }"
+    v-html="svgContent"
   />
 </template>
 
-<script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+<script lang="ts" setup>
+import { onMounted, ref, watch } from 'vue'
 import mermaid from 'mermaid'
 import { useI18n } from 'vue-i18n'
 
@@ -49,7 +49,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isDarkMode: false
+  isDarkMode: false,
 })
 
 const { t } = useI18n()
@@ -68,7 +68,7 @@ mermaid.initialize({
   flowchart: {
     useMaxWidth: true,
     htmlLabels: true,
-    curve: 'basis'
+    curve: 'basis',
   },
   sequence: {
     diagramMarginX: 50,
@@ -84,7 +84,7 @@ mermaid.initialize({
     bottomMarginAdj: 1,
     useMaxWidth: true,
     rightAngles: false,
-    showSequenceNumbers: false
+    showSequenceNumbers: false,
   },
   gantt: {
     titleTopMargin: 25,
@@ -93,8 +93,8 @@ mermaid.initialize({
     gridLineStartPadding: 35,
     leftPadding: 75,
     topPadding: 50,
-    rightPadding: 25
-  }
+    rightPadding: 25,
+  },
 })
 
 const renderMermaid = async () => {
@@ -111,7 +111,7 @@ const renderMermaid = async () => {
         theme: props.isDarkMode ? 'dark' : 'default',
         startOnLoad: false,
         securityLevel: 'loose',
-        fontFamily: 'JetBrains Mono, Consolas, Monaco, monospace'
+        fontFamily: 'JetBrains Mono, Consolas, Monaco, monospace',
       })
 
       const id = `mermaid-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`

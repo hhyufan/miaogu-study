@@ -5,6 +5,7 @@
 ## 回调函数（Callback）
 
 ### 基本回调
+
 ```javascript
 function fetchData(callback) {
   setTimeout(() => {
@@ -19,6 +20,7 @@ fetchData((data) => {
 ```
 
 ### 回调地狱
+
 ```javascript
 getData(function(a) {
   getMoreData(a, function(b) {
@@ -34,6 +36,7 @@ getData(function(a) {
 ## Promise
 
 ### 创建 Promise
+
 ```javascript
 const myPromise = new Promise((resolve, reject) => {
   setTimeout(() => {
@@ -48,6 +51,7 @@ const myPromise = new Promise((resolve, reject) => {
 ```
 
 ### 使用 Promise
+
 ```javascript
 myPromise
   .then(result => {
@@ -66,6 +70,7 @@ myPromise
 ```
 
 ### Promise.all
+
 ```javascript
 const promise1 = Promise.resolve(3);
 const promise2 = 42;
@@ -80,6 +85,7 @@ Promise.all([promise1, promise2, promise3])
 ```
 
 ### Promise.race
+
 ```javascript
 const promise1 = new Promise((resolve) => setTimeout(resolve, 500, "一"));
 const promise2 = new Promise((resolve) => setTimeout(resolve, 100, "二"));
@@ -93,6 +99,7 @@ Promise.race([promise1, promise2])
 ## Async/Await
 
 ### 基本用法
+
 ```javascript
 async function fetchUserData() {
   try {
@@ -113,6 +120,7 @@ fetchUserData().then(data => {
 ```
 
 ### 多个异步操作
+
 ```javascript
 async function processMultipleTasks() {
   try {
@@ -158,6 +166,7 @@ console.log("4. 同步代码");
 ## 实际应用示例
 
 ### 模拟 API 调用
+
 ```javascript
 function simulateAPICall(endpoint, delay = 1000) {
   return new Promise((resolve) => {

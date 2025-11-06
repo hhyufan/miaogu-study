@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { RouterView, useRoute } from 'vue-router'
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import AppHeader from './components/AppHeader.vue'
 
 const route = useRoute()
@@ -35,18 +35,18 @@ onUnmounted(() => {
       <RouterView />
     </div>
   </div>
-
 </template>
 
 <style scoped>
 * {
   box-sizing: border-box;
 }
-#app{
+#app {
   width: 100vw;
   height: 100vh;
 }
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100%;

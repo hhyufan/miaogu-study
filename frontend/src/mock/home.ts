@@ -10,27 +10,28 @@ Mock.mock('/api/home/chapters', 'get', (options: any) => {
   // 从请求中获取用户名参数（如果有）
   const url = new URL('http://localhost' + options.url)
   const username = url.searchParams.get('username') || 'admin' // 默认为admin用户
-  
+
   // 根据用户名返回对应的章节数据
-  const userChapters = (chaptersData as any).userChapters[username] || (chaptersData as any).defaultChapters
-  
+  const userChapters =
+    (chaptersData as any).userChapters[username] || (chaptersData as any).defaultChapters
+
   return {
     code: 200,
     message: 'success',
-    data: userChapters
+    data: userChapters,
   }
 })
 
 Mock.mock('/api/home/feed', 'get', {
   code: 200,
   message: 'success',
-  data: feedData
+  data: feedData,
 })
 
 Mock.mock('/api/home/recent-notes', 'get', {
   code: 200,
   message: 'success',
-  data: recentNotesData
+  data: recentNotesData,
 })
 
 // 支持分页的feed数据接口
@@ -51,8 +52,8 @@ Mock.mock(/\/api\/home\/feed\?page=\d+&size=\d+/, 'get', (options: any) => {
       total: feedData.length,
       page,
       size,
-      totalPages: Math.ceil(feedData.length / size)
-    }
+      totalPages: Math.ceil(feedData.length / size),
+    },
   }
 })
 
@@ -62,18 +63,21 @@ Mock.mock(/\/api\/home\/chapters\/search\?keyword=.*/, 'get', (options: any) => 
   const keyword = url.searchParams.get('keyword') || ''
 
   const allChapters = (chaptersData as any).defaultChapters || []
-  const filteredChapters = allChapters.map((chapter: any) => ({
-    ...chapter,
-    topics: chapter.topics.filter((topic: any) =>
-      topic.title.toLowerCase().includes(keyword.toLowerCase()) ||
-      chapter.title.toLowerCase().includes(keyword.toLowerCase())
-    )
-  })).filter((chapter: any) => chapter.topics.length > 0)
+  const filteredChapters = allChapters
+    .map((chapter: any) => ({
+      ...chapter,
+      topics: chapter.topics.filter(
+        (topic: any) =>
+          topic.title.toLowerCase().includes(keyword.toLowerCase()) ||
+          chapter.title.toLowerCase().includes(keyword.toLowerCase()),
+      ),
+    }))
+    .filter((chapter: any) => chapter.topics.length > 0)
 
   return {
     code: 200,
     message: 'success',
-    data: filteredChapters
+    data: filteredChapters,
   }
 })
 
