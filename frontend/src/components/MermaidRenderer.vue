@@ -135,49 +135,55 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-/* Mermaid 渲染器样式 */
+<style lang="scss" scoped>
+// Mermaid 渲染器样式
 .mermaid-container {
   width: 100%;
   overflow-x: auto;
   margin: 16px 0;
   padding: 1em;
+
+  // 暗模式样式
+  &.dark {
+    svg {
+      background-color: transparent;
+    }
+
+    // 节点样式（暗模式）
+    .node {
+      rect,
+      circle,
+      ellipse,
+      polygon {
+        fill: #21262d;
+        stroke: #30363d;
+        stroke-width: 2px;
+      }
+    }
+  }
+
+  // 滚动条样式（WebKit 内核）
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #30363d;
+
+    &:hover {
+      background: #656c76;
+    }
+  }
 }
 
-.mermaid-container.dark svg {
-  background-color: transparent;
-}
-
-/* 节点样式 */
-.mermaid-container.dark .node rect,
-.mermaid-container.dark .node circle,
-.mermaid-container.dark .node ellipse,
-.mermaid-container.dark .node polygon {
-  fill: #21262d;
-  stroke: #30363d;
-  stroke-width: 2px;
-}
-/* 响应式设计 */
+// 响应式设计
 @media (max-width: 768px) {
   .mermaid-container {
     font-size: 12px;
   }
-}
-
-/* 滚动条样式 */
-.mermaid-container::-webkit-scrollbar {
-  height: 8px;
-}
-
-.mermaid-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.mermaid-container::-webkit-scrollbar-thumb {
-  background: #30363d;
-}
-
-.mermaid-container::-webkit-scrollbar-thumb:hover {
-  background: #656c76;
 }
 </style>

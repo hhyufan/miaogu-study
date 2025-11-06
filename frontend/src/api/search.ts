@@ -34,9 +34,3 @@ export const getNoteSuggestions = (
     method: 'get',
     params,
   })
-
-export default {
-  getUserSuggestions,
-  findNoteByUserAndTags,
-  getNoteSuggestions,
-}

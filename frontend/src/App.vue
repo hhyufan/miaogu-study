@@ -37,14 +37,12 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+// 全局基础样式重置
 * {
   box-sizing: border-box;
 }
-#app {
-  width: 100vw;
-  height: 100vh;
-}
+
 body,
 html {
   margin: 0;
@@ -52,76 +50,88 @@ html {
   width: 100%;
 }
 
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
+// 主容器样式
 .main-wrapper {
   width: 100%;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+
+  // 带头部的容器（添加顶部内边距）
+  &.with-header {
+    padding-top: 60px;
+  }
 }
 
-.main-wrapper.with-header {
-  padding-top: 60px;
-}
-
+// 头部样式
 header {
   line-height: 1.5;
   max-height: 100vh;
+
+  .logo {
+    display: block;
+    margin: 0 auto 2rem;
+  }
+
+  // 导航样式
+  nav {
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 2rem;
+
+    a {
+      display: inline-block;
+      padding: 0 1rem;
+      border-left: 1px solid var(--color-border);
+
+      // 第一个导航项取消左边框
+      &:first-of-type {
+        border: 0;
+      }
+
+      // 路由激活状态
+      &.router-link-exact-active {
+        color: var(--color-text);
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
+// 桌面端响应式布局（≥1024px）
 @media (min-width: 1024px) {
   header {
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+    .logo {
+      margin: 0 2rem 0 0;
+    }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+    .wrapper {
+      display: flex;
+      place-items: flex-start;
+      flex-wrap: wrap;
+    }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-    padding: 1rem 0;
-    margin-top: 1rem;
+    nav {
+      text-align: left;
+      margin-left: -1rem;
+      font-size: 1rem;
+      padding: 1rem 0;
+      margin-top: 1rem;
+    }
   }
 }
 </style>

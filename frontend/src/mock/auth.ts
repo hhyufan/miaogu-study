@@ -126,8 +126,9 @@ Mock.mock('/api/auth/refresh', 'post', () => {
 })
 
 // 修改密码接口
-Mock.mock('/api/auth/change-password', 'post', (options: { body: string }) => {
-  const { oldPassword, newPassword } = JSON.parse(options.body)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+Mock.mock('/api/auth/change-password', 'post', (_/*options*/: { body: string }) => {
+  // const { oldPassword, newPassword } = JSON.parse(options.body)
 
   // 简化处理，直接返回成功
   return {
@@ -137,4 +138,4 @@ Mock.mock('/api/auth/change-password', 'post', (options: { body: string }) => {
   }
 })
 
-export default Mock
+export {}

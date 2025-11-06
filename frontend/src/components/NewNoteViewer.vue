@@ -243,8 +243,7 @@ const submit = async () => {
       username: username.value,
       group: form.selectedGroup?.trim(),
     })
-    // 可按需保留表单或清空
-    // resetForm()
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_) {
     // 校验失败或其它错误
@@ -254,95 +253,104 @@ const submit = async () => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+// 复用全局 CSS 变量（无需重复定义，直接引用原主题变量）
 .new-note-viewer-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  .viewer-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+  }
+
+  .new-note-form {
+    padding: 12px;
+    margin: 12px;
+
+    // 输入框与选择框取消背景
+    :deep(.el-input__wrapper),
+    :deep(.el-select .el-input__wrapper) {
+      background-color: transparent !important;
+      box-shadow: none !important;
+      border: 1px solid var(--border-color);
+    }
+
+    // 标签输入框中的标签适配主题并取消背景
+    :deep(.el-select__tags .el-tag) {
+      background-color: transparent;
+      color: var(--home-link-color);
+      border: 1px solid var(--home-link-color);
+      border-radius: 12px;
+    }
+
+    // 单独穿透子选择器，避免嵌套过深
+    :deep(.el-select__tags .el-tag .el-tag__close) {
+      color: var(--home-link-color);
+      background: transparent;
+    }
+  }
+
+  .upload-area {
+    width: 100%;
+
+    .upload-icon {
+      font-size: 28px;
+      color: var(--home-link-color);
+    }
+
+    // 覆盖 Element Plus 拖拽上传样式
+    :deep(.el-upload-dragger) {
+      background: transparent;
+      border: 1px dashed var(--border-color);
+      color: var(--text-secondary);
+
+      &:hover {
+        border-color: var(--home-link-color);
+      }
+    }
+
+    :deep(.el-upload__text) {
+      color: var(--text-secondary);
+
+      em {
+        color: var(--home-link-color);
+      }
+    }
+
+    :deep(.el-upload__tip) {
+      color: var(--text-tertiary);
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    margin-left: 88px;
+  }
+
+  .created-info {
+    margin-top: 6px;
+    font-size: 13px;
+
+    .note-id {
+      font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+        monospace;
+    }
+  }
 }
 
-.viewer-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 4px 0;
-  color: var(--text-primary);
-}
-
-.new-note-form {
-  padding: 12px;
-  margin: 12px;
-}
-
-.upload-area {
-  width: 100%;
-}
-.upload-icon {
-  font-size: 28px;
-  color: var(--home-link-color);
-}
-
-/* 覆盖 Element Plus 拖拽上传样式，适配主题变量 */
-.upload-area :deep(.el-upload-dragger) {
-  background: transparent; /* 取消背景 */
-  border: 1px dashed var(--border-color);
-  color: var(--text-secondary);
-}
-.upload-area :deep(.el-upload-dragger:hover) {
-  border-color: var(--home-link-color);
-}
-.upload-area :deep(.el-upload__text) {
-  color: var(--text-secondary);
-}
-.upload-area :deep(.el-upload__text em) {
-  color: var(--home-link-color);
-}
-.upload-area :deep(.el-upload__tip) {
-  color: var(--text-tertiary);
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
-  /* 与表单项内容区左侧对齐（label-width: 88px） */
-  margin-left: 88px;
-}
-
-.created-info {
-  margin-top: 6px;
-  font-size: 13px;
-}
-.note-id {
-  font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
-}
-
-/* 输入框与选择框取消背景 */
-.new-note-form :deep(.el-input__wrapper),
-.new-note-form :deep(.el-select .el-input__wrapper) {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: 1px solid var(--border-color);
-}
-
-/* 标签输入框中的标签适配主题并取消背景 */
-.new-note-form :deep(.el-select__tags .el-tag) {
-  background-color: transparent;
-  color: var(--home-link-color);
-  border: 1px solid var(--home-link-color);
-  border-radius: 12px;
-}
-.new-note-form :deep(.el-select__tags .el-tag .el-tag__close) {
-  color: var(--home-link-color);
-  background: transparent;
-}
-
-/* 下拉列表弹出层取消背景（全局作用于选择下拉） */
+// 修复：global() 包裹完整选择器，避免嵌套
 :global(.el-select__popper .el-select-dropdown) {
   background-color: transparent;
   border: 1px solid var(--border-color);
 }
+
 :global(.el-select__popper .el-select-dropdown__item) {
   color: var(--text-primary);
 }

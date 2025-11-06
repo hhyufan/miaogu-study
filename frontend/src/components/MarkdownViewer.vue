@@ -764,139 +764,142 @@ watch(
 )
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+// 定义全局主题变量（统一管理颜色，便于维护）
+$light-primary: #58a6ff;
+$dark-primary: #7c3aed;
+$light-tag-bg: rgba($light-primary, 0.1);
+$light-tag-bg-hover: rgba($light-primary, 0.15);
+$light-tag-border: rgba($light-primary, 0.2);
+$dark-tag-bg: rgba($dark-primary, 0.2);
+$dark-tag-bg-hover: rgba($dark-primary, 0.3);
+
 .markdown-viewer-container {
   font-family: 'Poppins', sans-serif;
-}
 
-/* 标题下方的笔记元信息条 */
-.note-meta-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 8px 0 12px 0;
-}
+  // 标题下方的笔记元信息条
+  .note-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0 12px 0;
+  }
 
-.note-meta-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+  .note-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 
-/* 统一 tag 配色，沿用 HomeView 的 content-tags 风格 */
-.note-meta-tags :deep(.el-tag) {
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: 500;
-  border-radius: 12px;
-  border: none;
-  white-space: nowrap;
-  transition: background-color 0.2s;
-}
+    // 统一 tag 配色，沿用 HomeView 的 content-tags 风格
+    :deep(.el-tag) {
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 12px;
+      border: none;
+      white-space: nowrap;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
 
-.note-meta-tags :deep(.el-tag:hover) {
-  cursor: pointer;
-}
+    // 浅色模式 - 淡蓝色半透明背景，蓝色文字
+    :root & :deep(.el-tag--primary) {
+      background: $light-tag-bg;
+      color: $light-primary;
+      border: 1px solid $light-tag-border;
 
-/* 浅色模式 - 淡蓝色半透明背景，蓝色文字 */
-:root .note-meta-tags :deep(.el-tag--primary) {
-  background: rgba(88, 166, 255, 0.1);
-  color: #58a6ff;
-  border: 1px solid rgba(88, 166, 255, 0.2);
-}
+      &:hover {
+        background: $light-tag-bg-hover;
+      }
+    }
 
-:root .note-meta-tags :deep(.el-tag--primary:hover) {
-  background: rgba(88, 166, 255, 0.15);
-}
+    // 深色模式 - 紫色半透明背景，紫色文字
+    [data-theme='dark'] & :deep(.el-tag--primary) {
+      background: $dark-tag-bg;
+      color: $dark-primary;
 
-/* 深色模式 - 紫色半透明背景，紫色文字 */
-[data-theme='dark'] .note-meta-tags :deep(.el-tag--primary) {
-  background: rgba(124, 58, 237, 0.2);
-  color: #7c3aed;
-}
+      &:hover {
+        background: $dark-tag-bg-hover;
+      }
+    }
+  }
 
-[data-theme='dark'] .note-meta-tags :deep(.el-tag--primary:hover) {
-  background: rgba(124, 58, 237, 0.3);
-}
+  // 编辑按钮样式与主题联动
+  .note-edit-btn {
+    padding: 4px;
+    border-radius: 6px;
 
-/* 编辑按钮样式与主题联动 */
-.note-edit-btn {
-  padding: 4px;
-  border-radius: 6px;
-}
+    :deep(.el-icon) {
+      font-size: 20px; // 图标更大
+      transition: color 0.2s ease;
+    }
 
-.note-edit-btn :deep(.el-icon) {
-  font-size: 20px; /* 图标更大 */
-  transition: color 0.2s ease;
-}
+    // 浅色模式 - 蓝色图标
+    :root & :deep(.el-icon) {
+      color: $light-primary;
+    }
 
-/* 浅色模式 - 蓝色图标 */
-:root .note-edit-btn :deep(.el-icon) {
-  color: #58a6ff;
-}
+    // 深色模式 - 紫色图标
+    [data-theme='dark'] & :deep(.el-icon) {
+      color: $dark-primary;
+    }
+  }
 
-/* 深色模式 - 紫色图标 */
-[data-theme='dark'] .note-edit-btn :deep(.el-icon) {
-  color: #7c3aed;
-}
+  // Language tag 样式：与 HomeViewer 的 tag 风格一致（不随主题变化）
+  :deep(.lang-tag) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    border: 1px solid $light-tag-border;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+    z-index: 10;
+    background: $light-tag-bg !important;
+    color: $light-primary !important;
 
-/* Language tag 样式：与 HomeViewer 的 tag 风格一致 */
-:deep(.lang-tag) {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  border: 1px solid rgba(88, 166, 255, 0.2);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-  z-index: 10;
-  /* 浅色模式：淡蓝底、蓝色文字 */
-  background: rgba(88, 166, 255, 0.1) !important;
-  color: #58a6ff !important;
-}
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
 
-/* 语言标签不随主题变化，统一淡蓝色 */
+  // 代码块样式：让 Prism 主题控制背景与前景色，仅保留结构与排版
+  :deep(pre) {
+    position: relative;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Fira Mono', Consolas, Menlo, Courier, monospace;
 
-:deep(.lang-tag:hover) {
-  filter: brightness(1.05);
-}
+    code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+  }
 
-/* 让 Prism 主题控制背景与前景色，这里仅保留结构与排版 */
-:deep(pre) {
-  position: relative;
-  padding: 1rem;
-  border-radius: 8px;
-  overflow-x: auto;
-  margin: 1rem 0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Fira Mono', Consolas, Menlo, Courier, monospace;
-}
+  :deep(code) {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Fira Mono', Consolas, Menlo, Courier, monospace;
+  }
 
-:deep(code) {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Fira Mono', Consolas, Menlo, Courier, monospace;
-}
+  // Dark mode 下的非块级内联 code 轻微适配
+  [data-theme='dark'] & {
+    color: #d1d5db;
 
-:deep(pre code) {
-  background: none;
-  padding: 0;
-  border-radius: 0;
-  color: inherit;
-  font-size: inherit;
-}
-
-/* Dark mode 下的非块级内联 code 轻微适配，避免与 Prism 冲突 */
-:deep([data-theme='dark'] .markdown-viewer-container) {
-  color: #d1d5db;
-}
-
-:deep([data-theme='dark'] code:not(pre code)) {
-  background: #1f2937;
-  color: #9ca3af;
+    code:not(pre code) {
+      background: #1f2937;
+      color: #9ca3af;
+    }
+  }
 }
 </style>

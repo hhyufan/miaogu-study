@@ -56,8 +56,6 @@ Mock.mock('/api/search/notes', 'post', (options: { body: string }) => {
   }
 })
 
-export default Mock
-
 // 笔记建议：根据 user、tags、keyword 返回匹配的笔记列表
 Mock.mock(/\/api\/search\/note_suggestions.*/, 'get', (options: any) => {
   const url = new URL('http://localhost' + options.url)
@@ -111,3 +109,5 @@ Mock.mock(/\/api\/search\/note_suggestions.*/, 'get', (options: any) => {
     data: suggestions,
   }
 })
+
+export {}

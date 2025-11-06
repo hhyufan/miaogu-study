@@ -119,15 +119,3 @@ export const getLearningStats = async (): Promise<{
     recentActivity,
   }
 }
-
-// 导出所有API函数
-export default {
-  getChapters,
-  searchChapters,
-  getFeedData,
-  getFeedDataPaginated,
-  getRecentNotes,
-  getChapterById,
-  getTopicById,
-  getLearningStats,
-}

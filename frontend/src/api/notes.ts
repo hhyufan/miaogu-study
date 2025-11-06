@@ -12,7 +12,3 @@ export const getNoteContent = async (topicId: string): Promise<string> => {
   // axios 响应拦截器已返回 data，这里即为文本内容
   return res as unknown as string
 }
-
-export default {
-  getNoteContent,
-}
