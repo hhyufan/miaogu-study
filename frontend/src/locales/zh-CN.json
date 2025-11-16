@@ -1,0 +1,184 @@
+{
+  "auth": {
+    "welcome": "欢迎回来",
+    "subtitle": "登录您的账户以继续",
+    "login": "登录",
+    "register": "注册",
+    "forgotPassword": "忘记密码",
+    "email": "邮箱",
+    "password": "密码",
+    "username": "用户名",
+    "confirmPassword": "确认密码",
+    "emailPlaceholder": "请输入您的邮箱",
+    "passwordPlaceholder": "请输入您的密码",
+    "usernamePlaceholder": "请输入您的用户名",
+    "confirmPasswordPlaceholder": "请再次输入密码",
+    "rememberMe": "记住我",
+    "loginButton": "登录",
+    "registerButton": "注册",
+    "sendResetEmail": "发送重置邮件",
+    "backToLogin": "返回登录",
+    "or": "或",
+    "githubLogin": "使用 GitHub 登录",
+    "loginWithGithub": "使用 GitHub 登录",
+    "githubAuthNotImplemented": "GitHub 登录功能尚未实现",
+    "noAccount": "还没有账户？",
+    "hasAccount": "已有账户？",
+    "registerNow": "立即注册",
+    "loginNow": "立即登录",
+    "agreeToTerms": "我同意服务条款和隐私政策",
+    "toggleTheme": "切换主题",
+    "toggleLanguage": "切换语言",
+    "emailRequired": "请输入邮箱",
+    "emailInvalid": "请输入有效的邮箱地址",
+    "passwordRequired": "请输入密码",
+    "passwordMinLength": "密码长度至少6位",
+    "usernameRequired": "请输入用户名",
+    "usernameMinLength": "用户名长度至少3位",
+    "usernameLength": "用户名长度应为3-20位",
+    "confirmPasswordRequired": "请确认密码",
+    "passwordMismatch": "两次输入的密码不一致",
+    "passwordLength": "密码长度至少6位",
+    "mustAgreeToTerms": "请同意服务条款和隐私政策",
+    "loginSuccess": "登录成功！",
+    "loginFailed": "登录失败，请检查您的凭据",
+    "registerSuccess": "注册成功！请登录您的账户",
+    "registerFailed": "注册失败，请稍后重试",
+    "resetEmailSent": "重置邮件已发送，请检查您的邮箱",
+    "resetEmailFailed": "发送重置邮件失败，请稍后重试",
+    "passwordStrength": {
+      "none": "请输入密码",
+      "weak": "弱",
+      "fair": "一般",
+      "medium": "中等",
+      "strong": "强",
+      "veryStrong": "很强",
+      "suggestions": {
+        "lowercase": "添加小写字母",
+        "uppercase": "添加大写字母",
+        "symbols": "添加特殊符号"
+      }
+    }
+  },
+  "common": {
+    "searchPlaceholder": "输入 / 进行搜索",
+    "confirm": "提示",
+    "new": "新建",
+    "quiz": "题目",
+    "toggleLanguage": "切换语言",
+    "toggleTheme": "切换主题",
+    "viewProfile": "查看个人资料"
+  },
+  "breadcrumb": {
+    "home": "首页",
+    "auth": "登录",
+    "about": "关于",
+    "profile": "个人资料",
+    "quiz": "题目",
+    "note": "笔记",
+    "notes": "笔记",
+    "user": "用户"
+  },
+  "messages": {
+    "logoutSuccess": "已退出登录",
+    "themeSwitch": {
+      "dark": "已切换到深色主题",
+      "light": "已切换到浅色主题"
+    },
+    "languageSwitch": "语言已切换到 {language}",
+    "searchInfo": "搜索: {query}",
+    "success": {
+      "copiedToClipboard": "已复制到剪贴板"
+    },
+    "error": {
+      "copyFailed": "复制失败",
+      "loadDataFailed": "加载数据失败，请稍后重试",
+      "loadNoteFailed": "加载笔记失败",
+      "noteNotFound": "未找到笔记文件映射：{topicId}",
+      "userNotFound": "用户 \"{username}\" 不存在",
+      "noteNotInUser": "用户 \"{username}\" 下没有笔记 \"{noteId}\"",
+      "noteNotExist": "笔记 \"{noteId}\" 不存在"
+    }
+  },
+  "home": {
+    "myNotes": "我的笔记",
+    "userNotes": "{username} 的笔记",
+    "newNote": "新建",
+    "searchNotes": "搜索笔记...",
+    "learningActivity": "学习动态",
+    "latestQuestions": "最新题目",
+    "filters": {
+      "all": "全部",
+      "latest": "最新",
+      "notes": "笔记"
+    },
+    "actions": {
+      "pinned": "置顶了笔记",
+      "published": "发布了",
+      "updated": "更新了",
+      "created": "创建了"
+    },
+    "stats": {
+      "views": "次查看",
+      "likes": "个赞",
+      "progress": "进度"
+    },
+    "timeAgo": {
+      "yesterday": "昨天",
+      "daysAgo": "天前",
+      "hoursAgo": "小时前",
+      "minutesAgo": "分钟前",
+      "justNow": "刚刚"
+    },
+    "noData": "暂无数据"
+  },
+  "about": {
+    "title": "个人信息",
+    "username": "用户名",
+    "email": "邮箱",
+    "phone": "手机号",
+    "userId": "用户ID",
+    "logout": "退出登录",
+    "noUserInfo": "未找到用户信息",
+    "goToLogin": "去登录",
+    "logoutConfirm": "确定要退出登录吗？",
+    "confirm": "确定",
+    "cancel": "取消"
+  },
+  "newNoteViewer": {
+    "title": "新建笔记",
+    "form": {
+      "id": "ID",
+      "idPlaceholder": "可选，不填将自动生成",
+      "name": "名称",
+      "namePlaceholder": "笔记名称（可选，默认使用导入文件名）",
+      "group": "分组",
+      "groupPlaceholder": "请选择或输入分组",
+      "tags": "标签",
+      "tagsPlaceholder": "可选：选择或输入标签",
+      "markdown": "Markdown"
+    },
+    "upload": {
+      "dragTextPrefix": "将 Markdown 文件拖拽到此处，或",
+      "clickToImport": "点击导入",
+      "tip": "仅支持 .md 文件，大小建议 ≤ 2MB"
+    },
+    "actions": {
+      "save": "保存",
+      "reset": "重置"
+    },
+    "created": {
+      "prefix": "已创建："
+    },
+    "messages": {
+      "mdOnly": "仅支持 Markdown (.md) 文件",
+      "readFail": "读取文件失败，请重试",
+      "uploadRequired": "请导入 Markdown 文件",
+      "saveSuccess": "已保存至前端数据（本地持久化）",
+      "idExists": "笔记ID已存在：{id}，不能新建"
+    },
+    "validation": {
+      "chooseOrEnterGroup": "请选择或输入分组"
+    }
+  }
+}

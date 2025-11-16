@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "phone": "15502441707",
+    "email": "admin@miaogu.com",
+    "password": "123456",
+    "avatar": "/hhyufan.jpg",
+    "createTime": "2025-01-25"
+  },
+  {
+    "id": 2,
+    "username": "user",
+    "phone": "13800138000",
+    "email": "user@example.com",
+    "password": "123456",
+    "avatar": "/hhyufan.jpg",
+    "createTime": "2025-01-25"
+  }
+]

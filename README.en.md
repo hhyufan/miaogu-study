@@ -1,36 +1,94 @@
 # miaogu-study
 
-#### Description
-喵咕学习平台工程文件
+This is a frontend project developed with the Vue 3 framework, supporting TypeScript, internationalization (i18n), mock data services, and theme switching.
 
-#### Software Architecture
-Software architecture description
+## Project Features
+- Built with Vue 3 + TypeScript + Vite
+- Supports internationalization (Chinese and English)
+- Integrated Pinia for state management
+- Supports theme switching (dark/light mode)
+- Uses Vue Router for routing management
+- Integrated mock data service for easier development and testing
+- Supports unit testing (Vitest) and end-to-end testing (Playwright)
 
-#### Installation
+## Recommended Development Environment
+- IDE: VS Code
+- Browser: Latest version of Chrome/Firefox/Edge
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## Project Structure Overview
+- `src/main.ts`: Project entry file
+- `src/router/index.ts`: Routing configuration
+- `src/stores/`: Pinia store modules (counter, user info, theme, language, etc.)
+- `src/components/`: Vue components
+- `src/views/`: Page view components
+- `src/api/`: Encapsulated network requests
+- `src/mock/`: Mock data service
+- `src/i18n/`: Internationalization support
+- `src/assets/`: Static resource files
+- `public/`: Public resources (e.g., images, icons, etc.)
 
-#### Instructions
+## Installation and Running
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### Install Dependencies
+```bash
+npm install
+```
 
-#### Contribution
+### Development Mode (with Hot Module Replacement)
+```bash
+npm run dev
+```
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+### Build Production Version
+```bash
+npm run build
+```
 
+### Start Local Server to Run Production Version
+```bash
+npm run preview
+```
 
-#### Gitee Feature
+## Testing
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+### Unit Tests
+```bash
+npm run test:unit
+```
+
+### End-to-End Tests
+```bash
+npm run test:e2e
+```
+
+#### Common Testing Commands
+- Run all end-to-end tests:
+  ```bash
+  npm run test:e2e
+  ```
+- Run tests only in Chromium browser:
+  ```bash
+  npm run test:e2e:chromium
+  ```
+- Run tests for a specific file:
+  ```bash
+  npm run test:e2e -- -g "filename"
+  ```
+- Run tests in debug mode:
+  ```bash
+  npm run test:e2e:debug
+  ```
+
+### Linting and Formatting
+```bash
+npm run lint
+```
+
+## Other Tools
+- Prettier: Code formatting configuration
+- ESLint: Code style enforcement
+- Vitest: Unit testing framework
+- Playwright: End-to-end testing framework
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

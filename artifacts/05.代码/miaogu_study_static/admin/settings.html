@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - 喵咕学习平台管理后台</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- 顶部导航栏 -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75zM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5z"/>
+                    </svg>
+                </button>
+                <div class="admin-logo">
+                    <span>喵咕管理后台</span>
+                </div>
+            </div>
+            <div class="admin-header-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                    </svg>
+                </button>
+                <div class="admin-user">
+                    <span id="adminUserName">管理员</span>
+                    <button class="logout-btn" onclick="logout()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M2 2.75C2 1.784 2.784 1 3.75 1h2.5a.75.75 0 0 1 0 1.5h-2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h2.5a.75.75 0 0 1 0 1.5h-2.5A1.75 1.75 0 0 1 2 13.25V2.75zm6.56 4.5l1.97-1.97a.75.75 0 0 1 1.06 1.06L10.31 8l1.28 1.28a.75.75 0 1 1-1.06 1.06l-1.97-1.97a.75.75 0 0 1 0-1.06z"/>
+                        <path d="M10.5 8a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5h-3A.75.75 0 0 1 10.5 8z"/>
+                    </svg>
+                    退出
+                </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 侧边导航栏 -->
+        <nav class="admin-sidebar" id="adminSidebar">
+            <ul class="admin-sidebar-nav">
+                <li><a href="dashboard.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/>
+                    </svg>
+                    仪表盘
+                </a></li>
+                <li><a href="users.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                    </svg>
+                    用户管理
+                </a></li>
+                <li><a href="notes.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                    </svg>
+                    笔记管理
+                </a></li>
+                <li><a href="settings.html" class="active">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                    </svg>
+                    系统设置
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- 主内容区域 -->
+        <main class="admin-main">
+            <div class="admin-container">
+                <div class="page-header">
+                    <h1>系统设置</h1>
+                </div>
+
+                <!-- 设置导航标签 -->
+                <div class="settings-tabs">
+                    <button class="tab-btn active" onclick="showTab('general')">基本设置</button>
+                    <button class="tab-btn" onclick="showTab('announcements')">公告管理</button>
+                    <button class="tab-btn" onclick="showTab('security')">安全设置</button>
+                    <button class="tab-btn" onclick="showTab('backup')">备份管理</button>
+                </div>
+
+                <!-- 基本设置 -->
+                <div id="generalTab" class="tab-content active">
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <h3>网站基本信息</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="generalSettingsForm">
+                                <div class="form-group">
+                                    <label for="siteName">网站名称</label>
+                                    <input type="text" id="siteName" value="喵咕学习平台" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="siteDescription">网站描述</label>
+                                    <textarea id="siteDescription" rows="3" required>一个专注于知识分享和学习的平台</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="siteKeywords">关键词</label>
+                                    <input type="text" id="siteKeywords" value="学习,笔记,知识分享,在线教育" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactEmail">联系邮箱</label>
+                                    <input type="email" id="contactEmail" value="admin@miaogu.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxFileSize">最大文件上传大小 (MB)</label>
+                                    <input type="number" id="maxFileSize" value="10" min="1" max="100" required>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableRegistration" checked>
+                                    <label for="enableRegistration">允许用户注册</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableComments" checked>
+                                    <label for="enableComments">启用评论功能</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">保存设置</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 公告管理 -->
+                <div id="announcementsTab" class="tab-content">
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <h3>公告列表</h3>
+                            <button class="btn btn-primary" onclick="showAddAnnouncementModal()">
+                                <span style="font-size: 16px">+</span> 添加公告
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>标题</th>
+                                            <th>类型</th>
+                                            <th>状态</th>
+                                            <th>创建时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="announcementsTableBody">
+                                        <!-- 公告数据将通过JavaScript动态加载 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 安全设置 -->
+                <div id="securityTab" class="tab-content">
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <h3>密码策略</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="securitySettingsForm">
+                                <div class="form-group">
+                                    <label for="minPasswordLength">最小密码长度</label>
+                                    <input type="number" id="minPasswordLength" value="8" min="6" max="20" required>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="requireUppercase" checked>
+                                    <label for="requireUppercase">要求包含大写字母</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="requireNumbers" checked>
+                                    <label for="requireNumbers">要求包含数字</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="requireSpecialChars">
+                                    <label for="requireSpecialChars">要求包含特殊字符</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sessionTimeout">会话超时时间 (分钟)</label>
+                                    <input type="number" id="sessionTimeout" value="30" min="5" max="480" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxLoginAttempts">最大登录尝试次数</label>
+                                    <input type="number" id="maxLoginAttempts" value="5" min="3" max="10" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">保存安全设置</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <h3>管理员密码修改</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="changePasswordForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">当前密码</label>
+                                    <input type="password" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">新密码</label>
+                                    <input type="password" id="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">确认新密码</label>
+                                    <input type="password" id="confirmPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">修改密码</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 备份管理 -->
+                <div id="backupTab" class="tab-content">
+                    <div class="admin-card">
+                        <div class="card-header">
+                            <h3>数据备份</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="backup-actions">
+                                <button class="btn btn-primary" onclick="createBackup()">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg>
+                                    创建备份
+                                </button>
+                                <button class="btn btn-success" onclick="showRestoreModal()">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                    </svg>
+                                    恢复备份
+                                </button>
+                            </div>
+
+                            <div class="backup-list">
+                                <h4>备份历史</h4>
+                                <div class="table-container">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>备份文件</th>
+                                                <th>大小</th>
+                                                <th>创建时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="backupTableBody">
+                                            <!-- 备份数据将通过JavaScript动态加载 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 添加公告模态框 -->
+    <div id="announcementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="announcementModalTitle">添加公告</h3>
+                <button class="modal-close" onclick="closeAnnouncementModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="announcementForm">
+                    <div class="form-group">
+                        <label for="announcementTitle">公告标题</label>
+                        <input type="text" id="announcementTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="announcementType">公告类型</label>
+                        <select id="announcementType" required>
+                            <option value="info">信息</option>
+                            <option value="warning">警告</option>
+                            <option value="success">成功</option>
+                            <option value="error">错误</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="announcementContent">公告内容</label>
+                        <textarea id="announcementContent" rows="5" required></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="announcementActive" checked>
+                        <label for="announcementActive">立即发布</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="saveAnnouncement()">保存</button>
+                <button class="btn" onclick="closeAnnouncementModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 恢复备份模态框 -->
+    <div id="restoreModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>恢复备份</h3>
+                <button class="modal-close" onclick="closeRestoreModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="backupFile">选择备份文件</label>
+                    <input type="file" id="backupFile" accept=".sql,.zip">
+                </div>
+                <div class="warning-message">
+                    <strong>警告：</strong>恢复备份将覆盖当前所有数据，此操作不可逆！
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="restoreBackup()">确认恢复</button>
+                <button class="btn" onclick="closeRestoreModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin-settings.js"></script>
+</body>
+</html>

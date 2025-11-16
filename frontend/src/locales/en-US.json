@@ -1,0 +1,184 @@
+{
+  "auth": {
+    "welcome": "Welcome Back",
+    "subtitle": "Sign in to your account to continue",
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "confirmPassword": "Confirm Password",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "usernamePlaceholder": "Enter your username",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "rememberMe": "Remember me",
+    "loginButton": "Sign In",
+    "registerButton": "Sign Up",
+    "sendResetEmail": "Send Reset Email",
+    "backToLogin": "Back to Login",
+    "or": "or",
+    "githubLogin": "Sign in with GitHub",
+    "loginWithGithub": "Sign in with GitHub",
+    "githubAuthNotImplemented": "GitHub authentication not implemented yet",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "registerNow": "Sign up now",
+    "loginNow": "Sign in now",
+    "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
+    "toggleTheme": "Toggle Theme",
+    "toggleLanguage": "Toggle Language",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "usernameRequired": "Username is required",
+    "usernameMinLength": "Username must be at least 3 characters",
+    "usernameLength": "Username must be 3-20 characters long",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordLength": "Password must be at least 6 characters",
+    "mustAgreeToTerms": "You must agree to the Terms of Service and Privacy Policy",
+    "loginSuccess": "Login successful!",
+    "loginFailed": "Login failed. Please check your credentials",
+    "registerSuccess": "Registration successful! Please sign in to your account",
+    "registerFailed": "Registration failed. Please try again later",
+    "resetEmailSent": "Reset email sent. Please check your inbox",
+    "resetEmailFailed": "Failed to send reset email. Please try again later",
+    "passwordStrength": {
+      "none": "Enter a password",
+      "weak": "Weak",
+      "fair": "Fair",
+      "medium": "Medium",
+      "strong": "Strong",
+      "veryStrong": "Very Strong",
+      "suggestions": {
+        "lowercase": "Add lowercase letters",
+        "uppercase": "Add uppercase letters",
+        "symbols": "Add symbols"
+      }
+    }
+  },
+  "common": {
+    "searchPlaceholder": "Type / to search",
+    "confirm": "Confirm",
+    "new": "New",
+    "quiz": "Quiz",
+    "toggleLanguage": "Toggle Language",
+    "toggleTheme": "Toggle Theme",
+    "viewProfile": "View Profile"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "auth": "Login",
+    "about": "About",
+    "profile": "Profile",
+    "quiz": "Quiz",
+    "note": "Note",
+    "notes": "Notes",
+    "user": "User"
+  },
+  "messages": {
+    "logoutSuccess": "Logged out successfully",
+    "themeSwitch": {
+      "dark": "Switched to dark theme",
+      "light": "Switched to light theme"
+    },
+    "languageSwitch": "Language switched to {language}",
+    "searchInfo": "Search: {query}",
+    "success": {
+      "copiedToClipboard": "Copied to clipboard"
+    },
+    "error": {
+      "copyFailed": "Copy failed",
+      "loadDataFailed": "Failed to load data, please try again later",
+      "loadNoteFailed": "Failed to load note",
+      "noteNotFound": "Note file mapping not found: {topicId}",
+      "userNotFound": "User \"{username}\" does not exist",
+      "noteNotInUser": "User \"{username}\" does not have note \"{noteId}\"",
+      "noteNotExist": "Note \"{noteId}\" does not exist"
+    }
+  },
+  "home": {
+    "myNotes": "My Notes",
+    "userNotes": "{username}'s Notes",
+    "newNote": "New",
+    "searchNotes": "Search notes...",
+    "learningActivity": "Learning Activity",
+    "latestQuestions": "Latest Questions",
+    "filters": {
+      "all": "All",
+      "latest": "Latest",
+      "notes": "Notes"
+    },
+    "actions": {
+      "pinned": "pinned note",
+      "published": "published",
+      "updated": "updated",
+      "created": "created"
+    },
+    "stats": {
+      "views": "views",
+      "likes": "likes",
+      "progress": "progress"
+    },
+    "timeAgo": {
+      "yesterday": "yesterday",
+      "daysAgo": "days ago",
+      "hoursAgo": "hours ago",
+      "minutesAgo": "minutes ago",
+      "justNow": "just now"
+    },
+    "noData": "No data available"
+  },
+  "about": {
+    "title": "Personal Information",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "userId": "User ID",
+    "logout": "Logout",
+    "noUserInfo": "No user information found",
+    "goToLogin": "Go to Login",
+    "logoutConfirm": "Are you sure you want to log out?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "newNoteViewer": {
+    "title": "New Note",
+    "form": {
+      "id": "ID",
+      "idPlaceholder": "Optional, auto-generated if empty",
+      "name": "Name",
+      "namePlaceholder": "Note name (optional, defaults to imported filename)",
+      "group": "Group",
+      "groupPlaceholder": "Select or enter a group",
+      "tags": "Tags",
+      "tagsPlaceholder": "Optional: select or enter tags",
+      "markdown": "Markdown"
+    },
+    "upload": {
+      "dragTextPrefix": "Drag Markdown file here, or",
+      "clickToImport": "click to import",
+      "tip": "Only .md supported, size ≤ 2MB"
+    },
+    "actions": {
+      "save": "Save",
+      "reset": "Reset"
+    },
+    "created": {
+      "prefix": "Created: "
+    },
+    "messages": {
+      "mdOnly": "Only Markdown (.md) files are supported",
+      "readFail": "Failed to read file, please retry",
+      "uploadRequired": "Please import a Markdown file",
+      "saveSuccess": "Saved to local persistent data",
+      "idExists": "Note ID already exists: {id}. Cannot create"
+    },
+    "validation": {
+      "chooseOrEnterGroup": "Please select or enter a group"
+    }
+  }
+}

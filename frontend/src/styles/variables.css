@@ -1,0 +1,237 @@
+/* CSS变量定义 - 浅色主题 */
+:root {
+  /* 背景色 */
+  --page-bg: #f5f7fa;
+  --card-bg: #ffffff;
+  --header-bg: #f0f2f5; /* AppHeader专用背景，比page-bg更深 */
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #fafafa;
+
+  /* 文字颜色 */
+  --text-primary: #262626;
+  --text-secondary: #595959;
+  --text-tertiary: #8c8c8c;
+
+  /* 边框颜色 */
+  --border-color: #d9d9d9;
+  --border-light: #f0f0f0;
+
+  /* 阴影 */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* 主色调 */
+  --primary-color: #409eff;
+  --primary-hover: #66b1ff;
+  --primary-active: #3a8ee6;
+
+  /* 状态颜色 */
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --error-color: #f56c6c;
+
+  /* 输入框 */
+  --input-bg: #ffffff;
+  --input-border: #dcdfe6;
+  --input-autofill-bg: #f0f9ff; /* 自动填充专用背景色，浅蓝色 */
+
+  /* 图标颜色 */
+  --icon-color: #24292f;
+
+  /* HomeViewer 特有颜色 */
+  --home-main-bg: var(--page-bg); /* 主容器背景 */
+  --home-feed-bg: var(--card-bg); /* Feed项目背景 */
+  --home-feed-content-bg: var(--bg-secondary); /* Feed内容背景 */
+  --home-feed-header-bg: var(--card-bg); /* Feed头部背景 */
+  --home-accent-color: var(--primary-color); /* 强调色 */
+  --home-link-color: var(--primary-color); /* 链接颜色 */
+  --home-hover-bg: rgba(112, 105, 105, 0.05); /* 悬停背景 */
+  --home-hover-border: var(--primary-color); /* 悬停边框 */
+
+  /* Element Plus 主题变量覆盖 */
+  --el-color-primary: var(--primary-color);
+  --el-color-primary-light-3: var(--primary-hover);
+  --el-color-primary-dark-2: var(--primary-active);
+  /* 主色浅9阶（用于部分组件的active高亮），浅色沿用默认偏浅蓝 */
+  --el-color-primary-light-9: #ecf5ff;
+  --el-bg-color: var(--card-bg);
+  --el-bg-color-page: var(--page-bg);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-tertiary);
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-light);
+  --el-box-shadow: 0 8px 32px var(--shadow-color);
+  /* 弹出层背景（下拉、气泡等） */
+  --el-bg-color-overlay: var(--card-bg);
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  /* 背景色 */
+  --page-bg: #0d1117; /* 使用HomeViewer的黑色背景 */
+  --card-bg: #161b22; /* 更深的卡片背景 */
+  --header-bg: #050608; /* AppHeader专用背景，比HomeViewer更深 */
+
+  --bg-secondary: #21262d; /* 次要背景色 */
+  --bg-tertiary: #171b22; /* 第三级背景色，用于内容区域 */
+
+  /* 文字颜色 */
+  --text-primary: #e6edf3; /* HomeViewer的主要文字颜色 */
+  --text-secondary: #8b949e; /* HomeViewer的次要文字颜色 */
+  --text-tertiary: #7d8590; /* HomeViewer的第三级文字颜色 */
+
+  /* 边框颜色 */
+  --border-color: #30363d; /* HomeViewer的边框颜色 */
+  --border-light: #21262d; /* HomeViewer的浅色边框 */
+
+  /* 阴影 */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+
+  /* 主色调 */
+  --primary-color: #409eff;
+  --primary-hover: #66b1ff;
+  --primary-active: #3a8ee6;
+
+  /* 状态颜色 */
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --error-color: #f56c6c;
+
+  /* 输入框 */
+  --input-bg: #262626;
+  --input-border: #434343;
+  --input-autofill-bg: #1a1a1a; /* 自动填充专用背景色，比普通输入框更深 */
+
+  /* 图标颜色 */
+  --icon-color: #e6edf3;
+
+  /* HomeViewer 特有颜色 */
+  --home-main-bg: #0d1117; /* 主容器背景 */
+  --home-feed-bg: #0d1117; /* Feed项目背景 */
+  --home-feed-content-bg: #141921; /* Feed内容背景 */
+  --home-feed-header-bg: #0d1117; /* Feed头部背景 */
+  --home-accent-color: #7c3aed; /* 强调色（紫色） */
+  --home-link-color: #58a6ff; /* 链接颜色 */
+  --home-hover-bg: rgba(35, 28, 28, 0.05); /* 悬停背景 */
+  --home-hover-border: rgba(124, 58, 237, 0.4); /* 悬停边框 */
+
+  /* Element Plus 深色主题变量覆盖 */
+  --el-fill-color-blank: var(--card-bg);
+  --el-fill-color-light: var(--bg-secondary);
+  --el-fill-color: var(--bg-tertiary);
+  /* 主色浅9阶（用于部分组件的active高亮），深色改为暗色背景以避免白底 */
+  --el-color-primary-light-9: var(--bg-secondary);
+  /* 弹出层背景（下拉、气泡等） */
+  --el-bg-color-overlay: var(--card-bg);
+
+  /* 滚动条变量 */
+  --scrollbar-track: var(--bg-secondary);
+  --scrollbar-thumb: var(--text-tertiary);
+  --scrollbar-thumb-hover: var(--text-secondary);
+  --scrollbar-width: 6px;
+  --scrollbar-border-radius: 3px;
+}
+
+/* 主题切换动画 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 全局样式重置 */
+body {
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* 修复浏览器自动填充样式 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--input-autofill-bg) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Element Plus Select & Tag 主题适配（全局） */
+/* 下拉弹层（Popper）透明背景 + 主题边框与文字 */
+.el-select__popper .el-select-dropdown {
+  background-color: transparent !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.el-select__popper .el-select-dropdown__item {
+  color: var(--text-primary) !important;
+}
+
+.el-select__popper .el-select-dropdown__item.is-selected {
+  color: var(--home-link-color) !important;
+}
+
+.el-select__wrapper {
+  background-color: transparent !important;
+}
+
+/* 输入框与选择框透明背景（全局） */
+.el-select .el-input__wrapper,
+.el-input .el-input__wrapper {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 选择框中的标签（chips）随主题变色 + 取消背景 */
+.el-select .el-tag {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-radius: 6px !important;
+}
+
+.el-select .el-tag .el-tag__close {
+  color: var(--text-primary) !important;
+  background: var(--card-bg) !important;
+}
+
+/* el-select 内部输入框与选区（selection）主题适配 */
+.el-select__input {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  caret-color: var(--home-link-color);
+}
+
+.el-select__input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+.el-select__selection {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+
+.el-select .el-input__wrapper.is-focus,
+.el-select .el-input__wrapper:hover {
+  border-color: var(--home-link-color) !important;
+}
+
+.el-select__tags {
+  gap: 6px;
+}
+
+/* Element Plus 输入框自动填充样式修复 */
+.el-input__inner:-webkit-autofill,
+.el-input__inner:-webkit-autofill:hover,
+.el-input__inner:-webkit-autofill:focus,
+.el-input__inner:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--input-autofill-bg) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}

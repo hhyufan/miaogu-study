@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喵咕学习平台</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/quiz-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span class="current-location">Home</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Type / to search" class="search-input">
+                </div>
+                <div class="button-group">
+                    <div class="action-buttons">
+                        <button class="header-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="header-btn language-toggle" title="切换语言">
+                            <i class="fas fa-language"></i>
+                        </button>
+                        <button class="header-btn theme-toggle" title="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <!-- <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                        </button> -->
+                        <button class="header-btn" title="题目" onclick="window.location.href='pages/quiz.html'">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                    </div>
+                    <div class="user-avatar" onclick="window.location.href='pages/profile.html'" title="查看个人资料">
+                        <img src="assets/hhyufan.jpg" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-container">
+        <!-- 左侧边栏 - 我的笔记 -->
+        <aside class="left-sidebar">
+            <div class="sidebar-header">
+                <h2>我的笔记</h2>
+                <button class="new-btn">
+                    <i class="fas fa-plus"></i>
+                    新建
+                </button>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索笔记...">
+                </div>
+            </div>
+
+            <div class="chapter-list">
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter1')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter1"></i>
+                        <span>JavaScript 基础</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter1">
+                        <div class="topic-item" onclick="showNoteDetail('note1')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>变量与数据类型.md</span>
+                        </div>
+                        <div class="topic-item" onclick="showNoteDetail('note2')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>函数与作用域.md</span>
+                        </div>
+                        <div class="topic-item" onclick="showNoteDetail('note3')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>对象与数组.md</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter2')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter2"></i>
+                        <span>React 进阶</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter2">
+                        <div class="topic-item" onclick="showNoteDetail('note4')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Hooks 深入理解.md</span>
+                        </div>
+                        <div class="topic-item" onclick="showNoteDetail('note5')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>状态管理最佳实践.md</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter3')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter3"></i>
+                        <span>算法与数据结构</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter3">
+                        <div class="topic-item" onclick="showNoteDetail('note6')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>排序算法总结.md</span>
+                        </div>
+                        <div class="topic-item" onclick="showNoteDetail('note7')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>二叉树遍历.md</span>
+                        </div>
+                        <div class="topic-item" onclick="showNoteDetail('note8')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>动态规划入门.md</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 中间内容区域 -->
+        <section class="main-content">
+            <!-- 动态内容 -->
+            <div class="content-header">
+                <h2>学习动态</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">全部</button>
+                    <button class="filter-btn">最新</button>
+                    <button class="filter-btn">笔记</button>
+                </div>
+            </div>
+
+            <div class="feed">
+                <div class="feed-item">
+                    <div class="feed-header-info">
+                        <img src="assets/hhyufan.jpg" alt="用户头像" class="user-avatar">
+                        <div class="user-details">
+                            <div class="first-line">
+                                <span class="username">hhyufan</span>
+                                <span class="action">置顶了笔记</span>
+                            </div>
+                            <span class="time">昨天</span>
+                        </div>
+                    </div>
+                    <div class="feed-content">
+                        <div class="content-title">
+                            <h4>JavaScript 高级特性学习</h4>
+                        </div>
+                        <div class="content-description">
+                            <p>深入学习了闭包、原型链和异步编程的核心概念...</p>
+                            <div class="content-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">前端开发</span>
+                                <span class="tag">高级特性</span>
+                            </div>
+                            <div class="feed-stats">
+                                <span><i class="fas fa-eye"></i> 23 次查看</span>
+                                <span><i class="fas fa-heart"></i> 5 个赞</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="feed-header-info">
+                        <img src="assets/hhyufan.jpg" alt="用户头像" class="user-avatar">
+                        <div class="user-details">
+                            <div class="first-line">
+                                <span class="username">学习小助手</span>
+                                <span class="action">发布了</span>
+                            </div>
+                            <span class="time">3天前</span>
+                        </div>
+                    </div>
+                    <div class="feed-content">
+                        <div class="content-title">
+                            <h4>v2025.9.15 学习计划更新</h4>
+                        </div>
+                        <div class="content-description">
+                            <p>本周学习重点：React Hooks 深入理解与实践应用</p>
+                            <div class="content-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">学习计划</span>
+                                <span class="tag">Hooks</span>
+                            </div>
+                            <div class="feed-stats">
+                                <span><i class="fas fa-tasks"></i> 进度 75%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+            <div class="sidebar-header">
+                <h2>最新题目</h2>
+            </div>
+            <div class="notes-list">
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>分享只读 Sparks 与受控数据...</h4>
+                        <span class="note-time">8小时前</span>
+                    </div>
+                    <p class="note-preview">关于数据控制和共享机制的深入探讨...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">数据</span>
+                    </div>
+                </div>
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>委托绕过控制推送保护现在...</h4>
+                        <span class="note-time">昨天</span>
+                    </div>
+                    <p class="note-preview">安全机制和权限控制的相关内容...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">安全</span>
+                    </div>
+                </div>
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>Conda 生态系统支持依赖机器人现在...</h4>
+                        <span class="note-time">昨天</span>
+                    </div>
+                    <p class="note-preview">包管理和依赖处理的最新进展...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">工具</span>
+                    </div>
+                </div>
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>Anthropic Claude Opus 4.1 现在在公共...</h4>
+                        <span class="note-time">昨天</span>
+                    </div>
+                    <p class="note-preview">AI模型的最新更新和功能介绍...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">AI</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- 独立的Markdown显示区域 -->
+    <div class="markdown-viewer" id="markdownViewer" style="display: none;">
+        <div class="markdown-container">
+            <!-- Markdown内容将在这里动态插入 -->
+        </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>导航菜单</h3>
+                <button class="sidebar-close" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link active">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </a>
+                <a href="pages/quiz.html" class="sidebar-link">
+                    <i class="fas fa-question-circle"></i>
+                    <span>题目页面</span>
+                </a>
+                <a href="pages/friendship.html" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>好友页面</span>
+                </a>
+                <a href="pages/profile.html" class="sidebar-link">
+                    <i class="fas fa-user"></i>
+                    <span>个人信息</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // 侧边栏功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+        
+        // 点击侧边栏外部区域关闭侧边栏
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+<script src="js/script.js"></script>
+    <script>
+        // 检查登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                // 未登录，跳转到登录页面
+                window.location.href = 'pages/PlatForm.html';
+            }
+        });
+    </script>
+
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资料 - 喵咕学习平台</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/profile-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span class="current-location">Profile</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Type / to search" class="search-input">
+                </div>
+                <div class="button-group">
+                    <div class="action-buttons">
+                        <button class="header-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="header-btn language-toggle" title="切换语言">
+                            <i class="fas fa-language"></i>
+                        </button>
+                        <button class="header-btn theme-toggle" title="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <!-- <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                        </button> -->
+                        <button class="header-btn" title="题目" onclick="window.location.href='../pages/quiz.html'">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="header-btn" title="首页" onclick="window.location.href='../index.html'">
+                            <i class="fas fa-home"></i>
+                        </button>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="../assets/hhyufan.jpg" alt="用户头像">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-container">
+        <!-- 左侧个人信息卡片 -->
+        <div class="profile-sidebar">
+            <div class="profile-card">
+                <!-- 头像 -->
+                <div class="avatar-container">
+                    <img src="../assets/hhyufan.jpg" alt="用户头像" class="profile-avatar">
+                    <div class="avatar-status"></div>
+                </div>
+
+                <!-- 基本信息 -->
+                <div class="profile-info">
+                    <h1 class="profile-name">hhyufan</h1>
+                    <p class="profile-username">@miaogu_learner</p>
+                    <p class="profile-bio">
+                        🎓 热爱学习的程序员 | 📚 知识分享者 | 🚀 持续成长中
+                    </p>
+                </div>
+
+                <!-- 详细信息 -->
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <svg class="detail-icon" viewBox="0 0 16 16" width="16" height="16">
+                            <path
+                                d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.07v.001zm-4.536 8.535L8 13l1-1.001a3.5 3.5 0 100-4.95A3.5 3.5 0 007 12.001z">
+                            </path>
+                        </svg>
+                        <span>北京, 中国</span>
+                    </div>
+                    <div class="detail-item">
+                        <svg class="detail-icon" viewBox="0 0 16 16" width="16" height="16">
+                            <path
+                                d="M8 9a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 100-4 2 2 0 000 4zm5.25 4.75a.75.75 0 00-1.5 0c0 .69-.56 1.25-1.25 1.25H5.5c-.69 0-1.25-.56-1.25-1.25a.75.75 0 00-1.5 0c0 1.52 1.23 2.75 2.75 2.75h5c1.52 0 2.75-1.23 2.75-2.75z">
+                            </path>
+                        </svg>
+                        <span>学生</span>
+                    </div>
+                    <div class="detail-item">
+                        <svg class="detail-icon" viewBox="0 0 16 16" width="16" height="16">
+                            <path
+                                d="M1.75 2A1.75 1.75 0 000 3.75v8.5C0 13.216.784 14 1.75 14h12.5A1.75 1.75 0 0016 12.25v-8.5A1.75 1.75 0 0014.25 2H1.75zM14.5 4.07v-.32a.25.25 0 00-.25-.25H1.75a.25.25 0 00-.25.25v.32L8 7.88l6.5-3.81zm-13 1.74v6.44c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.81L8.38 9.397a.75.75 0 01-.76 0L1.5 5.81z">
+                            </path>
+                        </svg>
+                        <a href="mailto:miaogu@example.com">miaogu@example.com</a>
+                    </div>
+                    <div class="detail-item">
+                        <svg class="detail-icon" viewBox="0 0 16 16" width="16" height="16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                            </path>
+                        </svg>
+                        <a href="https://github.com/miaogu" target="_blank">GitHub</a>
+                    </div>
+                </div>
+
+                <!-- 统计数据 -->
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">42</span>
+                        <span class="stat-label">学习天数</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">128</span>
+                        <span class="stat-label">笔记数量</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">完成项目</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧主要内容 -->
+        <div class="profile-main">
+            <!-- 个人介绍 -->
+            <div class="bio-section">
+                <div class="section-header">
+                    <h2 class="section-title">个人介绍</h2>
+                    <button id="edit-bio-btn" class="edit-bio-btn" title="编辑个人介绍">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Markdown内容显示区域 -->
+                <div class="bio-display" id="bio-display">
+                    <div class="markdown-content" id="markdown-content">
+                        <h2>👋 你好，我是 hhyufan</h2>
+                        <p>一名热爱编程的开发者，专注于桌面应用开发和用户体验设计。</p>
+                        <h3>🔧 技术栈</h3>
+                        <ul>
+                            <li><strong>桌面开发</strong>：Rainmeter 皮肤开发，系统组件定制</li>
+                            <li><strong>前端技术</strong>：HTML、CSS、JavaScript</li>
+                            <li><strong>编程语言</strong>：Python、Java、C/C++</li>
+                            <li><strong>工具与框架</strong>：Git、GitHub、Visual Studio Code</li>
+                        </ul>
+                        <h3>🚀 项目亮点</h3>
+                        <p>我开发了一系列 <strong>Rainmeter 桌面组件</strong>，包括：</p>
+                        <ul>
+                            <li>📱 <strong>简约电量显示器</strong> - 实时显示电池状态，支持多级电量图标</li>
+                            <li>🔊 <strong>声音控制器</strong> - 可视化音量调节，磨砂玻璃视觉效果</li>
+                            <li>⚙️ <strong>系统监控组件</strong> - 自适应尺寸，支持个性化配置</li>
+                        </ul>
+                        <h3>💡 关于我</h3>
+                        <p>我相信 <em>简约而不简单</em> 的设计理念，致力于创造既美观又实用的软件产品。在开发过程中，我注重用户体验和代码质量，喜欢探索新技术并将其应用到实际项目中。</p>
+                        <blockquote>
+                            <p>"代码是诗歌，设计是艺术，而程序员是连接两者的桥梁。"</p>
+                        </blockquote>
+                        <p>📫 <strong>联系方式</strong>：通过 GitHub 与我交流技术话题！</p>
+                    </div>
+                </div>
+
+                <!-- 编辑区域 -->
+                <div class="bio-edit-section" id="bio-edit-section" style="display: none;">
+                    <div class="file-upload-section">
+                        <label for="file-input" class="upload-label">
+                            <i class="fas fa-upload"></i>
+                            上传 Markdown 文件
+                        </label>
+                        <input type="file" id="file-input" accept=".md" style="display: none;">
+                        <button id="upload-btn" class="upload-btn">选择文件</button>
+                    </div>
+
+                    <div class="markdown-editor-container">
+                        <textarea id="markdown-editor" class="markdown-editor" placeholder="在这里编写你的个人介绍..."></textarea>
+                        <div class="editor-actions">
+                            <button id="save-bio-btn" class="save-btn">
+                                <i class="fas fa-save"></i> 保存
+                            </button>
+                            <button id="cancel-bio-btn" class="cancel-btn">
+                                <i class="fas fa-times"></i> 取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 学习活动概览 -->
+            <div class="activity-section">
+                <h2 class="section-title">学习活动</h2>
+                <div class="activity-summary">
+                    <p>过去一年共学习了 <strong>365</strong> 天，创建了 <strong>128</strong> 篇笔记</p>
+                </div>
+
+                <!-- 学习贡献图 -->
+                <div class="contribution-graph">
+                    <h3>学习贡献图</h3>
+                    <div class="contribution-calendar">
+                        <!-- 这里将用JavaScript动态生成贡献图 -->
+                        <div class="calendar-graph">
+                            <div class="calendar-months">
+                                <span>1月</span>
+                                <span>2月</span>
+                                <span>3月</span>
+                                <span>4月</span>
+                                <span>5月</span>
+                                <span>6月</span>
+                                <span>7月</span>
+                                <span>8月</span>
+                                <span>9月</span>
+                                <span>10月</span>
+                                <span>11月</span>
+                                <span>12月</span>
+                            </div>
+                            <div class="calendar-grid" id="contributionGrid">
+                                <!-- 贡献方块将通过JavaScript生成 -->
+                            </div>
+                        </div>
+                        <div class="contribution-legend">
+                            <span>少</span>
+                            <div class="legend-colors">
+                                <div class="legend-color" data-level="0"></div>
+                                <div class="legend-color" data-level="1"></div>
+                                <div class="legend-color" data-level="2"></div>
+                                <div class="legend-color" data-level="3"></div>
+                                <div class="legend-color" data-level="4"></div>
+                            </div>
+                            <span>多</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技能标签 -->
+            <div class="skills-section">
+                <h2 class="section-title">技能与兴趣</h2>
+                <div class="skills-container">
+                    <span class="skill-tag level-expert" data-level="专家">JavaScript</span>
+                    <span class="skill-tag level-advanced" data-level="高级">Python</span>
+                    <span class="skill-tag level-intermediate" data-level="中级">React</span>
+                    <span class="skill-tag level-intermediate" data-level="中级">Node.js</span>
+                    <span class="skill-tag level-advanced" data-level="高级">数据结构</span>
+                    <span class="skill-tag level-intermediate" data-level="中级">算法</span>
+                    <span class="skill-tag level-beginner" data-level="初级">机器学习</span>
+                    <span class="skill-tag level-intermediate" data-level="中级">Web开发</span>
+                </div>
+
+                <div class="learning-progress">
+                    <h4>当前学习进度</h4>
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-title">深度学习基础</span>
+                            <span class="progress-percentage">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-title">React高级特性</span>
+                            <span class="progress-percentage">60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-title">算法竞赛训练</span>
+                            <span class="progress-percentage">40%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近笔记 -->
+            <div class="recent-notes-section">
+                <h2 class="section-title">最近笔记</h2>
+                <div class="notes-list">
+                    <div class="note-item">
+                        <div class="note-info">
+                            <h3 class="note-title">JavaScript异步编程详解</h3>
+                            <p class="note-description">深入理解Promise、async/await和事件循环机制</p>
+                            <div class="note-meta">
+                                <span class="note-date">2天前</span>
+                                <span class="note-tags">
+                                    <span class="tag">JavaScript</span>
+                                    <span class="tag">异步</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-info">
+                            <h3 class="note-title">React Hooks最佳实践</h3>
+                            <p class="note-description">useState、useEffect等常用Hooks的使用技巧</p>
+                            <div class="note-meta">
+                                <span class="note-date">5天前</span>
+                                <span class="note-tags">
+                                    <span class="tag">React</span>
+                                    <span class="tag">Hooks</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-info">
+                            <h3 class="note-title">数据结构与算法复习</h3>
+                            <p class="note-description">二叉树、排序算法、动态规划等核心概念总结</p>
+                            <div class="note-meta">
+                                <span class="note-date">1周前</span>
+                                <span class="note-tags">
+                                    <span class="tag">算法</span>
+                                    <span class="tag">数据结构</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>导航菜单</h3>
+                <button class="close-btn" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../index.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="quiz.html" class="sidebar-link">
+                    <i class="fas fa-question-circle"></i>
+                    <span>题目练习</span>
+                </a>
+                <a href="profile.html" class="sidebar-link active">
+                    <i class="fas fa-user"></i>
+                    <span>个人信息</span>
+                </a>
+                <a href="friendship.html" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>好友</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                body.classList.remove('sidebar-open');
+            } else {
+                sidebar.classList.add('active');
+                body.classList.add('sidebar-open');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+            sidebar.classList.remove('active');
+            body.classList.remove('sidebar-open');
+        }
+
+        // 点击侧边栏外部关闭
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+
+            if (sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+    </script>
+
+    <script src="../js/profile-script.js"></script>
+</body>
+
+</html>

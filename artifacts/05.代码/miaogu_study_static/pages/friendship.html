@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的好友</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/friends.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span class="current-location">我的好友</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Type / to search" class="search-input">
+                </div>
+                <div class="button-group">
+                    <div class="action-buttons">
+                        <button class="header-btn language-toggle" title="切换语言">
+                            <i class="fas fa-language"></i>
+                        </button>
+                        <button class="header-btn theme-toggle" title="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <!-- <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                        </button> -->
+                    </div>
+                    <div class="user-avatar" onclick="window.location.href='../pages/profile.html'">
+                        <img src="../assets/hhyufan.jpg" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 好友会话界面 -->
+    <div class="chat-container" id="chat-container" style="display: none;">
+        <main class="main-content chat-main-content">
+            <div class="chat-header">
+                <button class="btn-back-to-friends">
+                    <i class="fas fa-arrow-left"></i> 返回好友列表
+                </button>
+                <div class="chat-user-info">
+                    <img src="../assets/images/user1.jpg" alt="聊天对象" class="chat-avatar" id="chat-avatar">
+                    <div class="chat-user-details">
+                        <h3 class="chat-username" id="chat-username">张三</h3>
+                        <p class="chat-user-status">在线</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-messages-container">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- 消息内容将通过JavaScript动态添加 -->
+                    <div class="message received">
+                        <img src="../assets/images/user1.jpg" alt="张三" class="message-avatar">
+                        <div class="message-content">
+                            <p>你好！看到你分享的Spring Boot笔记，想交流一下</p>
+                            <span class="message-time">10:30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="输入消息..." id="message-input">
+                <button class="btn-send" id="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="main-content">
+        <!-- 状态选项卡 -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="friends">好友列表</button>
+            <button class="tab-btn" data-tab="requests">好友申请</button>
+            <button class="tab-btn" data-tab="search">推荐的人</button>
+        </div>
+
+        <!-- 好友列表 -->
+        <div class="tab-content active" id="friends-content">
+            <!-- 搜索框 -->
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="搜索好友..." class="search-input" id="friendSearch">
+            </div>
+            <div class="friends-list">
+                <!-- 单个好友项 -->
+                <div class="friend-item">
+                    <img src="../assets/images/user1.jpg" alt="张三" class="avatar">
+                    <div class="friend-info">
+                        <h3 class="username">张三</h3>
+                        <p class="user-title">Java专家 · 阿里巴巴</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-chat">发消息</button>
+                        <button class="btn-more">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="friend-item">
+                    <img src="../assets/images/user2.jpg" alt="李四" class="avatar">
+                    <div class="friend-info">
+                        <h3 class="username">李四</h3>
+                        <p class="user-title">前端开发 · 腾讯</p>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-chat">发消息</button>
+                        <button class="btn-more">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- 更多好友项... -->
+            </div>
+        </div>
+
+        <!-- 申请列表 -->
+        <div class="tab-content" id="requests-content" style="display: none;">
+            <div class="requests-list">
+                <!-- 单个申请项 -->
+                <div class="request-item">
+                    <img src="../assets/images/user3.jpg" alt="王五" class="avatar">
+                    <div class="request-info">
+                        <h3 class="username">王五</h3>
+                        <p class="request-meta">后端开发工程师 · 5分钟前</p>
+                        <p class="request-msg">你好，看到你分享的Spring Boot笔记，想交流一下</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept">
+                            <i class="fas fa-check"></i> 接受
+                        </button>
+                        <button class="btn-reject">
+                            <i class="fas fa-times"></i> 拒绝
+                        </button>
+                    </div>
+                </div>
+
+                <div class="request-item">
+                    <img src="../assets/images/user4.jpg" alt="赵六" class="avatar">
+                    <div class="request-info">
+                        <h3 class="username">赵六</h3>
+                        <p class="request-meta">全栈开发 · 昨天</p>
+                        <p class="request-msg">共同好友：张三，李四</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept">
+                            <i class="fas fa-check"></i> 接受
+                        </button>
+                        <button class="btn-reject">
+                            <i class="fas fa-times"></i> 拒绝
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 推荐列表 -->
+        <div class="tab-content" id="search-content" style="display: none;">
+            <div class="search-section">
+                <h3>技术同好推荐</h3>
+                <div class="users-grid">
+                    <div class="user-card">
+                        <img src="../assets/images/user5.jpg" alt="钱七" class="avatar">
+                        <h4 class="username">钱七</h4>
+                        <p class="user-tags">React, Node.js</p>
+                        <button class="btn-add">
+                            <i class="fas fa-user-plus"></i> 添加
+                        </button>
+                    </div>
+
+                    <div class="user-card">
+                        <img src="../assets/images/user6.jpg" alt="孙八" class="avatar">
+                        <h4 class="username">孙八</h4>
+                        <p class="user-tags">Vue, Python</p>
+                        <button class="btn-add">
+                            <i class="fas fa-user-plus"></i> 添加
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索结果 -->
+            <div class="search-results" style="display: none;">
+                <div class="result-item">
+                    <img src="../assets/user7.jpg" alt="周九" class="avatar">
+                    <div class="result-info">
+                        <h3 class="username">周九</h3>
+                        <p class="user-title">架构师 · 华为</p>
+                        <p class="user-tags">Java, 微服务, 云计算</p>
+                    </div>
+                    <button class="btn-add">
+                        <i class="fas fa-user-plus"></i> 添加好友
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 选项卡切换功能
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有激活状态
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // 添加激活状态到当前按钮
+                button.classList.add('active');
+
+                // 显示对应内容
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).style.display = 'block';
+            });
+        });
+
+        // 发消息按钮点击事件
+        document.querySelectorAll('.btn-chat').forEach((button, index) => {
+            button.addEventListener('click', () => {
+                // 隐藏主内容区
+                document.getElementById('main-content').style.display = 'none';
+
+                // 获取好友信息
+                const friendItem = button.closest('.friend-item');
+                const username = friendItem.querySelector('.username').textContent;
+                const avatarSrc = friendItem.querySelector('.avatar').src;
+
+                // 更新聊天界面信息
+                document.getElementById('chat-username').textContent = username;
+                document.getElementById('chat-avatar').src = avatarSrc;
+
+                // 显示聊天界面
+                document.getElementById('chat-container').style.display = 'block';
+            });
+        });
+
+        // 返回好友列表按钮
+        document.querySelector('.btn-back-to-friends').addEventListener('click', () => {
+            // 隐藏聊天界面
+            document.getElementById('chat-container').style.display = 'none';
+
+            // 显示主内容区
+            document.getElementById('main-content').style.display = 'block';
+        });
+
+        // 发送消息功能
+        document.getElementById('send-message').addEventListener('click', sendMessage);
+        document.getElementById('message-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 在页面加载完成后滚动到消息底部
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatContainer = document.querySelector('.chat-messages-container');
+            if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+
+            if (message) {
+                const messagesContainer = document.getElementById('chat-messages');
+
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.innerHTML = `
+                <div class="message-content">
+                    <p>${message}</p>
+                    <span class="message-time">${getCurrentTime()}</span>
+                </div>
+                <img src="../assets/hhyufan.jpg" alt="我" class="message-avatar">
+            `;
+
+                messagesContainer.appendChild(messageElement);
+                input.value = '';
+
+                // 滚动到底部以显示最新消息
+                const chatContainer = document.querySelector('.chat-messages-container');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        }
+    </script>
+
+    <!-- 侧边栏 -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>导航菜单</h3>
+                <button class="sidebar-close" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../index.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </a>
+                <a href="quiz.html" class="sidebar-link">
+                    <i class="fas fa-question-circle"></i>
+                    <span>题目页面</span>
+                </a>
+                <a href="friendship.html" class="sidebar-link active">
+                    <i class="fas fa-users"></i>
+                    <span>好友页面</span>
+                </a>
+                <a href="profile.html" class="sidebar-link">
+                    <i class="fas fa-user"></i>
+                    <span>个人信息</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // 侧边栏功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        // 点击侧边栏外部区域关闭侧边栏
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

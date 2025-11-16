@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/quiz-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <span class="current-location">Home</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Type / to search" class="search-input">
+                </div>
+                <div class="button-group">
+                    <div class="action-buttons">
+                        <button class="header-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="header-btn language-toggle" title="切换语言">
+                            <i class="fas fa-language"></i>
+                        </button>
+                        <button class="header-btn theme-toggle" title="切换主题">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <!-- <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                        </button> -->
+                        <button class="header-btn">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                    </div>
+                    <div class="user-avatar" onclick="window.location.href='../pages/profile.html'">
+                        <img src="../assets/hhyufan.jpg" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </header>
+    <!-- 主要内容区域 -->
+    <main class="main-container">
+        <!-- 左侧栏 - 章节管理 -->
+        <aside class="left-sidebar">
+            <div class="sidebar-header">
+                <h2>章节管理</h2>
+                <button class="new-btn">
+                    <i class="fas fa-plus"></i>
+                    新建
+                </button>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索章节或题目...">
+                </div>
+            </div>
+
+            <div class="chapter-list">
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter1')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter1"></i>
+                        <span>第一章 基础知识</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter1">
+                        <div class="topic-item" onclick="showTopicDetail('topic1')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>1.1 概述</span>
+                        </div>
+                        <div class="topic-item" onclick="showTopicDetail('topic2')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>1.2 基本概念</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-header" onclick="toggleChapter('chapter2')">
+                        <i class="fas fa-chevron-right chapter-arrow" id="arrow-chapter2"></i>
+                        <span>第二章 进阶内容</span>
+                    </div>
+                    <div class="topic-list" id="topics-chapter2">
+                        <div class="topic-item" onclick="showTopicDetail('topic3')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>2.1 高级特性</span>
+                        </div>
+                        <div class="topic-item" onclick="showTopicDetail('topic4')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>2.2 实践应用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 中间栏 - 题目动态 -->
+        <section class="main-content">
+            <div class="content-header">
+                <h2 id="content-title">题目动态</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterContent('all')">全部</button>
+                    <button class="filter-btn" onclick="filterContent('recent')">最新</button>
+                    <button class="filter-btn" onclick="filterContent('practice')">练习</button>
+                    <button class="practice-btn" onclick="startPractice()">
+                        <i class="fas fa-play"></i>
+                        开始练习
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-body" id="main-content">
+                <!-- 题目动态列表 -->
+                <div class="topic-dynamics">
+                    <div class="dynamic-item">
+                        <div class="item-header">
+                            <h3>基础概念练习题</h3>
+                            <span class="time">2小时前</span>
+                        </div>
+                        <p class="item-desc">包含10道选择题，涵盖第一章基础知识点</p>
+                        <div class="item-tags">
+                            <span class="tag">基础</span>
+                            <span class="tag">选择题</span>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-item">
+                        <div class="item-header">
+                            <h3>进阶应用题目</h3>
+                            <span class="time">1天前</span>
+                        </div>
+                        <p class="item-desc">综合性题目，需要运用多个知识点</p>
+                        <div class="item-tags">
+                            <span class="tag">进阶</span>
+                            <span class="tag">综合</span>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-item">
+                        <div class="item-header">
+                            <h3>实践操作题</h3>
+                            <span class="time">3天前</span>
+                        </div>
+                        <p class="item-desc">动手实践，加深理解</p>
+                        <div class="item-tags">
+                            <span class="tag">实践</span>
+                            <span class="tag">操作</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 右侧栏 - 笔记动态 -->
+        <aside class="right-sidebar">
+            <div class="sidebar-header">
+                <h2>笔记动态</h2>
+            </div>
+
+            <div class="notes-list" id="notes-content">
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>基础概念总结</h4>
+                        <span class="note-time">今天</span>
+                    </div>
+                    <p class="note-preview">对第一章基础知识的总结和理解...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">总结</span>
+                    </div>
+                </div>
+
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>重点难点记录</h4>
+                        <span class="note-time">昨天</span>
+                    </div>
+                    <p class="note-preview">学习过程中遇到的难点和解决方法...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">难点</span>
+                    </div>
+                </div>
+
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>练习心得</h4>
+                        <span class="note-time">2天前</span>
+                    </div>
+                    <p class="note-preview">做题过程中的思考和体会...</p>
+                    <div class="note-tags">
+                        <span class="note-tag">心得</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // 章节展开/收起功能
+        function toggleChapter(chapterId) {
+            const topics = document.getElementById('topics-' + chapterId);
+            const arrow = document.getElementById('arrow-' + chapterId);
+
+            if (topics.style.display === 'none' || topics.style.display === '') {
+                topics.style.display = 'block';
+                arrow.style.transform = 'rotate(90deg)';
+            } else {
+                topics.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 显示题目详情
+        function showTopicDetail(topicId) {
+            const contentTitle = document.getElementById('content-title');
+            const mainContent = document.getElementById('main-content');
+            const notesContent = document.getElementById('notes-content');
+
+            contentTitle.textContent = '题目详情';
+            mainContent.innerHTML = `
+                <div class="topic-detail">
+                    <h3>题目: ${topicId}</h3>
+                    <div class="detail-content">
+                        <p>这里是题目的详细内容...</p>
+                        <div class="detail-actions">
+                            <button class="action-btn">编辑</button>
+                            <button class="action-btn delete">删除</button>
+                            <button class="action-btn">添加笔记</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 更新笔记区域显示相关笔记
+            notesContent.innerHTML = `
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>关于${topicId}的笔记</h4>
+                        <span class="note-time">刚刚</span>
+                    </div>
+                    <p class="note-preview">这是关于当前题目的笔记引用...</p>
+                </div>
+            `;
+        }
+
+        // 内容筛选功能
+        function filterContent(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 这里可以添加具体的筛选逻辑
+            console.log('筛选类型:', type);
+        }
+
+        // 开始练习
+        function startPractice() {
+            window.location.href = 'practice.html';
+        }
+
+        // 初始化：隐藏所有题目列表
+        document.addEventListener('DOMContentLoaded', function () {
+            const topicLists = document.querySelectorAll('.topic-list');
+            topicLists.forEach(list => {
+                list.style.display = 'none';
+            });
+        });
+    </script>
+
+    <!-- 侧边栏 -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>导航菜单</h3>
+                <button class="sidebar-close" onclick="closeSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../index.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>主页</span>
+                </a>
+                <a href="quiz.html" class="sidebar-link active">
+                    <i class="fas fa-question-circle"></i>
+                    <span>题目页面</span>
+                </a>
+                <a href="friendship.html" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>好友页面</span>
+                </a>
+                <a href="profile.html" class="sidebar-link">
+                    <i class="fas fa-user"></i>
+                    <span>个人信息</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // 侧边栏功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        }
+
+        // 点击侧边栏外部区域关闭侧边栏
+        document.addEventListener('click', function (event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,18 +1,228 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# ===========================
+# 通用忽略规则
+# ===========================
 
-# Other files and folders
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===========================
+# Node.js / 前端项目
+# ===========================
+
+# 依赖目录
+node_modules/
+jspm_packages/
+
+# 构建输出
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.output/
+
+# 缓存目录
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# 覆盖率报告
+coverage/
+*.lcov
+.nyc_output/
+
+# 测试相关
+test-results/
+playwright-report/
+__screenshots__/
+/cypress/videos/
+/cypress/screenshots/
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# ===========================
+# Java / Spring Boot 项目
+# ===========================
+
+# 编译输出
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+build/
+
+# Spring Boot
+application-*.yml
+application-*.yaml
+application-*.properties
+!application.yml
+!application.yaml
+!application.properties
+
+# ===========================
+# IDE 和编辑器
+# ===========================
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.c9/
+*.launch
 .settings/
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ===========================
+# 数据库
+# ===========================
+
+# H2 数据库
+*.db
+*.h2.db
+*.trace.db
+
+# SQLite
+*.sqlite
+*.sqlite3
+
+# ===========================
+# 安全相关
+# ===========================
+
+# 密钥和证书
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+*.truststore
+
+# 配置文件中的敏感信息
+*secret*
+*password*
+*credential*
+
+# ===========================
+# 项目特定
+# ===========================
+
+# 上传文件目录
+uploads/
+files/
+static/uploads/
+
+# 备份文件
+*.backup
+*.bak
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# 文档生成
+docs/build/
+site/
+
+# ===========================
+# 其他
+# ===========================
+
+# 包管理器锁文件 (根据团队约定选择保留或忽略)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
